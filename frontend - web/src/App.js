@@ -14,6 +14,7 @@ import Grades from './pages/Grades/Grades';
 import PullDiscipline from './pages/PullDiscipline/PullDiscipline';
 
 import styles from './styles/global.css';
+import Perfil from './pages/Perfil/Perfil';
 
 function App() {
   return (
@@ -58,6 +59,10 @@ function App() {
 
           <Route path="/materia">
             <PullDiscipline />
+          </Route>
+
+          <Route path="/perfil">
+            <Perfil />
           </Route>
         </Switch>
       </Layout>
