@@ -1,0 +1,61 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --white: #ffffff;
+  --background: #f2f3f5;
+  --gray: #666666;
+  --text: #333333;
+  --yellow: #fdff97;
+  --orange: #ff961a;
+  --green: #c0ffaa;
+  --light-blue: rgba(0, 83, 166, 0.03);
+  --blue: #065cbe;
+  --blue-dark: #0054a6;
+}
+
+@media (max-width: 1080px) {
+  html {
+    font-size: 93.75%;
+  }
+}
+
+@media (max-width: 720px) {
+  html {
+    font-size: 87.5%;
+  }
+}
+
+body {
+  background: var(--white);
+  color: var(--text);
+}
+
+body,
+input,
+textarea,
+button {
+  font: 400 1rem 'Manrope', sans-serif;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1 {
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+
+h2 {
+  font-weight: 600;
+  font-size: 1.125rem;
+}
