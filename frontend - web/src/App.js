@@ -12,9 +12,10 @@ import Matriculation from './pages/Matriculation/Matriculation';
 import AcademicCoefficient from './pages/AcademicCoefficient/AcademicCoefficient';
 import Grades from './pages/Grades/Grades';
 import PullDiscipline from './pages/PullDiscipline/PullDiscipline';
+import Perfil from './pages/Perfil/Perfil';
+import ClassMaterial from './pages/ClassMaterial/ClassMaterial';
 
 import styles from './styles/global.css';
-import Perfil from './pages/Perfil/Perfil';
 
 function App() {
   return (
@@ -63,6 +64,10 @@ function App() {
 
           <Route path="/perfil">
             <Perfil />
+          </Route>
+
+          <Route path="/material">
+            <ClassMaterial />
           </Route>
         </Switch>
       </Layout>
