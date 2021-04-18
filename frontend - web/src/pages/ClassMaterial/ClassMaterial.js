@@ -9,12 +9,15 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
 import Paper from '@material-ui/core/Paper';
+import Select from '@material-ui/core/Select';
+import { FormControl, InputLabel, MenuItem } from '@material-ui/core';
 
 import download from '../../assets/icons/download.svg';
 
 import styles from './styles.module.css';
 
 const ClassMaterial = () => {
+  const [subject, setSubject] = useState();
   const [page, setPage] = useState(0);
   const rowsPerPage = 6;
 
@@ -38,10 +41,6 @@ const ClassMaterial = () => {
       },
     },
   }))(TableRow);
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
 
   const rows = [
     {
@@ -93,64 +92,89 @@ const ClassMaterial = () => {
         <div />
       </div>
 
-      <div className={styles.table}>
-        <TableContainer component={Paper}>
-          <Table aria-label="customized table">
-            <TableHead>
-              <TableRow>
-                <StyledTableCell align="center" width="150px">
-                  sigla
-                </StyledTableCell>
-                <StyledTableCell align="left">Título</StyledTableCell>
-                <StyledTableCell align="center">Data</StyledTableCell>
-                <StyledTableCell align="center">Arquivo</StyledTableCell>
-              </TableRow>
-            </TableHead>
+      <div style={{ display: 'flex' }}>
+        <FormControl variant="outlined" className={styles.select}>
+          <InputLabel id="demo-simple-select-outlined-label">
+            Disciplina
+          </InputLabel>
+          <Select
+            native
+            labelId="demo-simple-select-outlined-label"
+            id="demo-simple-select-outlined"
+            value={subject}
+            onChange={(value) => setSubject(value.target.value)}
+            label="Disciplina"
+          >
+            <option value="Todas">Todas</option>
+            <option value="C115">C115</option>
+            <option value="C213">C213</option>
+            <option value="C317">C317</option>
+          </Select>
+        </FormControl>
 
-            <TableBody>
-              {rows
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => (
-                  <StyledTableRow key={row.turma}>
-                    <StyledTableCell align="center">
-                      {row.sigla}
-                    </StyledTableCell>
+        <div className={styles.table}>
+          <TableContainer component={Paper}>
+            <Table aria-label="customized table">
+              <TableHead>
+                <TableRow>
+                  <StyledTableCell align="center" width="150px">
+                    Sigla
+                  </StyledTableCell>
+                  <StyledTableCell align="left">Título</StyledTableCell>
+                  <StyledTableCell align="center">Data</StyledTableCell>
+                  <StyledTableCell align="center">Arquivo</StyledTableCell>
+                </TableRow>
+              </TableHead>
 
-                    <StyledTableCell align="left">{row.titulo}</StyledTableCell>
+              <TableBody>
+                {rows
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row) => (
+                    <StyledTableRow key={row.turma}>
+                      <StyledTableCell align="center">
+                        {row.sigla}
+                      </StyledTableCell>
 
-                    <StyledTableCell align="center">{row.data}</StyledTableCell>
+                      <StyledTableCell align="left">
+                        {row.titulo}
+                      </StyledTableCell>
 
-                    <StyledTableCell align="center">
-                      <button>
-                        <img src={download} />
-                      </button>
-                    </StyledTableCell>
-                  </StyledTableRow>
-                ))}
+                      <StyledTableCell align="center">
+                        {row.data}
+                      </StyledTableCell>
 
-              {arr.map((element, index) => {
-                return (
-                  <>
-                    {index < emptyRows && (
-                      <StyledTableRow key={index} style={{ height: '53px' }}>
-                        <TableCell colSpan={4} />
-                      </StyledTableRow>
-                    )}
-                  </>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
+                      <StyledTableCell align="center">
+                        <button>
+                          <img src={download} />
+                        </button>
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  ))}
 
-        <TablePagination
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onChangePage={handleChangePage}
-          rowsPerPageOptions={[]}
-        />
+                {arr.map((element, index) => {
+                  return (
+                    <>
+                      {index < emptyRows && (
+                        <StyledTableRow key={index} style={{ height: '53px' }}>
+                          <TableCell colSpan={4} />
+                        </StyledTableRow>
+                      )}
+                    </>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+
+          <TablePagination
+            component="div"
+            count={rows.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onChangePage={(value, newPage) => setPage(newPage)}
+            rowsPerPageOptions={[]}
+          />
+        </div>
       </div>
     </div>
   );
