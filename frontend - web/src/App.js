@@ -14,6 +14,7 @@ import Grades from './pages/Grades/Grades';
 import PullDiscipline from './pages/PullDiscipline/PullDiscipline';
 import Perfil from './pages/Perfil/Perfil';
 import ClassMaterial from './pages/ClassMaterial/ClassMaterial';
+import Frequency from './pages/ClassSchedule/ClassSchedule';
 
 import styles from './styles/global.css';
 
@@ -68,6 +69,10 @@ function App() {
 
           <Route path="/material">
             <ClassMaterial />
+          </Route>
+
+          <Route path="/frequencia">
+            <Frequency />
           </Route>
         </Switch>
       </Layout>

@@ -23,18 +23,7 @@
 }
 
 .table {
-  margin: 20px 30px 0px 30px;
-}
-
-.table thead th {
-  padding: 10px;
-}
-
-.table thead > tr:last-child > th {
-  border-style: solid;
-  border-right: var(--white);
-  border-top: none;
-  border-width: thin;
+  margin: 20px 30px 80px 30px;
 }
 
 .table tr > td:not(:first-of-type) {
@@ -53,27 +42,11 @@
   font-family: 'Manrope', sans-serif;
 }
 
-.oneRowBorder {
-  border-style: solid;
-  border-top: none;
-  border-bottom: none !important;
-  border-width: thin;
+.classAcronyme {
+  font-weight: 600;
 }
 
-.monthsBorder {
-  border-style: solid;
-  border-top: none;
-  border-right: none;
-  border-width: thin;
-}
-
-.info {
-  margin-top: 20px;
-  margin-bottom: 80px;
-
-  text-align: center;
-
-  font-size: 0.875rem;
-
+.classroom {
   color: var(--blue-dark);
+  font-size: 0.688rem;
 }

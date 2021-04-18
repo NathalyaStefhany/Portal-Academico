@@ -11,7 +11,7 @@ import Paper from '@material-ui/core/Paper';
 
 import styles from './styles.module.css';
 
-const ClassSchedule = () => {
+const Frequency = () => {
   const StyledTableCell = withStyles((theme) => ({
     head: {
       backgroundColor: '#0054a6',
@@ -35,137 +35,37 @@ const ClassSchedule = () => {
 
   const rows = [
     {
-      hour: '08:00 - 08:50',
-      monday: { acronyme: null, classroom: null },
-      tuesday: { acronyme: null, classroom: null },
-      wednesday: { acronyme: null, classroom: null },
-      thursday: { acronyme: null, classroom: null },
-      friday: { acronyme: null, classroom: null },
-      saturday: { acronyme: null, classroom: null },
+      turma: 'C317',
+      fev: { teo: 0, lab: '-', jus: 0 },
+      mar: { teo: 0, lab: '-', jus: 0 },
+      abr: { teo: 0, lab: '-', jus: 0 },
+      mai: { teo: '-', lab: '-', jus: '-' },
+      jun: { teo: '-', lab: '-', jus: '-' },
+      jul: { teo: '-', lab: '-', jus: '-' },
+      aulasMin: 24,
+      limPrev: 0,
+      total: 0,
+      sit: '-',
     },
     {
-      hour: '08:50 - 09:40',
-      monday: { acronyme: null, classroom: null },
-      tuesday: { acronyme: null, classroom: null },
-      wednesday: { acronyme: null, classroom: null },
-      thursday: { acronyme: null, classroom: null },
-      friday: { acronyme: null, classroom: null },
-      saturday: { acronyme: null, classroom: null },
-    },
-    {
-      hour: '10:00 - 10:50',
-      monday: { acronyme: null, classroom: null },
-      tuesday: { acronyme: null, classroom: null },
-      wednesday: { acronyme: null, classroom: null },
-      thursday: { acronyme: null, classroom: null },
-      friday: { acronyme: null, classroom: null },
-      saturday: { acronyme: null, classroom: null },
-    },
-    {
-      hour: '10:50 - 11:40',
-      monday: { acronyme: null, classroom: null },
-      tuesday: { acronyme: null, classroom: null },
-      wednesday: { acronyme: null, classroom: null },
-      thursday: { acronyme: null, classroom: null },
-      friday: { acronyme: null, classroom: null },
-      saturday: { acronyme: null, classroom: null },
-    },
-    {
-      hour: '13:30 - 14:20',
-      monday: { acronyme: 'C317', classroom: null },
-      tuesday: { acronyme: 'C115 - L1', classroom: '(Local : I-17)' },
-      wednesday: { acronyme: null, classroom: null },
-      thursday: { acronyme: null, classroom: null },
-      friday: { acronyme: null, classroom: null },
-      saturday: { acronyme: null, classroom: null },
-    },
-    {
-      hour: '14:20 - 15:10',
-      monday: { acronyme: 'C317', classroom: null },
-      tuesday: { acronyme: 'C115 - L1', classroom: '(Local : I-17)' },
-      wednesday: { acronyme: null, classroom: null },
-      thursday: { acronyme: null, classroom: null },
-      friday: { acronyme: null, classroom: null },
-      saturday: { acronyme: null, classroom: null },
-    },
-    {
-      hour: '15:30 - 16:20',
-      monday: { acronyme: 'C317', classroom: null },
-      tuesday: { acronyme: null, classroom: null },
-      wednesday: { acronyme: null, classroom: null },
-      thursday: { acronyme: null, classroom: null },
-      friday: { acronyme: null, classroom: null },
-      saturday: { acronyme: null, classroom: null },
-    },
-    {
-      hour: '16:20 - 17:10',
-      monday: { acronyme: 'C317', classroom: null },
-      tuesday: { acronyme: null, classroom: null },
-      wednesday: { acronyme: null, classroom: null },
-      thursday: { acronyme: null, classroom: null },
-      friday: { acronyme: null, classroom: null },
-      saturday: { acronyme: null, classroom: null },
-    },
-    {
-      hour: '17:30 - 18:20',
-      monday: { acronyme: null, classroom: null },
-      tuesday: { acronyme: 'AC8 - I', classroom: null },
-      wednesday: { acronyme: null, classroom: null },
-      thursday: { acronyme: 'G008', classroom: '(Local : I-9)' },
-      friday: { acronyme: null, classroom: null },
-      saturday: { acronyme: 'G008', classroom: '(Local : I-9)' },
-    },
-    {
-      hour: '18:20 - 19:10',
-      monday: { acronyme: null, classroom: null },
-      tuesday: { acronyme: 'AC8 - I', classroom: null },
-      wednesday: { acronyme: null, classroom: null },
-      thursday: { acronyme: 'G008', classroom: '(Local : I-9)' },
-      friday: { acronyme: null, classroom: null },
-      saturday: { acronyme: 'G008', classroom: '(Local : I-9)' },
-    },
-    {
-      hour: '19:30 - 20:20',
-      monday: { acronyme: 'C213', classroom: '(Local : I-17)' },
-      tuesday: { acronyme: null, classroom: null },
-      wednesday: { acronyme: null, classroom: null },
-      thursday: { acronyme: 'C213 - L1', classroom: '(Prédio VI - 1.2)' },
-      friday: { acronyme: null, classroom: null },
-      saturday: { acronyme: null, classroom: null },
-    },
-    {
-      hour: '20:20 - 21:10',
-      monday: { acronyme: 'C213', classroom: '(Local : I-17)' },
-      tuesday: { acronyme: null, classroom: null },
-      wednesday: { acronyme: null, classroom: null },
-      thursday: { acronyme: 'C213 - L1', classroom: '(Prédio VI - 1.2)' },
-      friday: { acronyme: null, classroom: null },
-      saturday: { acronyme: null, classroom: null },
-    },
-    {
-      hour: '21:30 - 22:20',
-      monday: { acronyme: null, classroom: null },
-      tuesday: { acronyme: null, classroom: null },
-      wednesday: { acronyme: null, classroom: null },
-      thursday: { acronyme: 'T106 - L1', classroom: '(Local : I-16)' },
-      friday: { acronyme: null, classroom: null },
-      saturday: { acronyme: null, classroom: null },
-    },
-    {
-      hour: '22:10 - 23:10',
-      monday: { acronyme: null, classroom: null },
-      tuesday: { acronyme: null, classroom: null },
-      wednesday: { acronyme: null, classroom: null },
-      thursday: { acronyme: 'T106 - L1', classroom: '(Local : I-16)' },
-      friday: { acronyme: null, classroom: null },
-      saturday: { acronyme: null, classroom: null },
+      turma: 'G008',
+      fev: { teo: 0, lab: '-', jus: 0 },
+      mar: { teo: 0, lab: '-', jus: 0 },
+      abr: { teo: 0, lab: '-', jus: 0 },
+      mai: { teo: '-', lab: '-', jus: '-' },
+      jun: { teo: '-', lab: '-', jus: '-' },
+      jul: { teo: '-', lab: '-', jus: '-' },
+      aulasMin: 16,
+      limPrev: 20,
+      total: 0,
+      sit: '-',
     },
   ];
 
   return (
     <div className={styles.container}>
       <div className={styles.title}>
-        <h1>Horário das Aulas</h1>
+        <h1>Frequência</h1>
         <div />
       </div>
 
@@ -174,98 +74,183 @@ const ClassSchedule = () => {
           <Table aria-label="customized table">
             <TableHead>
               <TableRow>
-                <StyledTableCell align="center" width="150px">
-                  Horário
+                <StyledTableCell align="center" className={styles.oneRowBorder}>
+                  Turma
                 </StyledTableCell>
-                <StyledTableCell align="center">Segunda</StyledTableCell>
-                <StyledTableCell align="center">Terça</StyledTableCell>
-                <StyledTableCell align="center">Quarta</StyledTableCell>
-                <StyledTableCell align="center">Quinta</StyledTableCell>
-                <StyledTableCell align="center">Sexta</StyledTableCell>
-                <StyledTableCell align="center">Sábado</StyledTableCell>
+                <StyledTableCell align="center"></StyledTableCell>
+                <StyledTableCell align="center">Fev</StyledTableCell>
+                <StyledTableCell align="center"></StyledTableCell>
+                <StyledTableCell
+                  align="center"
+                  className={styles.monthsBorder}
+                ></StyledTableCell>
+                <StyledTableCell align="center">Mar</StyledTableCell>
+                <StyledTableCell align="center"></StyledTableCell>
+                <StyledTableCell
+                  align="center"
+                  className={styles.monthsBorder}
+                ></StyledTableCell>
+                <StyledTableCell align="center">Abr</StyledTableCell>
+                <StyledTableCell align="center"></StyledTableCell>
+                <StyledTableCell
+                  align="center"
+                  className={styles.monthsBorder}
+                ></StyledTableCell>
+                <StyledTableCell align="center">Mai</StyledTableCell>
+                <StyledTableCell align="center"></StyledTableCell>
+                <StyledTableCell
+                  align="center"
+                  className={styles.monthsBorder}
+                ></StyledTableCell>
+                <StyledTableCell align="center">Jun</StyledTableCell>
+                <StyledTableCell align="center"></StyledTableCell>
+                <StyledTableCell
+                  align="center"
+                  className={styles.monthsBorder}
+                ></StyledTableCell>
+                <StyledTableCell align="center">Jul</StyledTableCell>
+                <StyledTableCell align="center"></StyledTableCell>
+                <StyledTableCell align="center" className={styles.oneRowBorder}>
+                  Aulas
+                </StyledTableCell>
+                <StyledTableCell align="center" className={styles.oneRowBorder}>
+                  Lim.
+                </StyledTableCell>
+                <StyledTableCell align="center" className={styles.oneRowBorder}>
+                  Total
+                </StyledTableCell>
+                <StyledTableCell align="center" className={styles.oneRowBorder}>
+                  Sit.
+                </StyledTableCell>
+              </TableRow>
+              <TableRow style={{ padding: '10px' }}>
+                <StyledTableCell align="center" width="30px"></StyledTableCell>
+                <StyledTableCell align="center">Teo</StyledTableCell>
+                <StyledTableCell align="center">Lab</StyledTableCell>
+                <StyledTableCell align="center">Jus</StyledTableCell>
+                <StyledTableCell align="center">Teo</StyledTableCell>
+                <StyledTableCell align="center">Lab</StyledTableCell>
+                <StyledTableCell align="center">Jus</StyledTableCell>
+                <StyledTableCell align="center">Teo</StyledTableCell>
+                <StyledTableCell align="center">Lab</StyledTableCell>
+                <StyledTableCell align="center">Jus</StyledTableCell>
+                <StyledTableCell align="center">Teo</StyledTableCell>
+                <StyledTableCell align="center">Lab</StyledTableCell>
+                <StyledTableCell align="center">Jus</StyledTableCell>
+                <StyledTableCell align="center">Teo</StyledTableCell>
+                <StyledTableCell align="center">Lab</StyledTableCell>
+                <StyledTableCell align="center">Jus</StyledTableCell>
+                <StyledTableCell align="center">Teo</StyledTableCell>
+                <StyledTableCell align="center">Lab</StyledTableCell>
+                <StyledTableCell align="center">Jus</StyledTableCell>
+                <StyledTableCell align="center">Minist.</StyledTableCell>
+                <StyledTableCell align="center">Prev.</StyledTableCell>
+                <StyledTableCell align="center"></StyledTableCell>
+                <StyledTableCell align="center"></StyledTableCell>
               </TableRow>
             </TableHead>
 
             <TableBody>
               {rows.map((row) => (
-                <StyledTableRow key={row.hour}>
-                  <StyledTableCell align="center">{row.hour}</StyledTableCell>
+                <StyledTableRow key={row.turma}>
+                  <StyledTableCell align="center">{row.turma}</StyledTableCell>
 
                   <StyledTableCell align="center">
-                    <p className={styles.classAcronyme}>
-                      {row.monday.acronyme}
-                    </p>
-
-                    {row.monday.classroom && (
-                      <p className={styles.classroom}>{row.monday.classroom}</p>
-                    )}
+                    {row.fev.teo}
                   </StyledTableCell>
 
                   <StyledTableCell align="center">
-                    <p className={styles.classAcronyme}>
-                      {row.tuesday.acronyme}
-                    </p>
-
-                    {row.tuesday.classroom && (
-                      <p className={styles.classroom}>
-                        {row.tuesday.classroom}
-                      </p>
-                    )}
+                    {row.fev.lab}
                   </StyledTableCell>
 
                   <StyledTableCell align="center">
-                    <p className={styles.classAcronyme}>
-                      {row.wednesday.acronyme}
-                    </p>
-
-                    {row.wednesday.classroom && (
-                      <p className={styles.classroom}>
-                        {row.wednesday.classroom}
-                      </p>
-                    )}
+                    {row.fev.jus}
                   </StyledTableCell>
 
                   <StyledTableCell align="center">
-                    <p className={styles.classAcronyme}>
-                      {row.thursday.acronyme}
-                    </p>
-
-                    {row.thursday.classroom && (
-                      <p className={styles.classroom}>
-                        {row.thursday.classroom}
-                      </p>
-                    )}
+                    {row.mar.teo}
                   </StyledTableCell>
 
                   <StyledTableCell align="center">
-                    <p className={styles.classAcronyme}>
-                      {row.friday.acronyme}
-                    </p>
-
-                    {row.friday.classroom && (
-                      <p className={styles.classroom}>{row.friday.classroom}</p>
-                    )}
+                    {row.mar.lab}
                   </StyledTableCell>
 
                   <StyledTableCell align="center">
-                    <p className={styles.classAcronyme}>
-                      {row.saturday.acronyme}
-                    </p>
-
-                    {row.saturday.classroom && (
-                      <p className={styles.classroom}>
-                        {row.saturday.classroom}
-                      </p>
-                    )}
+                    {row.mar.jus}
                   </StyledTableCell>
+
+                  <StyledTableCell align="center">
+                    {row.abr.teo}
+                  </StyledTableCell>
+
+                  <StyledTableCell align="center">
+                    {row.abr.lab}
+                  </StyledTableCell>
+
+                  <StyledTableCell align="center">
+                    {row.abr.jus}
+                  </StyledTableCell>
+
+                  <StyledTableCell align="center">
+                    {row.mai.teo}
+                  </StyledTableCell>
+
+                  <StyledTableCell align="center">
+                    {row.mai.lab}
+                  </StyledTableCell>
+
+                  <StyledTableCell align="center">
+                    {row.mai.jus}
+                  </StyledTableCell>
+
+                  <StyledTableCell align="center">
+                    {row.jun.teo}
+                  </StyledTableCell>
+
+                  <StyledTableCell align="center">
+                    {row.jun.lab}
+                  </StyledTableCell>
+
+                  <StyledTableCell align="center">
+                    {row.jun.jus}
+                  </StyledTableCell>
+
+                  <StyledTableCell align="center">
+                    {row.jul.teo}
+                  </StyledTableCell>
+
+                  <StyledTableCell align="center">
+                    {row.jul.lab}
+                  </StyledTableCell>
+
+                  <StyledTableCell align="center">
+                    {row.jul.jus}
+                  </StyledTableCell>
+
+                  <StyledTableCell align="center">
+                    {row.aulasMin}
+                  </StyledTableCell>
+
+                  <StyledTableCell align="center">
+                    {row.limPrev}
+                  </StyledTableCell>
+
+                  <StyledTableCell align="center">{row.total}</StyledTableCell>
+
+                  <StyledTableCell align="center">{row.sit}</StyledTableCell>
                 </StyledTableRow>
               ))}
             </TableBody>
           </Table>
         </TableContainer>
       </div>
+
+      <p className={styles.info}>
+        O número máximo de faltas justificadas não poderá ultrapassar o limite
+        de <b>10%</b> da carga horária <b>prevista</b> para cada disciplina.
+      </p>
     </div>
   );
 };
 
-export default ClassSchedule;
+export default Frequency;
