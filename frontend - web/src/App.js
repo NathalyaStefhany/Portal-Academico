@@ -15,6 +15,7 @@ import PullDiscipline from './pages/PullDiscipline/PullDiscipline';
 import Perfil from './pages/Perfil/Perfil';
 import ClassMaterial from './pages/ClassMaterial/ClassMaterial';
 import Frequency from './pages/ClassSchedule/ClassSchedule';
+import Requirements from './pages/Requirements/Requirements';
 
 import styles from './styles/global.css';
 
@@ -73,6 +74,10 @@ function App() {
 
           <Route path="/frequencia">
             <Frequency />
+          </Route>
+
+          <Route path="/requisitos">
+            <Requirements />
           </Route>
         </Switch>
       </Layout>
