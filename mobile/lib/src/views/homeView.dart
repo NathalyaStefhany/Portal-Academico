@@ -74,7 +74,7 @@ class HomeViewState extends State<HomeView> {
                             Container(
                               margin: EdgeInsets.fromLTRB(20, 0, 10, 10),
                               child: Text(
-                                'Matricula: 1467', 
+                                'Matricula: 1234', 
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
                                   fontSize: 16,
