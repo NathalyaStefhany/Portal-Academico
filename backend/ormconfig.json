@@ -1,0 +1,16 @@
+{
+    "type": "mongodb",
+    "host": "localhost",
+    "port": 27017,
+    "database": "portalAcademico",
+    "synchronize": true,
+    "useUnifiedTopology": true,
+    "entities": [
+        "src/entities/**/*.ts"
+    ],
+    "migrations": ["src/database/migrations/**/*.ts"],
+    "cli": {
+        "entitiesDir": "src/entity",
+        "migrationsDir": "src/database/migrations"
+    }
+}
