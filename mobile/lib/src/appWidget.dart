@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/src/views/homeView.dart';
+import 'package:mobile/src/views/home/homeView.dart';
 import 'package:mobile/src/views/loginView.dart';
 
 class AppWidget extends StatelessWidget{

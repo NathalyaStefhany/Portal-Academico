@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/src/core/appTextStyles.dart';
 
 // ignore: must_be_immutable
 class NumberTextField extends StatelessWidget{
@@ -19,9 +20,7 @@ class NumberTextField extends StatelessWidget{
       keyboardType: TextInputType.number,
       decoration: InputDecoration(
         labelText: labelText,
-        labelStyle: TextStyle(
-          fontSize: 23
-        ),
+        labelStyle: AppTextStyles.body18,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8)
         ),
