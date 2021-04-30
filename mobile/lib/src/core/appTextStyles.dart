@@ -70,6 +70,12 @@ class AppTextStyles {
     fontWeight: FontWeight.normal,
   );
 
+  static final TextStyle bodyGray14 = GoogleFonts.manrope(
+    color: AppColors.gray,
+    fontSize: 14,
+    fontWeight: FontWeight.w600,
+  );
+
   static final TextStyle bodyBlue14 = GoogleFonts.manrope(
     color: AppColors.darkBlue,
     fontSize: 14,
