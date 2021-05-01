@@ -82,6 +82,12 @@ class AppTextStyles {
     fontWeight: FontWeight.w600,
   );
 
+  static final TextStyle bodyBlue16 = GoogleFonts.manrope(
+    color: AppColors.darkBlue,
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+  );
+
   static final TextStyle buttonWhite = GoogleFonts.manrope(
     color: AppColors.white,
     fontSize: 18,
