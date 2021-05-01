@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/src/views/academicCoefficient.dart';
 import 'package:mobile/src/views/gradeView.dart';
 import 'package:mobile/src/views/home/homeView.dart';
 import 'package:mobile/src/views/loginView.dart';
@@ -21,6 +22,7 @@ class AppWidget extends StatelessWidget{
         '/': (context) => LoginView(),
         '/home': (context) => HomeView(),
         '/grades': (context) => GradeView(),
+        '/academicCoef': (context) => AcademicCoefficient(),
       },
     );
   }

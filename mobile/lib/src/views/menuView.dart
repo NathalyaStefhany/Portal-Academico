@@ -40,6 +40,9 @@ class MenuView extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.folder),
             title: Text('Coeficiente Acadêmico', style: AppTextStyles.bodyBold),
+            onTap: (){
+              Navigator.of(context).pushReplacementNamed('/academicCoef');
+            },
           ),
           ListTile(
             title: Text('CALENDÁRIO E HORÁRIOS', style: AppTextStyles.bodyGray14,)
