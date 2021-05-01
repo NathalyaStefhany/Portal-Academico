@@ -36,6 +36,9 @@ class MenuView extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.school_outlined),
             title: Text('Histórico', style: AppTextStyles.bodyBold),
+            onTap: (){
+              Navigator.of(context).pushReplacementNamed('/historic');
+            },
           ),
           ListTile(
             leading: Icon(Icons.folder),

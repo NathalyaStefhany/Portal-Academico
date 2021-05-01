@@ -12,7 +12,7 @@ class AcademicCoef {
   AcademicCoef(this.semester, this.cre, this.crs, this.mediana);
 }
 
-class AcademicCoefficient extends StatelessWidget {
+class AcademicCoefficientView extends StatelessWidget {
   final List<AcademicCoef> coef = [
     AcademicCoef('2017/1', 100, 100, 100),
     AcademicCoef('2017/2', 100, 100, 100),
