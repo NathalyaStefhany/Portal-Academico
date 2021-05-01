@@ -32,6 +32,9 @@ class MenuView extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.date_range),
             title: Text('Frequência', style: AppTextStyles.bodyBold),
+            onTap: (){
+              Navigator.of(context).pushReplacementNamed('/frequency');
+            },
           ),
           ListTile(
             leading: Icon(Icons.school_outlined),

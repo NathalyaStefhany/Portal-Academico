@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/src/views/academicCoefficientView.dart';
+import 'package:mobile/src/views/frequencyView.dart';
 import 'package:mobile/src/views/gradeView.dart';
 import 'package:mobile/src/views/historicView.dart';
 import 'package:mobile/src/views/home/homeView.dart';
@@ -25,6 +26,7 @@ class AppWidget extends StatelessWidget{
         '/grades': (context) => GradeView(),
         '/academicCoef': (context) => AcademicCoefficientView(),
         '/historic': (context) => HistoricView(),
+        '/frequency': (context) => FrequencyView(),
       },
     );
   }
