@@ -21,6 +21,9 @@ class MenuView extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.folder_open),
             title: Text('Material de Aula', style: AppTextStyles.bodyBold),
+            onTap: (){
+              Navigator.of(context).pushReplacementNamed('/classMaterial');
+            },
           ),
           ListTile(
             leading: Icon(Icons.assessment_outlined),
@@ -44,7 +47,7 @@ class MenuView extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.folder),
+            leading: Icon(Icons.bar_chart_sharp),
             title: Text('Coeficiente Acadêmico', style: AppTextStyles.bodyBold),
             onTap: (){
               Navigator.of(context).pushReplacementNamed('/academicCoef');
@@ -55,18 +58,17 @@ class MenuView extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.access_time),
-            title: Text('Horários do Semestre', style: AppTextStyles.bodyBold),
-          ),
-          ListTile(
-            leading: Icon(Icons.access_time),
             title: Text('Horário de Atendimento', style: AppTextStyles.bodyBold),
+            onTap: (){
+              Navigator.of(context).pushReplacementNamed('/openingHours');
+            },
           ),
           ListTile(
             leading: Icon(Icons.text_snippet_outlined),
             title: Text('Provas', style: AppTextStyles.bodyBold),
           ),
           ListTile(
-            leading: Icon(Icons.folder),
+            leading: Icon(Icons.event),
             title: Text('Reposição de Aula', style: AppTextStyles.bodyBold),
           ),
         ],

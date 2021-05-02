@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/src/views/academicCoefficientView.dart';
+import 'package:mobile/src/views/classMaterialView.dart';
 import 'package:mobile/src/views/frequencyView.dart';
 import 'package:mobile/src/views/gradeView.dart';
 import 'package:mobile/src/views/historicView.dart';
 import 'package:mobile/src/views/home/homeView.dart';
 import 'package:mobile/src/views/loginView.dart';
+import 'package:mobile/src/views/openingHoursView.dart';
 
 class AppWidget extends StatelessWidget{
 
@@ -27,6 +29,8 @@ class AppWidget extends StatelessWidget{
         '/academicCoef': (context) => AcademicCoefficientView(),
         '/historic': (context) => HistoricView(),
         '/frequency': (context) => FrequencyView(),
+        '/classMaterial': (context) => ClassMaterialView(),
+        '/openingHours': (context) => OpeningHoursView(),
       },
     );
   }
