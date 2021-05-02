@@ -7,6 +7,8 @@ import 'package:mobile/src/views/historicView.dart';
 import 'package:mobile/src/views/home/homeView.dart';
 import 'package:mobile/src/views/loginView.dart';
 import 'package:mobile/src/views/openingHoursView.dart';
+import 'package:mobile/src/views/replacementView.dart';
+import 'package:mobile/src/views/testsView.dart';
 
 class AppWidget extends StatelessWidget{
 
@@ -31,6 +33,8 @@ class AppWidget extends StatelessWidget{
         '/frequency': (context) => FrequencyView(),
         '/classMaterial': (context) => ClassMaterialView(),
         '/openingHours': (context) => OpeningHoursView(),
+        '/tests': (context) => TestsView(),
+        '/replacement': (context) => ReplacementView(),
       },
     );
   }

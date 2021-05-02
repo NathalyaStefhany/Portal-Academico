@@ -66,10 +66,16 @@ class MenuView extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.text_snippet_outlined),
             title: Text('Provas', style: AppTextStyles.bodyBold),
+            onTap: (){
+              Navigator.of(context).pushReplacementNamed('/tests');
+            },
           ),
           ListTile(
             leading: Icon(Icons.event),
             title: Text('Reposição de Aula', style: AppTextStyles.bodyBold),
+            onTap: (){
+              Navigator.of(context).pushReplacementNamed('/replacement');
+            },
           ),
         ],
       ),
