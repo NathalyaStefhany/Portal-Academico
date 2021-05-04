@@ -1,6 +1,13 @@
 import { ObjectId } from "mongodb";
 import { Entity, Column, CreateDateColumn, PrimaryColumn } from "typeorm";
-import { ISchoolSupply } from "./ISchoolSupply";
+import { ClassDate } from "./ClassDate";
+import { Frequency } from "./Frequency";
+import { SchoolSupply } from "./SchoolSupply";
+import { Test } from "./Test";
+
+interface matriculationNumber {
+    matriculationNumber: number
+}
 
 @Entity("classes")
 class Class {
@@ -20,37 +27,37 @@ class Class {
     Classroom: string
 
     @Column()
-    ClassDate: Array<{ date: Date }>
+    ClassDate: Array<ClassDate>
 
     @Column()
-    TestDates: Array<ITest>;
+    TestDates?: Array<Test>;
 
     @Column()
     FrequencyLimit: number;
 
     @Column()
-    Frequency: Array<IFrequency>;
+    Frequency?: Array<Frequency>;
 
     @Column()
-    SchoolSupplies: Array<ISchoolSupply>;
+    SchoolSupplies?: Array<SchoolSupply>;
 
     @Column()
-    Students: Array<{ matriculationNumber: number }>;
+    Students: Array<matriculationNumber>;
 
     constructor(
-        acronym: string, classParam: string, classroom: string, classDate: Array<{ date: Date }>,
-        testDates: Array<ITest>, frequencyLimit: number, frequency: Array<IFrequency>, 
-        schoolSupplies: Array<ISchoolSupply>, students: Array<{ matriculationNumber: number }>) {
+        acronym: string, classParam: string, classroom: string, classDate: Array<ClassDate>,
+        testDates: Array<Test>, frequencyLimit: number, frequency: Array<Frequency>,
+        schoolSupplies: Array<SchoolSupply>, students: Array<matriculationNumber>) {
 
-            this.Acronym = acronym;
-            this.Class = classParam;
-            this.Classroom = classroom;
-            this.ClassDate = classDate;
-            this.TestDates = testDates;
-            this.FrequencyLimit = frequencyLimit;
-            this.Frequency = frequency;
-            this.SchoolSupplies = schoolSupplies;
-            this.Students = students;
+        this.Acronym = acronym;
+        this.Class = classParam;
+        this.Classroom = classroom;
+        this.ClassDate = classDate;
+        this.TestDates = testDates;
+        this.FrequencyLimit = frequencyLimit;
+        this.Frequency = frequency;
+        this.SchoolSupplies = schoolSupplies;
+        this.Students = students;
 
     }
 
