@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/src/components/numberTextField.dart';
+import 'package:mobile/src/core/appTextStyles.dart';
 
 class LoginView extends StatefulWidget {
   @override
@@ -16,93 +17,80 @@ class _LoginViewState extends State<LoginView>{
 
   Widget _loginBody(){
     return Container(
-        child: SizedBox(
-          width: MediaQuery.of(this.context).size.width ,
-          height: MediaQuery.of(this.context).size.height,
-          child: Padding(
-            padding: const EdgeInsets.all(30.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(height: MediaQuery.of(context).size.height/2.5),
-                DropdownButtonFormField(
-                  value: curso,
-                  onChanged: (value) {
-                    setState(() {
-                      curso = value;
-                    });
-                  },
-                  items: cursos.map((c) {
-                    return DropdownMenuItem(
-                      value: c,
-                      child: Text(c),
-                    );
-                  }).toList(),
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8)
-                    ),
-                    filled: true,
-                    fillColor: Colors.white,
-                    labelText: ' Curso ',
-                    labelStyle: TextStyle(
-                      fontSize: 23,
-                      backgroundColor: Colors.white,
-                      color: Color(0xFF065CBE),
-                    ),
-                  ),
-                  style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.black
-                    ),
-                  icon: Icon(Icons.keyboard_arrow_down_sharp),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 45),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(height: MediaQuery.of(context).size.height/3.2),
+            DropdownButtonFormField(
+              value: curso,
+              onChanged: (value) {
+                setState(() {
+                  curso = value;
+                });
+              },
+              items: cursos.map((c) {
+                return DropdownMenuItem(
+                  value: c,
+                  child: Text(c),
+                );
+              }).toList(),
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
                 ),
-
-                SizedBox(height: 45),
-                NumberTextField('Matrícula', matricula, false),
-
-                SizedBox(height: 45),
-                NumberTextField('Senha', senha, true),
-                Container(
-                  child: Text(
-                    'Esqueceu a senha?',
-                    style: TextStyle(
-                      color: Color(0xFF065CBE),
-                      height: 2,                     
-                    ),
-                  ),
-                  alignment: Alignment.bottomLeft,
-                ),
-
-                SizedBox(height: 40),
-                ElevatedButton(
-                  child: Text(
-                    "Entrar".toUpperCase(),
-                    style: TextStyle(fontSize: 20)
-                  ),
-
-                  style: ButtonStyle(
-                    foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                    backgroundColor: MaterialStateProperty.all<Color>(Colors.orange),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)
-                      ),
-                    ),
-                    minimumSize: MaterialStateProperty.all<Size>(Size(400, 60))
-                  ),
-                  
-                  onPressed: () {
-                    if (matricula.toString() == '123' && senha.toString() == '123') {
-                      Navigator.of(context).pushReplacementNamed('/home');
-                    }
-                  },
-                ),
-              ],
+                filled: true,
+                fillColor: Colors.white,
+                labelText: ' Curso ',
+                labelStyle: AppTextStyles.body18
+              ),
+              style: AppTextStyles.body18,
+              icon: Icon(Icons.keyboard_arrow_down_sharp),
             ),
-          ),
+
+            SizedBox(height: 40),
+            NumberTextField('Matrícula', matricula, false),
+
+            SizedBox(height: 40),
+            NumberTextField('Senha', senha, true),
+
+            SizedBox(height: 5),
+            Container(
+              child: Text(
+                'Esqueceu a senha?',
+                style: AppTextStyles.bodyBlue14,
+              ),
+              alignment: Alignment.bottomLeft,
+            ),
+
+            SizedBox(height: 40),
+            ElevatedButton(
+              child: Text(
+                "Entrar".toUpperCase(),
+                style: AppTextStyles.buttonWhite,
+              ),
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.orange),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)
+                  ),
+                ),
+                minimumSize: MaterialStateProperty.all<Size>(Size(400, 60))
+              ),
+              
+              onPressed: () {
+                if (matricula.toString() == '123' && senha.toString() == '123') {
+                  Navigator.of(context).pushReplacementNamed('/home');
+                }
+              },
+            ),
+          ],
         ),
-      );
+      ),     
+    );
   }
 
   @override
@@ -111,8 +99,6 @@ class _LoginViewState extends State<LoginView>{
       body: Stack(
         children: [
           Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.center,
@@ -125,7 +111,6 @@ class _LoginViewState extends State<LoginView>{
             ),
           ),
           Container(
-            margin: EdgeInsets.zero,
             width: MediaQuery.of(context).size.width,
             height: 500,
             child: Image.asset(
@@ -133,22 +118,25 @@ class _LoginViewState extends State<LoginView>{
               fit: BoxFit.fitWidth,
             ),
           ),
-          Container(
-            height: MediaQuery.of(context).size.height - 500,
-            child: Image.asset('assets/images/Inatel_Branco.png'),
-            margin: EdgeInsetsDirectional.only(start: 40, end: 40),
-          ),
-          Container(
-            height: MediaQuery.of(context).size.height - 350,
-            alignment: Alignment.center,
-            child: Text(
-              'Portal Acadêmico',
-              style: TextStyle(
-                color: Colors.orange,
-                fontSize: 28,
-                fontWeight: FontWeight.bold
+          Padding(
+            padding: const EdgeInsets.only(top: 30, left: 40, right: 40),
+            child: SafeArea(
+              top: true,
+              child: Column(
+                children: [
+                  Container(
+                    child: Image.asset('assets/images/Inatel_Branco.png'),
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Portal Acadêmico',
+                      style: AppTextStyles.titleOrange,
+                    )
+                  ),
+                ],
               ),
-            )
+            ),
           ),
           Container(
             child: SingleChildScrollView(
