@@ -1,5 +1,9 @@
 import { Entity, Column, CreateDateColumn, PrimaryColumn } from "typeorm";
 
+interface acronym {
+    acronym: string
+}
+
 @Entity("students")
 class Student {
     @CreateDateColumn()
@@ -27,11 +31,11 @@ class Student {
     Period: number;
 
     @Column()
-    Subjects: Array<{ acronym: string }>
+    Subjects: Array<acronym>
 
     constructor(
         matriculationNumber: number, name: string, email: string, birthDate: Date,
-        cpf: string, period: number, subjects: Array<{ acronym: string }>, password: string = '') {
+        cpf: string, period: number, subjects: Array<acronym>, password: string = '') {
 
         this.CreatedAt = new Date(Date.now());
         this.MatriculationNumber = matriculationNumber;

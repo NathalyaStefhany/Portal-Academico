@@ -1,4 +1,5 @@
 import { Entity, Column, CreateDateColumn, PrimaryColumn } from "typeorm";
+import { SubjectHist } from "./SubjectHist";
 
 @Entity("histories")
 class Historic {
@@ -9,9 +10,9 @@ class Historic {
     MatriculationNumber: number;
 
     @Column()
-    Subjects: Array<ISubjectHist>;
+    Subjects: Array<SubjectHist>;
 
-    constructor(matriculationNumber: number, subjects: Array<ISubjectHist>) {
+    constructor(matriculationNumber: number, subjects: Array<SubjectHist>) {
         this.CreatedAt = new Date(Date.now());
         this.MatriculationNumber = matriculationNumber;
         this.Subjects = subjects;
