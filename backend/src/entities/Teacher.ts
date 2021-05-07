@@ -1,5 +1,6 @@
 import { ObjectId } from "mongodb";
 import { Entity, Column, CreateDateColumn, PrimaryColumn } from "typeorm";
+import { TimeTable } from "./TimeTable";
 
 @Entity("teachers")
 class Teacher {
@@ -22,7 +23,7 @@ class Teacher {
     Password: string;
 
     @Column()
-    TimeTable: Array<ITimeTable>
+    TimeTable: Array<TimeTable>
 
     @Column()
     Classes: Array<ObjectId>
