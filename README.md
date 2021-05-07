@@ -10,12 +10,12 @@
 This project is a proposed interface for the Inatel academic portal.
 
 <p align="center">
- <a href="#project-description">Project Description</a> •
- <a href="#layout">Layout</a> • 
- <a href="#functionalities">Functionalities</a> • 
- <a href="#technologies">Technologies</a> • 
- <a href="#run-the-project">Run the Project</a> • 
- <a href="#authors">Authors</a>
+ <a href="#-project-description">Project Description</a> •
+ <a href="#-layout">Layout</a> • 
+ <a href="#-functionalities">Functionalities</a> • 
+ <a href="#-technologies">Technologies</a> • 
+ <a href="#-run-the-project">Run the Project</a> • 
+ <a href="#-authors">Authors</a>
 </p>
 
 ## 💻 Project Description
