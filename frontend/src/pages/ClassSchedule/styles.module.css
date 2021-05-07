@@ -1,0 +1,52 @@
+.container {
+  display: flex;
+
+  flex-direction: column;
+
+  width: 100%;
+}
+
+.title {
+  width: auto;
+
+  margin-top: 75px;
+  margin-left: 30px;
+}
+
+.title > div {
+  height: 1px;
+
+  background-color: var(--blue);
+
+  margin-top: 5px;
+  margin-right: 30px;
+}
+
+.table {
+  margin: 20px 30px 80px 30px;
+}
+
+.table tr > td:not(:first-of-type) {
+  border: 1px solid rgba(224, 224, 224, 1);
+}
+
+.table tr > td:last-child {
+  border-right: 0px;
+}
+
+.table td {
+  font-family: 'Manrope', sans-serif;
+}
+
+.table th {
+  font-family: 'Manrope', sans-serif;
+}
+
+.classAcronyme {
+  font-weight: 600;
+}
+
+.classroom {
+  color: var(--blue-dark);
+  font-size: 0.688rem;
+}

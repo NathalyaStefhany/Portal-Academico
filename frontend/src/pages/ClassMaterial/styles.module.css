@@ -1,0 +1,64 @@
+.container {
+  display: flex;
+
+  flex-direction: column;
+
+  width: 100%;
+}
+
+.title {
+  width: auto;
+
+  margin-top: 75px;
+  margin-left: 30px;
+}
+
+.title > div {
+  height: 1px;
+
+  background-color: var(--blue);
+
+  margin-top: 5px;
+  margin-right: 30px;
+}
+
+.select {
+  width: 200px;
+
+  margin: 20px 30px 0px 30px !important;
+}
+
+.table {
+  margin: 20px 30px 80px 30px;
+
+  width: 70%;
+
+  align-self: center;
+}
+
+.table td {
+  font-family: 'Manrope', sans-serif;
+}
+
+.table th {
+  font-family: 'Manrope', sans-serif;
+}
+
+.table button {
+  border: none;
+  background-color: rgba(0, 0, 0, 0);
+
+  vertical-align: sub;
+}
+
+.table img {
+  width: 18px;
+  height: 18px;
+
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.table span {
+  color: var(--gray) !important;
+}
