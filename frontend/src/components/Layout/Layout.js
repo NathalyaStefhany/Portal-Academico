@@ -6,20 +6,27 @@ import Footer from '../Footer/Footer';
 
 import styles from './styles.module.css';
 
-const Layout = ({ children }) => {
+const Layout = ({ children, isAuthenticated }) => {
   return (
-    <div className={styles.container}>
-      <Header />
+    <>
+      {isAuthenticated ? (
+        <div className={styles.container}>
+          <Header />
 
-      {children}
+          {children}
 
-      <Footer />
-    </div>
+          <Footer />
+        </div>
+      ) : (
+        <>{children}</>
+      )}
+    </>
   );
 };
 
 Layout.propTypes = {
   children: PropTypes.element.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
 };
 
 export default Layout;

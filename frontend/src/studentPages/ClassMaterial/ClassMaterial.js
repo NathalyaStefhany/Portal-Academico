@@ -10,7 +10,7 @@ import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
 import Paper from '@material-ui/core/Paper';
 import Select from '@material-ui/core/Select';
-import { FormControl, InputLabel, MenuItem } from '@material-ui/core';
+import { FormControl, InputLabel } from '@material-ui/core';
 
 import download from '../../assets/icons/download.svg';
 

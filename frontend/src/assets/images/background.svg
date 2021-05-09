@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+  <polygon points="0,0 0,1000 500,1000 750,0" style="fill:#065CBE;"/>
+  <line x1="750" y1="-2" x2="500" y2="1005" style="stroke:#FF9900;stroke-width:10" />
+</svg>

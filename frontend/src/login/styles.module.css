@@ -1,0 +1,83 @@
+.background {
+  width: 100%;
+  min-height: 100vh;
+
+  background-image: url(../assets/images/background.svg);
+  background-size: auto;
+
+  display: flex;
+}
+
+.logo {
+  height: 100%;
+  width: 50%;
+
+  text-align: center;
+
+  padding-top: 15.625rem;
+}
+
+.logo img {
+  width: 18.75rem;
+}
+
+.logo p {
+  color: var(--orange);
+  font-size: 1.75rem;
+  font-weight: 800;
+}
+
+.login {
+  height: 100%;
+  width: 50%;
+
+  text-align: center;
+
+  padding-top: 5rem;
+}
+
+.loginButton button {
+  font-size: 1.375rem;
+  font-weight: 700;
+
+  background-color: var(--white);
+
+  width: 9.375rem;
+  height: 3.125rem;
+
+  border: none;
+  border-bottom: var(--text) solid 2px;
+}
+
+.selected {
+  color: var(--text);
+  border-bottom: var(--text) solid 2px;
+}
+
+.unselected {
+  color: var(--light-gray);
+  border-bottom: var(--light-gray) solid 2px !important;
+}
+
+.enterButton {
+  width: 21.875rem;
+  height: 3.438rem;
+
+  background-color: var(--orange);
+  color: var(--white);
+
+  margin-top: 2.5rem;
+
+  border: none;
+  border-radius: 10px;
+}
+
+.enterButton:active {
+  background-color: #f58400;
+}
+
+.select {
+  width: 21.875rem;
+
+  margin: 50px 30px 0px 30px !important;
+}

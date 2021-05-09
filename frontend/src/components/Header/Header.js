@@ -11,14 +11,14 @@ const Header = () => {
     <div className={styles.header}>
       <img src={logoInatel} alt="Logo branco do Inatel" />
 
-      <Link to="/">Home</Link>
+      <Link to="/aluno">Home</Link>
       <Link to="/aulas">Aulas</Link>
       <Link to="/matricula">Matrícula</Link>
       <Link to="/perfil">Perfil</Link>
 
       <div className={styles.logout}>
         <img src={logout} alt="Icone de logout" />
-        <Link to="/login">Sair</Link>
+        <Link to="/">Sair</Link>
       </div>
     </div>
   );
