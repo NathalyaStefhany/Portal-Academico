@@ -12,8 +12,6 @@ import styles from './styles.module.css';
 const Login = ({ setIsAuthenticated }) => {
   const [login, setLogin] = useState('student');
 
-  setIsAuthenticated(false);
-
   return (
     <div className={styles.background}>
       <div className={styles.logo}>
@@ -52,7 +50,9 @@ const Login = ({ setIsAuthenticated }) => {
         {login === 'student' && (
           <StudentLogin setIsAuthenticated={setIsAuthenticated} />
         )}
-        {login === 'teacher' && <TeacherLogin />}
+        {login === 'teacher' && (
+          <TeacherLogin setIsAuthenticated={setIsAuthenticated} />
+        )}
         {login === 'employee' && <EmployeeLogin />}
       </div>
     </div>

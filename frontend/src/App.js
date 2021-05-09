@@ -18,15 +18,25 @@ import ClassMaterial from './studentPages/ClassMaterial/ClassMaterial';
 import Frequency from './studentPages/Frequency/Frequency';
 import Requirements from './studentPages/Requirements/Requirements';
 
+import TeacherHome from './teacherPages/Home/Home';
+import TeacherPerfil from './teacherPages/Perfil/Perfil';
+
 import styles from './styles/global.css';
 import { useState } from 'react';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState({
+    student: false,
+    teacher: false,
+    employee: false,
+  });
 
   return (
     <Router>
-      <Layout isAuthenticated={isAuthenticated}>
+      <Layout
+        isAuthenticated={isAuthenticated}
+        setIsAuthenticated={setIsAuthenticated}
+      >
         <Routes>
           <Route exact path="/">
             <Login setIsAuthenticated={setIsAuthenticated} />
@@ -86,6 +96,14 @@ function App() {
 
           <Route path="/aluno/requisitos">
             <Requirements />
+          </Route>
+
+          <Route path="/professor">
+            <TeacherHome />
+          </Route>
+
+          <Route path="/professor/perfil">
+            <TeacherPerfil />
           </Route>
         </Routes>
       </Layout>

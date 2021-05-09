@@ -16,7 +16,7 @@ const StudentLogin = ({ setIsAuthenticated }) => {
 
   const login = () => {
     if (course === 'gec' && enrollment === '1369' && password === '1369') {
-      setIsAuthenticated(true);
+      setIsAuthenticated({ student: true, teacher: false, employee: false });
       navigate('/aluno');
     }
   };
