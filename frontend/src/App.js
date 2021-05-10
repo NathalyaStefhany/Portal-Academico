@@ -20,6 +20,7 @@ import Requirements from './studentPages/Requirements/Requirements';
 
 import TeacherHome from './teacherPages/Home/Home';
 import TeacherPerfil from './teacherPages/Perfil/Perfil';
+import TeacherGrades from './teacherPages/Grades/Grades';
 
 import styles from './styles/global.css';
 import { useState } from 'react';
@@ -104,6 +105,10 @@ function App() {
 
           <Route path="/professor/perfil">
             <TeacherPerfil />
+          </Route>
+
+          <Route path="/professor/notas">
+            <TeacherGrades />
           </Route>
         </Routes>
       </Layout>

@@ -1,0 +1,39 @@
+.modal p:first-child {
+  color: var(--blue-dark);
+
+  font-size: 18px;
+  font-weight: 600;
+
+  text-align: center;
+}
+
+.modal div:first-of-type {
+  height: 1px;
+
+  background-color: var(--blue);
+
+  margin-top: 5px;
+  margin-bottom: 13px;
+}
+
+.modal p {
+  font-size: 18px;
+}
+
+.modal b {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.modal select {
+  margin-left: 5px;
+
+  width: 250px;
+  height: 35px;
+
+  border-color: var(--gray);
+  border-radius: 5px;
+
+  font-size: 16px;
+  color: var(--text);
+}
