@@ -1,0 +1,38 @@
+.table {
+  align-self: center;
+
+  text-align: center;
+}
+
+.table tr > td:not(:first-of-type) {
+  border-left: 1px solid rgba(224, 224, 224, 1);
+}
+
+.table td {
+  font-family: 'Manrope', sans-serif;
+
+  padding: 8px;
+}
+
+.table th {
+  font-family: 'Manrope', sans-serif;
+}
+
+.table button {
+  border: none;
+  background-color: rgba(0, 0, 0, 0);
+
+  vertical-align: sub;
+}
+
+.table img {
+  width: 40px;
+  height: 40px;
+
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.table span {
+  color: var(--gray) !important;
+}

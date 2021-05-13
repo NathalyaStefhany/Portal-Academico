@@ -1,0 +1,132 @@
+.container {
+  display: flex;
+
+  flex-direction: column;
+
+  width: 100%;
+}
+
+.title {
+  width: auto;
+
+  margin-top: 75px;
+  margin-left: 30px;
+}
+
+.title > div {
+  height: 1px;
+
+  background-color: var(--blue);
+
+  margin-top: 5px;
+  margin-right: 30px;
+}
+
+.leftContainer {
+  margin: 20px 30px 0px 30px !important;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.select {
+  width: 350px;
+  margin-bottom: 30px !important;
+}
+
+.table {
+  align-self: center;
+
+  text-align: center;
+}
+
+.table tr > td:not(:first-of-type) {
+  border-left: 1px solid rgba(224, 224, 224, 1);
+}
+
+.table td {
+  font-family: 'Manrope', sans-serif;
+  text-align: -webkit-center;
+}
+
+.table th {
+  font-family: 'Manrope', sans-serif;
+}
+
+.table button {
+  border: none;
+  background-color: rgba(0, 0, 0, 0);
+
+  vertical-align: sub;
+}
+
+.table img {
+  width: 40px;
+  height: 40px;
+
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.table span {
+  color: var(--gray) !important;
+}
+
+.buttonAdd {
+  background-color: var(--blue-dark);
+  color: var(--white) !important;
+
+  font-weight: 600 !important;
+  font-size: 18px !important;
+
+  cursor: pointer;
+
+  border: none !important;
+}
+
+.checkbox {
+  width: 25px;
+  height: 25px;
+
+  border-color: var(--blue-dark);
+}
+
+.modal p:first-child {
+  color: var(--blue-dark);
+
+  font-size: 18px;
+  font-weight: 600;
+
+  text-align: center;
+}
+
+.modal div:first-of-type {
+  height: 1px;
+
+  background-color: var(--blue);
+
+  margin-top: 5px;
+  margin-bottom: 13px;
+}
+
+.modal p {
+  font-size: 18px;
+}
+
+.modal b {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.modal select {
+  margin-left: 5px;
+
+  width: 250px;
+  height: 35px;
+
+  border-color: var(--gray);
+  border-radius: 5px;
+
+  font-size: 16px;
+  color: var(--text);
+}
