@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import { Entity, Column, CreateDateColumn, PrimaryColumn } from "typeorm";
+import { Entity, Column, CreateDateColumn, PrimaryColumn, ObjectIdColumn } from "typeorm";
 import { ClassDate } from "./ClassDate";
 import { Frequency } from "./Frequency";
 import { SchoolSupply } from "./SchoolSupply";
@@ -14,7 +14,7 @@ class Class {
     @CreateDateColumn()
     CreatedAt: Date;
 
-    @PrimaryColumn()
+    @ObjectIdColumn()
     _id: ObjectId
 
     @Column()
@@ -26,19 +26,19 @@ class Class {
     @Column()
     Classroom: string
 
-    @Column()
+    @Column(type => ClassDate)
     ClassDate: Array<ClassDate>
 
-    @Column()
+    @Column(type => Test)
     TestDates?: Array<Test>;
 
     @Column()
     FrequencyLimit: number;
 
-    @Column()
+    @Column(type => Frequency)
     Frequency?: Array<Frequency>;
 
-    @Column()
+    @Column(type => SchoolSupply)
     SchoolSupplies?: Array<SchoolSupply>;
 
     @Column()

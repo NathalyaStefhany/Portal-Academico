@@ -3,6 +3,7 @@ import { Column } from "typeorm";
 class Requirement {
     @Column()
     Acronym: string;
+    
     @Column()
     RequireFlag: number;
 

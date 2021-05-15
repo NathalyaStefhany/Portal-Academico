@@ -1,7 +1,7 @@
 import { Column, PrimaryColumn } from "typeorm";
 
 class Test {
-    @PrimaryColumn()
+    @Column()
     TestName: string;
 
     @Column()

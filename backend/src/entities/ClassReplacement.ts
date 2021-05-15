@@ -1,12 +1,12 @@
 import { ObjectId } from "mongodb";
-import { Entity, Column, CreateDateColumn, PrimaryColumn } from "typeorm";
+import { Entity, Column, CreateDateColumn, PrimaryColumn, ObjectIdColumn } from "typeorm";
 
 @Entity("classReplacement")
 class ClassReplacement {
     @CreateDateColumn()
     CreatedAt: Date;
 
-    @PrimaryColumn()
+    @ObjectIdColumn()
     _id: ObjectId;
 
     @Column()

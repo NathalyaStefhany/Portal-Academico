@@ -6,4 +6,5 @@ createConnection({
     port: 27017,
     database: "portalAcademico",
     useUnifiedTopology: true,
+    entities: ["./src/entities/**.ts"],
 });

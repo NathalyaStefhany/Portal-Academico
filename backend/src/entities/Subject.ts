@@ -1,5 +1,4 @@
-import { ObjectId } from "mongodb";
-import { Entity, Column, CreateDateColumn, PrimaryColumn } from "typeorm";
+import { Entity, Column, CreateDateColumn, PrimaryColumn, ObjectIdColumn } from "typeorm";
 import { Requirement } from "./Requirement";
 
 interface classId {

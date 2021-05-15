@@ -3,6 +3,7 @@ import { Column } from "typeorm";
 class Frequency {
     @Column()
     ClassDate: Date;
+    
     @Column()
     MissingStudents: Array<number>;
 

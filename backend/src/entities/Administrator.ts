@@ -1,4 +1,4 @@
-import { Entity, Column, CreateDateColumn, PrimaryColumn } from "typeorm";
+import { Entity, Column, CreateDateColumn, PrimaryColumn, ObjectIdColumn } from "typeorm";
 
 @Entity("administrators")
 class Administrator {
@@ -31,4 +31,4 @@ class Administrator {
 
 }
 
-export { Administrator }
+export { Administrator };

@@ -1,8 +1,8 @@
 import { Binary, ObjectId } from "mongodb";
-import { Column, CreateDateColumn, PrimaryColumn } from "typeorm";
+import { Column, CreateDateColumn, ObjectIdColumn, PrimaryColumn } from "typeorm";
 
 class SchoolSupply {
-    @PrimaryColumn()
+    @ObjectIdColumn()
     _id: ObjectId;
 
     @Column()

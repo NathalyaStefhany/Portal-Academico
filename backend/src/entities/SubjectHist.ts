@@ -1,7 +1,7 @@
-import { Column, PrimaryColumn } from "typeorm";
+import { Column } from "typeorm";
 
 class SubjectHist {
-    @PrimaryColumn()
+    @Column()
     Acronym: string;
 
     @Column()
