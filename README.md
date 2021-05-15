@@ -84,7 +84,7 @@ $ npm install
 # Run the server in development mode
 $ npm run dev
 
-# The application will open on the port: 3333
+# The application will run on the port: 3333
 ```
 
 ### 🖥️ Front-end - Web
