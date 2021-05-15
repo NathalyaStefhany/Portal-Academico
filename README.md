@@ -72,7 +72,7 @@ API in Node.js that provides communication with the MongoDB bank and is consumed
 # Clone this repository
 $ git clone https://github.com/NathalyaStefhany/Portal-Academico.git
 
-# Instal the dependencies
+# Install the dependencies
 $ npm i
 
 # Run the server in development mode
