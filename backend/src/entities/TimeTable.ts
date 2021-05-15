@@ -3,6 +3,7 @@ import { Column } from "typeorm";
 class TimeTable {
     @Column()
     Description: string;
+    
     @Column()
     Hour: string;
 

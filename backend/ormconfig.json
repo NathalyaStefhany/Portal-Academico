@@ -5,12 +5,9 @@
     "database": "portalAcademico",
     "synchronize": true,
     "useUnifiedTopology": true,
-    "entities": [
-        "src/entities/**/*.ts"
-    ],
-    "migrations": ["src/database/migrations/**/*.ts"],
+    "migrations": ["./src/database/migrations/**.ts"],
+    "entities": ["./src/entities/**.ts"],
     "cli": {
-        "entitiesDir": "src/entity",
-        "migrationsDir": "src/database/migrations"
+        "migrationDir": "./src/database/migrations/"
     }
 }

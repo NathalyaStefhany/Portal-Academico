@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import { Entity, Column, CreateDateColumn, PrimaryColumn } from "typeorm";
+import { Entity, Column, CreateDateColumn, PrimaryColumn, ObjectIdColumn } from "typeorm";
 import { TimeTable } from "./TimeTable";
 
 @Entity("teachers")

@@ -1,21 +1,52 @@
-import { getCustomRepository, MongoRepository, Repository } from "typeorm";
+import { getCustomRepository, MongoRepository } from "typeorm";
 import { Administrator } from "../entities/Administrator";
-import { AdministratorsRepository } from "../repositories/AdministratorRepository";
+import { AdministratorRepository } from "../repositories/AdministratorRepository";
+
 
 class AdministratorsService {
     private admininstratorsRepository: MongoRepository<Administrator>;
 
     constructor() {
-        this.admininstratorsRepository = getCustomRepository(AdministratorsRepository);
+        this.admininstratorsRepository = getCustomRepository(AdministratorRepository);
     }
-    /** 
-        async create({ employeeNumber, name, email, birthDate }: IAdministrator) {
-            const exist = await this.admininstratorsRepository.findOne(
-                {
-                    employeeNumber,
-                }
-            )
-        }*/
+
+    async create(employeeNumber: number, name: string, email: string, birthDate: Date) {
+
+        const adminExist = await this.admininstratorsRepository.findOne({
+            EmployeeNumber: employeeNumber
+        });
+
+        if (adminExist) {
+            return 0;
+        }
+
+        const admin = this.admininstratorsRepository.create({
+            EmployeeNumber: employeeNumber,
+            Name: name,
+            Email: email,
+            BirthDate: birthDate
+        });
+
+        await this.admininstratorsRepository.insertOne(admin);
+
+        return admin;
+    }
+
+    async getAdminByEmployeeNbr(employeeNumber: number){
+        const admin = await this.admininstratorsRepository.find({
+            EmployeeNumber: employeeNumber
+        });
+
+        return admin;
+    }
+
+    async deleteAdminByEmployeeNbr(employeeNumber: number){
+        const admin = this.admininstratorsRepository.findOneAndDelete({
+            "EmployeeNumber": employeeNumber
+        });
+
+        return admin;
+    }
 }
 
 export { AdministratorsService }

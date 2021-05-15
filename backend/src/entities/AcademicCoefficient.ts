@@ -1,4 +1,4 @@
-import { Entity, Column, CreateDateColumn, PrimaryColumn } from "typeorm";
+import { Entity, Column, CreateDateColumn, PrimaryColumn, ObjectIdColumn } from "typeorm";
 import { Coefficient } from "./Coefficient";
 
 @Entity("academicCoefficients")
@@ -9,7 +9,7 @@ class AcademicCoefficient {
     @PrimaryColumn()
     MatriculationNumber: number;
 
-    @Column()
+    @Column(type => Coefficient)
     Values: Array<Coefficient>;
 
     constructor(matriculationNumber: number, values: Array<Coefficient>) {

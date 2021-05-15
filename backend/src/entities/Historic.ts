@@ -1,4 +1,4 @@
-import { Entity, Column, CreateDateColumn, PrimaryColumn } from "typeorm";
+import { Entity, Column, CreateDateColumn, PrimaryColumn, ObjectIdColumn } from "typeorm";
 import { SubjectHist } from "./SubjectHist";
 
 @Entity("histories")
@@ -9,7 +9,7 @@ class Historic {
     @PrimaryColumn()
     MatriculationNumber: number;
 
-    @Column()
+    @Column(type => SubjectHist)
     Subjects: Array<SubjectHist>;
 
     constructor(matriculationNumber: number, subjects: Array<SubjectHist>) {
