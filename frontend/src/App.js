@@ -22,6 +22,7 @@ import TeacherHome from './teacherPages/Home/Home';
 import TeacherPerfil from './teacherPages/Perfil/Perfil';
 import TeacherGrades from './teacherPages/Grades/Grades';
 import TeacherFrequency from './teacherPages/Frequency/Frequency';
+import TeacherClassMaterial from './teacherPages/ClassMaterial/ClassMaterial';
 
 import styles from './styles/global.css';
 import { useState } from 'react';
@@ -114,6 +115,10 @@ function App() {
 
           <Route path="/professor/frequencia">
             <TeacherFrequency />
+          </Route>
+
+          <Route path="/professor/material">
+            <TeacherClassMaterial />
           </Route>
         </Routes>
       </Layout>
