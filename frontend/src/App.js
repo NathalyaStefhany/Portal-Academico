@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import Layout from './components/Layout/Layout';
@@ -24,8 +25,10 @@ import TeacherGrades from './teacherPages/Grades/Grades';
 import TeacherFrequency from './teacherPages/Frequency/Frequency';
 import TeacherClassMaterial from './teacherPages/ClassMaterial/ClassMaterial';
 
+import Registrations from './employeePages/Registrations/registrations';
+import EmployeePerfil from './employeePages/Perfil/Perfil';
+
 import styles from './styles/global.css';
-import { useState } from 'react';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState({
@@ -119,6 +122,14 @@ function App() {
 
           <Route path="/professor/material">
             <TeacherClassMaterial />
+          </Route>
+
+          <Route path="/funcionario/">
+            <Registrations />
+          </Route>
+
+          <Route path="/funcionario/perfil">
+            <EmployeePerfil />
           </Route>
         </Routes>
       </Layout>

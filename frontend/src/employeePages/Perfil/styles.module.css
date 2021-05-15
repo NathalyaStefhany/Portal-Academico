@@ -1,0 +1,109 @@
+.container {
+  display: flex;
+
+  flex-direction: column;
+
+  width: 100%;
+}
+
+.title {
+  width: auto;
+
+  margin-top: 75px;
+  margin-left: 30px;
+}
+
+.title > div {
+  height: 1px;
+
+  background-color: var(--blue);
+
+  margin-top: 5px;
+  margin-right: 30px;
+}
+
+.infos {
+  width: 50%;
+
+  margin: 20px 30px 80px 30px;
+
+  background-color: var(--blue-dark);
+  color: var(--white);
+
+  border-radius: 5px;
+}
+
+.infos table {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.infos img {
+  width: 130px;
+  height: 130px;
+
+  margin: 30px 15px 30px 15px;
+}
+
+.infos tr {
+  height: 30px;
+}
+
+.infos td {
+  min-width: 90px;
+}
+
+.password {
+  width: 50%;
+
+  margin: 20px 30px 80px 30px;
+
+  background-color: var(--blue-dark);
+  color: var(--white);
+
+  border-radius: 5px;
+}
+
+.password h1 {
+  text-align: center;
+
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.password table {
+  text-align: right;
+
+  margin: auto;
+}
+
+.password tr {
+  height: 30px;
+}
+
+.password td:last-of-type {
+  padding-left: 20px;
+}
+
+.password button {
+  background-color: var(--orange);
+  color: var(--white);
+
+  font-weight: 700;
+  font-size: 1.125rem;
+
+  width: 8.125rem;
+  height: 2.188rem;
+
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+  border-color: transparent;
+}
+
+.password div {
+  text-align: center;
+
+  margin-top: 30px;
+  margin-bottom: 20px;
+}

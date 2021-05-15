@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import Select from '@material-ui/core/Select';
 import { FormControl, TextField } from '@material-ui/core';
 
 import styles from './styles.module.css';
@@ -36,6 +35,7 @@ const TeacherLogin = ({ setIsAuthenticated }) => {
         variant="outlined"
         onChange={(value) => setPassword(value.target.value)}
         style={{ marginTop: '45px' }}
+        autoComplete="new-password"
       />
 
       <button className={styles.enterButton} onClick={login}>

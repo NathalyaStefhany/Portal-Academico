@@ -101,6 +101,28 @@ const Header = ({ isAuthenticated, setIsAuthenticated }) => {
         </>
       )}
 
+      {isAuthenticated.employee && (
+        <>
+          <Link
+            to="/funcionario"
+            className={styles.navbar}
+            onClick={() => setFontColor('home')}
+            style={{ color: fontColor === 'home' ? '#ff961a' : '#ffffff' }}
+          >
+            Casdastros
+          </Link>
+
+          <Link
+            to="/funcionario/perfil"
+            className={styles.navbar}
+            onClick={() => setFontColor('perfil')}
+            style={{ color: fontColor === 'perfil' ? '#ff961a' : '#ffffff' }}
+          >
+            Perfil
+          </Link>
+        </>
+      )}
+
       <div className={styles.logout}>
         <img src={logout} alt="Icone de logout" />
         <Link

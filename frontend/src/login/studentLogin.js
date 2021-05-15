@@ -53,6 +53,7 @@ const StudentLogin = ({ setIsAuthenticated }) => {
         variant="outlined"
         onChange={(value) => setPassword(value.target.value)}
         style={{ marginTop: '45px' }}
+        autoComplete="new-password"
       />
 
       <button className={styles.enterButton} onClick={login}>

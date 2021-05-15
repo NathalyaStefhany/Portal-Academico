@@ -53,7 +53,9 @@ const Login = ({ setIsAuthenticated }) => {
         {login === 'teacher' && (
           <TeacherLogin setIsAuthenticated={setIsAuthenticated} />
         )}
-        {login === 'employee' && <EmployeeLogin />}
+        {login === 'employee' && (
+          <EmployeeLogin setIsAuthenticated={setIsAuthenticated} />
+        )}
       </div>
     </div>
   );
