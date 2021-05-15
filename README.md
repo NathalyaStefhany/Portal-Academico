@@ -72,11 +72,19 @@ API in Node.js that provides communication with the MongoDB bank and is consumed
 # Clone this repository
 $ git clone https://github.com/NathalyaStefhany/Portal-Academico.git
 
+# Access the project folder in your terminal/cmd
+$ cd Portal-Academico
+
+# Go to the front-end application folder
+$ cd backend
+
 # Install the dependencies
 $ npm install
 
 # Run the server in development mode
 $ npm run dev
+
+# The application will open on the port: 3333
 ```
 
 ### 🖥️ Front-end - Web
