@@ -20,12 +20,7 @@ class AdministratorsService {
             return 0;
         }
 
-        const admin = this.admininstratorsRepository.create({
-            EmployeeNumber: employeeNumber,
-            Name: name,
-            Email: email,
-            BirthDate: birthDate
-        });
+        const admin = new Administrator(employeeNumber, name, email, birthDate)
 
         await this.admininstratorsRepository.insertOne(admin);
 
@@ -33,7 +28,7 @@ class AdministratorsService {
     }
 
     async getAdminByEmployeeNbr(employeeNumber: number){
-        const admin = await this.admininstratorsRepository.find({
+        const admin = await this.admininstratorsRepository.findOne({
             EmployeeNumber: employeeNumber
         });
 
