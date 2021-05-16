@@ -1,6 +1,7 @@
 import { ObjectId } from "mongodb";
-import { Entity, Column, CreateDateColumn, PrimaryColumn, ObjectIdColumn } from "typeorm";
+import { Entity, Column, CreateDateColumn, PrimaryColumn } from "typeorm";
 import { TimeTable } from "./TimeTable";
+import bcrypt from"bcryptjs";
 
 @Entity("teachers")
 class Teacher {
@@ -34,7 +35,7 @@ class Teacher {
         this.Email = email;
         this.Name = name;
         this.BirthDate = birthDate;
-        this.Password = password ? password : "12345";
+        this.Password = password ? bcrypt.hashSync(password, 10) : bcrypt.hashSync("12345", 10);
     }
 
 }

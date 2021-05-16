@@ -1,4 +1,5 @@
-import { Entity, Column, CreateDateColumn, PrimaryColumn, ObjectIdColumn } from "typeorm";
+import { Entity, Column, CreateDateColumn, PrimaryColumn } from "typeorm";
+import bcrypt from "bcryptjs";
 
 @Entity("administrators")
 class Administrator {
@@ -17,7 +18,7 @@ class Administrator {
    @Column()
    BirthDate: Date;
 
-   @Column()
+   @Column({select: false})
    Password: string;
 
    constructor(employeeNumber: number, name: string, email: string, birthDate: Date, password: string = '') {
@@ -26,7 +27,7 @@ class Administrator {
       this.Email = email;
       this.Name = name;
       this.BirthDate = birthDate;
-      this.Password = password ? password : "12345";
+      this.Password = password ? bcrypt.hashSync(password, 10) : bcrypt.hashSync("12345", 10);
    }
 
 }

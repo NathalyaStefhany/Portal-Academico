@@ -1,13 +1,18 @@
 import { Router } from "express";
 import { AcademicCoefficientController } from "./controllers/AcademicCoefficientController";
 import { AdministratorsController } from "./controllers/AdministratorsController";
+import { AuthController } from "./controllers/AuthController";
 import { HistoricController } from "./controllers/HistoricController";
 
 const routes = Router();
 //Controllers
+const authController = new AuthController();
 const adminController = new AdministratorsController();
 const coefficientController = new AcademicCoefficientController();
 const historicController = new HistoricController();
+
+//Login
+routes.post("/login/admin", authController.authAdmin);
 
 //Administrator routes
 routes.post("/admin", adminController.create);

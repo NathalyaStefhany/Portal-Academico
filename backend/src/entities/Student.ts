@@ -1,4 +1,5 @@
-import { Entity, Column, CreateDateColumn, PrimaryColumn, ObjectIdColumn } from "typeorm";
+import { Entity, Column, CreateDateColumn, PrimaryColumn } from "typeorm";
+import bcrypt from "bcryptjs";
 
 interface acronym {
     acronym: string
@@ -43,7 +44,7 @@ class Student {
         this.BirthDate = birthDate;
         this.CPF = cpf;
         this.Email = email;
-        this.Password = password ? password : "12345";
+        this.Password = password ? bcrypt.hashSync(password, 10) : bcrypt.hashSync("12345", 10);
         this.Period = period;
         this.Subjects = subjects;
     }
