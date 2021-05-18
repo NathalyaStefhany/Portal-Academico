@@ -14,6 +14,9 @@ const historicController = new HistoricController();
 //Login
 routes.post("/login/admin", authController.authAdmin);
 
+//Rotas abaixo do verify necessitam do token
+routes.use(authController.verifyUser);
+
 //Administrator routes
 routes.post("/admin", adminController.create);
 routes.get("/admin/:employeeNumber", adminController.getAdmin);

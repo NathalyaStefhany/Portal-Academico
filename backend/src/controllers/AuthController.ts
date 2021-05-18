@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { AdministratorsService } from "../services/AdministratorsService";
 import bcrypt from "bcryptjs";
 import jsonwebtoken from "jsonwebtoken";
@@ -119,6 +119,39 @@ class AuthController {
             return response.status(500).json({
                 message: error.message,
             });
+        }
+    }
+
+    async verifyUser(request: Request, response: Response, next: NextFunction): Promise<Response>{
+        try {
+            const authHeader = request.headers.authorization;
+
+            if(!authHeader){
+                return response.status(401).json({error: "Token não fornecido"});
+            }
+
+            const parts = authHeader.split(" ");
+
+            if(parts.length !== 2){
+                return response.status(401).json({error: "Token mal gerado"});
+            }
+
+            const [scheme, token] = parts;
+
+            if(!/^Bearer$/i.test(scheme)){
+                return response.status(401).json({error: "Token mal formado"});
+            }
+
+            jsonwebtoken.verify(token, "fda3e738d8f85dfc27d68a1c33aab34b2da3eb45", (err) => {
+                if(err) return response.status(401).json({error: "Token inválido"});
+
+                return next();
+            })
+
+        } catch (error) {
+            return response.status(500).json({
+                message: error.message,
+            });            
         }
     }
 }
