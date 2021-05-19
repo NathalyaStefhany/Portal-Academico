@@ -18,13 +18,13 @@ class Class {
     _id: ObjectId
 
     @Column()
-    Acronym: string
+    Acronym: string;
 
     @Column()
-    Class: string
+    Class: string;
 
     @Column()
-    Classroom: string
+    Classroom: string;
 
     @Column(type => ClassDate)
     ClassDate: Array<ClassDate>

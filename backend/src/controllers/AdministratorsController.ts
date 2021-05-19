@@ -10,18 +10,21 @@ class AdministratorsController {
 
             const admin = await adminService.create(employeeNumber, name, email, new Date(birthDate))
 
-            return response.json(admin);
+            if(admin){
+                return response.json(admin);
+            }
+            else{
+                return response.status(409).json({"Error":"Administrador existente"});
+            }
 
         } catch (error) {
-            console.log(error);
-
             return response.status(500).json({
                 message: error.message,
             });
         }
     }
 
-    async showAdmin(request: Request, response: Response) {
+    async getAdmin(request: Request, response: Response) {
 
         try {
             const { employeeNumber } = request.params;
