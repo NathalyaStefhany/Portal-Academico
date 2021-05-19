@@ -1,0 +1,46 @@
+import { Request, Response } from "express";
+import { StudentService } from "../services/StudentService";
+
+class StudentController {
+
+    async create(request: Request, response: Response): Promise<Response> {
+        try {
+            const { matriculationNumber, name, email, birthDate, cpf, classes, password } = request.body;
+
+            const studentService = new StudentService();
+
+            const student = await studentService.createStudent(matriculationNumber, name, email, new Date(birthDate), cpf, password);
+
+            if (student) {
+                return response.json(student);
+            }
+            else {
+                return response.status(409).json({ "Error": "Estudante existente" });
+            }
+
+        } catch (error) {
+            return response.status(500).json({
+                message: error.message,
+            });
+        }
+    }
+
+    async getStudent(request: Request, response: Response): Promise<Response> {
+        try {
+            const { matriculationNumber } = request.params;
+
+            const studentService = new StudentService();
+
+            const student = await studentService.getStudentByMatNbr(parseInt(matriculationNumber));
+
+            return response.json(student);
+            
+        } catch (error) {
+            return response.status(500).json({
+                message: error.message,
+            });
+        }
+    }
+}
+
+export { StudentController }

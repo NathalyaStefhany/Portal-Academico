@@ -1,9 +1,6 @@
 import { Entity, Column, CreateDateColumn, PrimaryColumn } from "typeorm";
 import bcrypt from "bcryptjs";
-
-interface acronym {
-    acronym: string
-}
+import { StudentClass } from "./StudentClass";
 
 @Entity("students")
 class Student {
@@ -32,11 +29,12 @@ class Student {
     Period: number;
 
     @Column()
-    Subjects: Array<acronym>
+    Classes: Array<StudentClass>
+
 
     constructor(
         matriculationNumber: number, name: string, email: string, birthDate: Date,
-        cpf: string, period: number, subjects: Array<acronym>, password: string = '') {
+        cpf: string, classes: Array<StudentClass>, password: string = '') {
 
         this.CreatedAt = new Date(Date.now());
         this.MatriculationNumber = matriculationNumber;
@@ -45,8 +43,8 @@ class Student {
         this.CPF = cpf;
         this.Email = email;
         this.Password = password ? bcrypt.hashSync(password, 10) : bcrypt.hashSync("12345", 10);
-        this.Period = period;
-        this.Subjects = subjects;
+        this.Period = 1;
+        this.Classes = classes;
     }
 
 }

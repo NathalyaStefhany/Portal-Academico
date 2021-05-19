@@ -10,7 +10,24 @@ class TeacherService {
         this.teacherRepository = getCustomRepository(TeacherRepository);
     }
 
-    async getAdminByEmployeeNbr(employeeNumber: number) {
+    async createTeacher(employeeNumber: number, name: string, email: string, birthDate: Date, password: string) {
+
+        const teacherExist = await this.teacherRepository.findOne({
+            EmployeeNumber: employeeNumber
+        });
+
+        if (teacherExist) {
+            return 0;
+        }
+
+        const teacher = new Teacher(employeeNumber, name, email, birthDate, [], [], password);
+
+        await this.teacherRepository.insertOne(teacher);
+
+        return teacher;
+    }
+
+    async getTeacherByEmployeeNbr(employeeNumber: number) {
         const teacher = await this.teacherRepository.findOne({
             EmployeeNumber: employeeNumber
         });

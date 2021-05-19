@@ -21,7 +21,7 @@ class AuthController {
                     const token = jsonwebtoken.sign(
                         { employeeNumber },
                         "fda3e738d8f85dfc27d68a1c33aab34b2da3eb45",
-                        { expiresIn: 7200 }
+                        { expiresIn: 86400 }
                     );
                     admin.Password = undefined;
 
@@ -59,7 +59,7 @@ class AuthController {
                     const token = jsonwebtoken.sign(
                         { matriculationNumber },
                         "fda3e738d8f85dfc27d68a1c33aab34b2da3eb45",
-                        { expiresIn: 7200 }
+                        { expiresIn: 86400 }
                     );
                     student.Password = undefined;
 
@@ -90,14 +90,14 @@ class AuthController {
 
             const teacherService = new TeacherService();
 
-            let teacher = await teacherService.getAdminByEmployeeNbr(employeeNumber);
+            let teacher = await teacherService.getTeacherByEmployeeNbr(employeeNumber);
 
             if (teacher) {
                 if (await bcrypt.compare(password, teacher.Password)) {
                     const token = jsonwebtoken.sign(
                         { employeeNumber },
                         "fda3e738d8f85dfc27d68a1c33aab34b2da3eb45",
-                        { expiresIn: 7200 }
+                        { expiresIn: 86400 }
                     );
                     teacher.Password = undefined;
 

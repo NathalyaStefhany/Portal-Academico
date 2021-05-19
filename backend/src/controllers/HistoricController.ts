@@ -43,7 +43,7 @@ class HistoricController {
             });
         }
     }
-    async deleteHistoric(request: Request, response: Response): Promise<Response>{
+    /* async deleteHistoric(request: Request, response: Response): Promise<Response>{
         try {
             const {matriculationNumber} = request.params;
 
@@ -58,7 +58,7 @@ class HistoricController {
                 message: error.message,
             })
         }
-    }
+    } */
 }
 
 export { HistoricController }
