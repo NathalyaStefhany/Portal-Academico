@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import logoInatel from '../../assets/images/Inatel Branco.png';
 import logout from '../../assets/icons/logout.svg';
 
+import Navbar from '../Navbar/Navbar';
+
 import styles from './styles.module.css';
 
 const Header = ({ isAuthenticated, setIsAuthenticated }) => {
@@ -14,43 +16,7 @@ const Header = ({ isAuthenticated, setIsAuthenticated }) => {
     <div className={styles.header}>
       <img src={logoInatel} alt="Logo branco do Inatel" />
 
-      {isAuthenticated.student && (
-        <>
-          <Link
-            to="/aluno"
-            className={styles.navbar}
-            onClick={() => setFontColor('home')}
-            style={{ color: fontColor === 'home' ? '#ff961a' : '#ffffff' }}
-          >
-            Home
-          </Link>
-          <Link
-            to="/aulas"
-            className={styles.navbar}
-            onClick={() => setFontColor('aulas')}
-            style={{ color: fontColor === 'aulas' ? '#ff961a' : '#ffffff' }}
-          >
-            Aulas
-          </Link>
-          <Link
-            to="/matricula"
-            className={styles.navbar}
-            onClick={() => setFontColor('matricula')}
-            style={{ color: fontColor === 'matricula' ? '#ff961a' : '#ffffff' }}
-          >
-            Matrícula
-          </Link>
-
-          <Link
-            to="/aluno/perfil"
-            className={styles.navbar}
-            onClick={() => setFontColor('perfil')}
-            style={{ color: fontColor === 'perfil' ? '#ff961a' : '#ffffff' }}
-          >
-            Perfil
-          </Link>
-        </>
-      )}
+      {isAuthenticated.student && <Navbar />}
 
       {isAuthenticated.teacher && (
         <>
