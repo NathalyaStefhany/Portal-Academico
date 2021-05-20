@@ -1,6 +1,7 @@
 import { getCustomRepository, MongoRepository } from "typeorm";
 import { Student } from "../entities/Student";
 import { StudentRepository } from "../repositories/StudentRepository";
+import bcrypt from "bcryptjs";
 
 
 class StudentService {
@@ -36,6 +37,28 @@ class StudentService {
         });
 
         return student;
+    }
+
+    async updatePassword(matriculationNumber: number, password: string, passwordUpdated: string){
+        const student = await this.studentRepository.findOne({
+            MatriculationNumber: matriculationNumber
+        });
+
+        if (await bcrypt.compare(password, student.Password)){
+            passwordUpdated = bcrypt.hashSync(passwordUpdated, 10);
+            const studentUpdated = await this.studentRepository.findOneAndUpdate(
+                {MatriculationNumber: matriculationNumber},
+                {
+                    $set: {
+                        "Password": passwordUpdated
+                    }
+                }
+            );
+
+            return studentUpdated.value;
+        }
+
+        return {Error: "Senha atual incorreta"};
     }
 }
 

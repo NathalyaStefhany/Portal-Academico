@@ -1,6 +1,7 @@
 import { getCustomRepository, MongoRepository } from "typeorm";
 import { Administrator } from "../entities/Administrator";
 import { AdministratorRepository } from "../repositories/AdministratorRepository";
+import bcrypt from "bcryptjs";
 
 
 class AdministratorsService {
@@ -36,11 +37,33 @@ class AdministratorsService {
     }
 
     async deleteAdminByEmployeeNbr(employeeNumber: number){
-        const admin = this.admininstratorsRepository.findOneAndDelete({
+        const admin = await this.admininstratorsRepository.findOneAndDelete({
             "EmployeeNumber": employeeNumber
         });
 
-        return admin;
+        return admin.value;
+    }
+
+    async updatePassword(employeeNumber: number, password: string, passwordUpdated: string){
+        const admin = await this.admininstratorsRepository.findOne({
+            EmployeeNumber: employeeNumber
+        });
+
+        if (await bcrypt.compare(password, admin.Password)){
+            passwordUpdated = bcrypt.hashSync(passwordUpdated, 10);
+            const adminUpdated = await this.admininstratorsRepository.findOneAndUpdate(
+                {EmployeeNumber: employeeNumber},
+                {
+                    $set: {
+                        "Password": passwordUpdated
+                    }
+                }
+            );
+
+            return adminUpdated.value;
+        }
+
+        return {Error: "Senha atual incorreta"};
     }
 }
 

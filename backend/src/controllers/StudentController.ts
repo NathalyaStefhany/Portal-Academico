@@ -41,6 +41,23 @@ class StudentController {
             });
         }
     }
+
+    async updatePassword(request: Request, response: Response): Promise<Response>{
+        try {
+            const {matriculationNumber, password, passwordUpdated} = request.body;
+
+            const studentService = new StudentService();
+
+            const student = await studentService.updatePassword(matriculationNumber, password, passwordUpdated);
+
+            return response.json(student);            
+            
+        } catch (error) {
+            return response.status(500).json({
+                message: error.message,
+            });
+        }
+    }
 }
 
 export { StudentController }

@@ -1,6 +1,7 @@
 import { getCustomRepository, MongoRepository } from "typeorm";
 import { Teacher } from "../entities/Teacher";
 import { TeacherRepository } from "../repositories/TeacherRepository";
+import bcrypt from "bcryptjs";
 
 
 class TeacherService {
@@ -33,6 +34,28 @@ class TeacherService {
         });
 
         return teacher;
+    }
+
+    async updatePassword(employeeNumber: number, password: string, passwordUpdated: string){
+        const teacher = await this.teacherRepository.findOne({
+            EmployeeNumber: employeeNumber
+        });
+
+        if (await bcrypt.compare(password, teacher.Password)){
+            passwordUpdated = bcrypt.hashSync(passwordUpdated, 10);
+            const teacherUpdated = await this.teacherRepository.findOneAndUpdate(
+                {EmployeeNumber: employeeNumber},
+                {
+                    $set: {
+                        "Password": passwordUpdated
+                    }
+                }
+            );
+
+            return teacherUpdated.value;
+        }
+
+        return {Error: "Senha atual incorreta"};
     }
 }
 

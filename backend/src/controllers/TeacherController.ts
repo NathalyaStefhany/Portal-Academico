@@ -42,6 +42,23 @@ class TeacherController {
             });
         }
     }
+
+    async updatePassword(request: Request, response: Response): Promise<Response>{
+        try {
+            const {employeeNumber, password, passwordUpdated} = request.body;
+
+            const teacherService = new TeacherService();
+
+            const teacher = await teacherService.updatePassword(employeeNumber, password, passwordUpdated);
+
+            return response.json(teacher);            
+            
+        } catch (error) {
+            return response.status(500).json({
+                message: error.message,
+            });
+        }
+    }
 }
 
 export { TeacherController }
