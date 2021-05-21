@@ -11,7 +11,6 @@ class StudentController {
         email,
         birthDate,
         cpf,
-        classes,
         password,
       } = request.body;
 
@@ -75,10 +74,7 @@ class StudentController {
     }
   }
 
-  async updatePassword(
-    request: Request,
-    response: Response
-  ): Promise<Response> {
+  async updatePassword(request: Request, response: Response): Promise<Response> {
     try {
       const { matriculationNumber, password, passwordUpdated } = request.body;
 
@@ -87,7 +83,7 @@ class StudentController {
       const student = await studentService.updatePassword(
         matriculationNumber,
         password,
-        passwordUpdated
+        passwordUpdated,
       );
 
       return response.json(student);

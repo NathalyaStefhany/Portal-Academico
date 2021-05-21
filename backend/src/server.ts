@@ -1,12 +1,11 @@
 import express from "express";
 import "./database";
 import { routes } from "./routes";
+import cors from "cors";
 
 const app = express();
 
-var cors = require("cors");
-
-var corsOptions = {
+const corsOptions = {
   origin: "http://localhost:3000",
   optionsSuccessStatus: 200,
 };
