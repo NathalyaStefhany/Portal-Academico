@@ -75,11 +75,14 @@ $ git clone https://github.com/NathalyaStefhany/Portal-Academico.git
 # Access the project folder in your terminal/cmd
 $ cd Portal-Academico
 
-# Go to the front-end application folder
+# Go to the back-end application folder
 $ cd backend
 
 # Install the dependencies
 $ npm install
+
+# At the first time, it's necessary to run this command
+$ npm run typeorm migration:run
 
 # Run the server in development mode
 $ npm run dev
@@ -116,6 +119,20 @@ Developed with Flutter.
 ```sh
 # Clone this repository
 $ git clone https://github.com/NathalyaStefhany/Portal-Academico.git
+
+# Access the project folder in your terminal/cmd
+$ cd Portal-Academico
+
+# Go to the mobile application folder
+$ cd frontend
+
+# Install the dependencies
+$ flutter pub get
+
+# Run the application in development mode
+$ flutter run
+
+# The application will open on the device you have chosen to run it on
 ```
 
 ## 👪 Authors
