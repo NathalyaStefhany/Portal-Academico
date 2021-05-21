@@ -83,7 +83,7 @@ function App() {
           </Route>
 
           <Route path="/aluno/coeficiente">
-            <AcademicCoefficient />
+            <AcademicCoefficient studentInfo={studentInfo} />
           </Route>
 
           <Route path="/aluno/notas">

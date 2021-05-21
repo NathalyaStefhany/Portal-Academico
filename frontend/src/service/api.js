@@ -14,3 +14,10 @@ export const GET_STUDENT_HISTORIC = (matriculationNumber) => ({
     method: 'GET',
   },
 });
+
+export const GET_STUDENT_COEFFICIENT = (matriculationNumber) => ({
+  url: `${API}/coefficient/${matriculationNumber}`,
+  config: {
+    method: 'GET',
+  },
+});
