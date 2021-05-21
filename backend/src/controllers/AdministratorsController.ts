@@ -24,7 +24,7 @@ class AdministratorsController {
         }
     }
 
-    async getAdmin(request: Request, response: Response) {
+    async getAdmin(request: Request, response: Response): Promise<Response>{
 
         try {
             const { employeeNumber } = request.params;
@@ -42,7 +42,7 @@ class AdministratorsController {
         }
     }
 
-    async deleteAdmin(request: Request, response: Response) {
+    async deleteAdmin(request: Request, response: Response): Promise<Response> {
         try {
             const { employeeNumber } = request.params;
 
@@ -50,8 +50,25 @@ class AdministratorsController {
 
             const admin = await adminService.deleteAdminByEmployeeNbr(parseInt(employeeNumber));
 
-            return response.json(admin.value);
+            return response.json(admin);
 
+        } catch (error) {
+            return response.status(500).json({
+                message: error.message,
+            });
+        }
+    }
+
+    async updatePassword(request: Request, response: Response): Promise<Response>{
+        try {
+            const {employeeNumber, password, passwordUpdated} = request.body;
+
+            const adminService = new AdministratorsService();
+
+            const admin = await adminService.updatePassword(employeeNumber, password, passwordUpdated);
+
+            return response.json(admin);            
+            
         } catch (error) {
             return response.status(500).json({
                 message: error.message,

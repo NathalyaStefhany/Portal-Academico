@@ -1,47 +1,80 @@
 import { getCustomRepository, MongoRepository } from "typeorm";
 import { Administrator } from "../entities/Administrator";
 import { AdministratorRepository } from "../repositories/AdministratorRepository";
-
+import bcrypt from "bcryptjs";
 
 class AdministratorsService {
-    private admininstratorsRepository: MongoRepository<Administrator>;
+  private admininstratorsRepository: MongoRepository<Administrator>;
 
-    constructor() {
-        this.admininstratorsRepository = getCustomRepository(AdministratorRepository);
+  constructor() {
+    this.admininstratorsRepository = getCustomRepository(
+      AdministratorRepository
+    );
+  }
+
+  async create(
+    employeeNumber: number,
+    name: string,
+    email: string,
+    birthDate: Date
+  ) {
+    const adminExist = await this.admininstratorsRepository.findOne({
+      EmployeeNumber: employeeNumber,
+    });
+
+    if (adminExist) {
+      return 0;
     }
 
-    async create(employeeNumber: number, name: string, email: string, birthDate: Date) {
+    const admin = new Administrator(employeeNumber, name, email, birthDate);
 
-        const adminExist = await this.admininstratorsRepository.findOne({
-            EmployeeNumber: employeeNumber
-        });
+    await this.admininstratorsRepository.insertOne(admin);
 
-        if (adminExist) {
-            return 0;
-        }
+    return admin;
+  }
 
-        const admin = new Administrator(employeeNumber, name, email, birthDate)
+  async getAdminByEmployeeNbr(employeeNumber: number) {
+    const admin = await this.admininstratorsRepository.findOne({
+      EmployeeNumber: employeeNumber,
+    });
 
-        await this.admininstratorsRepository.insertOne(admin);
+    return admin;
+  }
 
-        return admin;
+  async deleteAdminByEmployeeNbr(employeeNumber: number) {
+    const admin = await this.admininstratorsRepository.findOneAndDelete({
+      EmployeeNumber: employeeNumber,
+    });
+
+    return admin.value;
+  }
+
+  async updatePassword(
+    employeeNumber: number,
+    password: string,
+    passwordUpdated: string
+  ) {
+    const admin = await this.admininstratorsRepository.findOne({
+      EmployeeNumber: employeeNumber,
+    });
+
+    if (await bcrypt.compare(password, admin.Password)) {
+      passwordUpdated = bcrypt.hashSync(passwordUpdated, 10);
+      const adminUpdated =
+        await this.admininstratorsRepository.findOneAndUpdate(
+          { EmployeeNumber: employeeNumber },
+          {
+            $set: {
+              Password: passwordUpdated,
+            },
+          }
+        );
+
+      return adminUpdated.value;
     }
 
-    async getAdminByEmployeeNbr(employeeNumber: number){
-        const admin = await this.admininstratorsRepository.findOne({
-            EmployeeNumber: employeeNumber
-        });
-
-        return admin;
-    }
-
-    async deleteAdminByEmployeeNbr(employeeNumber: number){
-        const admin = this.admininstratorsRepository.findOneAndDelete({
-            "EmployeeNumber": employeeNumber
-        });
-
-        return admin;
-    }
+    return { Error: "Senha atual incorreta" };
+  }
 }
 
-export { AdministratorsService }
+export { AdministratorsService };
