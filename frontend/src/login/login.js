@@ -9,7 +9,7 @@ import EmployeeLogin from './employeeLogin';
 
 import styles from './styles.module.css';
 
-const Login = ({ setIsAuthenticated }) => {
+const Login = ({ setIsAuthenticated, setStudentInfo }) => {
   const [login, setLogin] = useState('student');
 
   return (
@@ -48,7 +48,10 @@ const Login = ({ setIsAuthenticated }) => {
         </div>
 
         {login === 'student' && (
-          <StudentLogin setIsAuthenticated={setIsAuthenticated} />
+          <StudentLogin
+            setIsAuthenticated={setIsAuthenticated}
+            setStudentInfo={setStudentInfo}
+          />
         )}
         {login === 'teacher' && (
           <TeacherLogin setIsAuthenticated={setIsAuthenticated} />
@@ -63,6 +66,7 @@ const Login = ({ setIsAuthenticated }) => {
 
 Login.propTypes = {
   setIsAuthenticated: PropTypes.func.isRequired,
+  setStudentInfo: PropTypes.func.isRequired,
 };
 
 export default Login;

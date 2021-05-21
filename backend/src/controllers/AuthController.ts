@@ -5,155 +5,159 @@ import jsonwebtoken from "jsonwebtoken";
 import { StudentService } from "../services/StudentService";
 import { TeacherService } from "../services/TeacherService";
 
-
 class AuthController {
+  async authAdmin(request: Request, response: Response): Promise<Response> {
+    try {
+      const { employeeNumber, password } = request.body;
 
-    async authAdmin(request: Request, response: Response): Promise<Response> {
-        try {
-            const { employeeNumber, password } = request.body;
+      const adminService = new AdministratorsService();
 
-            const adminService = new AdministratorsService();
+      let admin = await adminService.getAdminByEmployeeNbr(employeeNumber);
 
-            let admin = await adminService.getAdminByEmployeeNbr(employeeNumber);
+      if (admin) {
+        if (await bcrypt.compare(password, admin.Password)) {
+          const token = jsonwebtoken.sign(
+            { employeeNumber },
+            "fda3e738d8f85dfc27d68a1c33aab34b2da3eb45",
+            { expiresIn: 86400 }
+          );
+          admin.Password = undefined;
 
-            if (admin) {
-                if (await bcrypt.compare(password, admin.Password)) {
-                    const token = jsonwebtoken.sign(
-                        { employeeNumber },
-                        "fda3e738d8f85dfc27d68a1c33aab34b2da3eb45",
-                        { expiresIn: 86400 }
-                    );
-                    admin.Password = undefined;
-
-                    return response.json({ admin, token })
-                }
-                else {
-                    return response.status(400).json({
-                        massage: "Senha inválida"
-                    })
-                }
-            }
-            else {
-                return response.status(400).json({
-                    message: "Usuário não encontrado"
-                });
-            }
-
-        } catch (error) {
-            return response.status(500).json({
-                message: error.message,
-            });
+          return response.json({ admin, token });
+        } else {
+          return response.status(400).json({
+            massage: "Senha inválida",
+          });
         }
+      } else {
+        return response.status(400).json({
+          message: "Usuário não encontrado",
+        });
+      }
+    } catch (error) {
+      return response.status(500).json({
+        message: error.message,
+      });
     }
+  }
 
-    async authStudent(request: Request, response: Response): Promise<Response> {
-        try {
-            const { matriculationNumber, password } = request.body;
+  async authStudent(request: Request, response: Response): Promise<Response> {
+    try {
+      const { matriculationNumber, password } = request.body;
 
-            const studentService = new StudentService();
+      const studentService = new StudentService();
 
-            let student = await studentService.getStudentByMatNbr(matriculationNumber);
+      let student = await studentService.getStudentByMatNbr(
+        matriculationNumber
+      );
 
-            if (student) {
-                if (await bcrypt.compare(password, student.Password)) {
-                    const token = jsonwebtoken.sign(
-                        { matriculationNumber },
-                        "fda3e738d8f85dfc27d68a1c33aab34b2da3eb45",
-                        { expiresIn: 86400 }
-                    );
-                    student.Password = undefined;
+      if (student) {
+        if (await bcrypt.compare(password, student.Password)) {
+          const token = jsonwebtoken.sign(
+            { matriculationNumber },
+            "fda3e738d8f85dfc27d68a1c33aab34b2da3eb45",
+            { expiresIn: 86400 }
+          );
+          student.Password = undefined;
 
-                    return response.json({ student, token })
-                }
-                else {
-                    return response.status(400).json({
-                        massage: "Senha inválida"
-                    })
-                }
-            }
-            else {
-                return response.status(400).json({
-                    message: "Usuário não encontrado"
-                });
-            }
+          const name = student.Name;
+          const course = student.Course;
 
-        } catch (error) {
-            return response.status(500).json({
-                message: error.message,
-            });
+          return response.json({ matriculationNumber, name, course, token });
+        } else {
+          return response.status(400).json({
+            massage: "Senha inválida",
+          });
         }
+      } else {
+        return response.status(400).json({
+          message: "Usuário não encontrado",
+        });
+      }
+    } catch (error) {
+      return response.status(500).json({
+        message: error.message,
+      });
     }
+  }
 
-    async authTeacher(request: Request, response: Response): Promise<Response> {
-        try {
-            const { employeeNumber, password } = request.body;
+  async authTeacher(request: Request, response: Response): Promise<Response> {
+    try {
+      const { employeeNumber, password } = request.body;
 
-            const teacherService = new TeacherService();
+      const teacherService = new TeacherService();
 
-            let teacher = await teacherService.getTeacherByEmployeeNbr(employeeNumber);
+      let teacher = await teacherService.getTeacherByEmployeeNbr(
+        employeeNumber
+      );
 
-            if (teacher) {
-                if (await bcrypt.compare(password, teacher.Password)) {
-                    const token = jsonwebtoken.sign(
-                        { employeeNumber },
-                        "fda3e738d8f85dfc27d68a1c33aab34b2da3eb45",
-                        { expiresIn: 86400 }
-                    );
-                    teacher.Password = undefined;
+      if (teacher) {
+        if (await bcrypt.compare(password, teacher.Password)) {
+          const token = jsonwebtoken.sign(
+            { employeeNumber },
+            "fda3e738d8f85dfc27d68a1c33aab34b2da3eb45",
+            { expiresIn: 86400 }
+          );
+          teacher.Password = undefined;
 
-                    return response.json({ teacher, token })
-                }
-                else {
-                    return response.status(400).json({
-                        massage: "Senha inválida"
-                    })
-                }
-            }
-            else {
-                return response.status(400).json({
-                    message: "Usuário não encontrado"
-                });
-            }
-
-        } catch (error) {
-            return response.status(500).json({
-                message: error.message,
-            });
+          return response.json({ teacher, token });
+        } else {
+          return response.status(400).json({
+            massage: "Senha inválida",
+          });
         }
+      } else {
+        return response.status(400).json({
+          message: "Usuário não encontrado",
+        });
+      }
+    } catch (error) {
+      return response.status(500).json({
+        message: error.message,
+      });
     }
+  }
 
-    async verifyUser(request: Request, response: Response, next: NextFunction): Promise<Response> {
-        try {
-            const authHeader = request.headers.authorization;
+  async verifyUser(
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ): Promise<Response> {
+    try {
+      const authHeader = request.headers.authorization;
 
-            if (!authHeader) {
-                return response.status(401).json({ error: "Token não fornecido" });
-            }
+      if (!authHeader) {
+        return response.status(401).json({ error: "Token não fornecido" });
+      }
 
-            const parts = authHeader.split(" ");
+      const parts = authHeader.split(" ");
 
-            if (parts.length !== 2) {
-                return response.status(401).json({ error: "Token mal gerado" });
-            }
+      if (parts.length !== 2) {
+        return response.status(401).json({ error: "Token mal gerado" });
+      }
 
-            const [scheme, token] = parts;
+      const [scheme, token] = parts;
 
-            if (!/^Bearer$/i.test(scheme)) {
-                return response.status(401).json({ error: "Token mal formado" });
-            }
+      if (!/^Bearer$/i.test(scheme)) {
+        return response.status(401).json({ error: "Token mal formado" });
+      }
 
-            jsonwebtoken.verify(token, "fda3e738d8f85dfc27d68a1c33aab34b2da3eb45", (err) => {
-                if (err) return response.status(401).json({ error: "Token inválido" });
+      jsonwebtoken.verify(
+        token,
+        "fda3e738d8f85dfc27d68a1c33aab34b2da3eb45",
+        (err) => {
+          if (err)
+            return response.status(401).json({ error: "Token inválido" });
 
-                return next();
-            });
-
-        } catch (error) {
-            return response.status(500).json({
-                message: error.message,
-            });
+          return next();
         }
+      );
+    } catch (error) {
+      return response.status(500).json({
+        message: error.message,
+      });
     }
+  }
 }
 
-export { AuthController }
+export { AuthController };

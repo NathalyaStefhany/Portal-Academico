@@ -3,45 +3,44 @@ import { Historic } from "../entities/Historic";
 import { SubjectHist } from "../entities/SubjectHist";
 import { HistoricRepository } from "../repositories/HistoricRepository";
 
-
 class HistoricService {
-    private historicRepository: MongoRepository<Historic>
+  private historicRepository: MongoRepository<Historic>;
 
-    constructor() {
-        this.historicRepository = getCustomRepository(HistoricRepository);
+  constructor() {
+    this.historicRepository = getCustomRepository(HistoricRepository);
+  }
+
+  async create(matriculationNumber: number, subjects: Array<SubjectHist>) {
+    const matExist = await this.historicRepository.findOne({
+      MatriculationNumber: matriculationNumber,
+    });
+
+    if (matExist) {
+      return 0;
     }
 
-    async create(matriculationNumber: number, subjects: Array<SubjectHist>) {
-        const matExist = await this.historicRepository.findOne({
-            MatriculationNumber: matriculationNumber
-        });
+    const historic = new Historic(matriculationNumber, subjects);
 
-        if (matExist) {
-            return 0;
-        }
+    await this.historicRepository.insertOne(historic);
 
-        const historic = new Historic(matriculationNumber, subjects);
+    return historic;
+  }
 
-        await this.historicRepository.insertOne(historic);
+  async getHistoricByMatNbr(matriculationNumber: number) {
+    const historic = await this.historicRepository.findOne({
+      MatriculationNumber: matriculationNumber,
+    });
 
-        return historic;
-    }
-    
-    async getHistoricByMatNbr(matriculationNumber: number){
-        const historic = await this.historicRepository.findOne({
-            MatriculationNumber: matriculationNumber
-        });
+    return historic;
+  }
 
-        return historic;
-    }
+  async deleteHistoric(matriculationNumber: number) {
+    const historic = await this.historicRepository.findOneAndDelete({
+      MatriculationNumber: matriculationNumber,
+    });
 
-    async deleteHistoric(matriculationNumber: number){
-        const historic = await this.historicRepository.findOneAndDelete({
-            "MatriculationNumber": matriculationNumber
-        });
-        
-        return historic;
-    }
+    return historic;
+  }
 }
 
-export { HistoricService }
+export { HistoricService };

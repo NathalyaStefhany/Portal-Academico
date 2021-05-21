@@ -1,25 +1,55 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import Select from '@material-ui/core/Select';
 import { FormControl, InputLabel, TextField } from '@material-ui/core';
 
+import useFetch from '../hooks/useFetch';
+import { POST_STUDENT_LOGIN } from '../service/api';
+
 import styles from './styles.module.css';
 
-const StudentLogin = ({ setIsAuthenticated }) => {
+const StudentLogin = ({ setIsAuthenticated, setStudentInfo }) => {
   const [course, setCourse] = useState('gec');
   const [enrollment, setEnrollment] = useState('');
   const [password, setPassword] = useState('');
 
+  const [login, setLogin] = useState(false);
+
+  const { request } = useFetch();
+
   const navigate = useNavigate();
 
-  const login = () => {
-    if (course === 'gec' && enrollment === '1369' && password === '1369') {
-      setIsAuthenticated({ student: true, teacher: false, employee: false });
-      navigate('/aluno');
+  useEffect(() => {
+    if (login) {
+      const sendLogin = async () => {
+        const bodyData = {
+          matriculationNumber: parseInt(enrollment),
+          password: password,
+        };
+
+        const { url: url, config: config } = POST_STUDENT_LOGIN(bodyData);
+
+        const { json, error } = await request(url, config);
+
+        if (!error) {
+          setStudentInfo(json);
+
+          setIsAuthenticated({
+            student: true,
+            teacher: false,
+            employee: false,
+          });
+
+          navigate('/aluno');
+        }
+      };
+
+      sendLogin();
+      setLogin(false);
     }
-  };
+  }, [login]);
 
   return (
     <FormControl variant="outlined" className={styles.select}>
@@ -56,7 +86,7 @@ const StudentLogin = ({ setIsAuthenticated }) => {
         autoComplete="new-password"
       />
 
-      <button className={styles.enterButton} onClick={login}>
+      <button className={styles.enterButton} onClick={() => setLogin(true)}>
         ENTRAR
       </button>
     </FormControl>
@@ -65,6 +95,7 @@ const StudentLogin = ({ setIsAuthenticated }) => {
 
 StudentLogin.propTypes = {
   setIsAuthenticated: PropTypes.func.isRequired,
+  setStudentInfo: PropTypes.func.isRequired,
 };
 
 export default StudentLogin;

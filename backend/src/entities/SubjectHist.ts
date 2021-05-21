@@ -1,19 +1,28 @@
 import { Column } from "typeorm";
 
 class SubjectHist {
-    @Column()
-    Acronym: string;
+  @Column()
+  Acronym: string;
 
-    @Column()
-    SubjectName: string;
+  @Column()
+  SubjectName: string;
 
-    @Column()
-    GradeValue: number;
+  @Column()
+  GradeValue: number;
 
-    constructor(acronym: string, subjectName: string, gradeValue: number){
-        this.Acronym = acronym;
-        this.SubjectName = subjectName;
-        this.GradeValue = gradeValue;
-    }
+  @Column()
+  SemesterYear: string;
+
+  constructor(
+    acronym: string,
+    subjectName: string,
+    gradeValue: number,
+    semesterYear: string
+  ) {
+    this.Acronym = acronym;
+    this.SubjectName = subjectName;
+    this.GradeValue = gradeValue;
+    this.SemesterYear = semesterYear;
+  }
 }
-export {SubjectHist}
+export { SubjectHist };

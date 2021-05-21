@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 
 import {
   withStyles,
@@ -8,13 +9,15 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  TablePagination,
   Paper,
 } from '@material-ui/core';
 
+import useFetch from '../../hooks/useFetch';
+import { GET_STUDENT_HISTORIC } from '../../service/api';
+
 import styles from './styles.module.css';
 
-const Historic = () => {
+const Historic = ({ studentInfo }) => {
   const StyledTableCell = withStyles((theme) => ({
     head: {
       backgroundColor: '#0054a6',
@@ -36,6 +39,24 @@ const Historic = () => {
     },
   }))(TableRow);
 
+  const { request } = useFetch();
+  const [historic, setHistoric] = useState([]);
+
+  useEffect(() => {
+    const sendRequest = async () => {
+      const { url: url, config: config } = GET_STUDENT_HISTORIC(
+        studentInfo.matriculationNumber
+      );
+
+      const { json, error } = await request(url, config);
+
+      if (!error) setHistoric(json.Subjects);
+    };
+
+    sendRequest();
+  }, []);
+
+  /*
   const subject = [
     { sigla: 'AC1', descricao: 'Atividades Complementares' },
     { sigla: 'C201', descricao: 'Introdução à Engenharia' },
@@ -173,7 +194,7 @@ const Historic = () => {
     { nota: null, ano: null },
     { nota: null, ano: null },
     { nota: null, ano: null },
-  ];
+  ]; */
 
   return (
     <div className={styles.container}>
@@ -199,29 +220,36 @@ const Historic = () => {
             </TableHead>
 
             <TableBody>
-              {rows.map((row, index) => (
-                <StyledTableRow key={index}>
-                  <StyledTableCell align="center">
-                    <p className={styles.classAcronyme}>
-                      {subject[index].sigla}
-                    </p>
-                  </StyledTableCell>
+              {historic.length &&
+                historic.map((row, index) => (
+                  <StyledTableRow key={index}>
+                    <StyledTableCell align="center">
+                      <p className={styles.classAcronyme}>{row.Acronym}</p>
+                    </StyledTableCell>
 
-                  <StyledTableCell align="center">
-                    {subject[index].descricao}
-                  </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.SubjectName}
+                    </StyledTableCell>
 
-                  <StyledTableCell align="center">{row.nota}</StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.GradeValue}
+                    </StyledTableCell>
 
-                  <StyledTableCell align="center">{row.ano}</StyledTableCell>
-                </StyledTableRow>
-              ))}
+                    <StyledTableCell align="center">
+                      {row.SemesterYear}
+                    </StyledTableCell>
+                  </StyledTableRow>
+                ))}
             </TableBody>
           </Table>
         </TableContainer>
       </div>
     </div>
   );
+};
+
+Historic.propTypes = {
+  studentInfo: PropTypes.object,
 };
 
 export default Historic;

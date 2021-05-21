@@ -22,7 +22,7 @@ routes.post("/login/student", authController.authStudent);
 routes.post("/login/teacher", authController.authTeacher);
 
 //Rotas abaixo do verify necessitam do token
-routes.use(authController.verifyUser);
+//routes.use(authController.verifyUser);
 
 //Administrator routes
 routes.post("/admin", adminController.create);
@@ -32,6 +32,10 @@ routes.delete("/admin/delete/:employeeNumber", adminController.deleteAdmin);
 //Student routes
 routes.post("/student", studentController.create);
 routes.get("/student/:matriculationNumber", studentController.getStudent);
+routes.delete(
+  "/student/delete/:matriculationNumber",
+  studentController.deleteStudent
+);
 
 //Teacher routes
 routes.post("/teacher", teacherController.create);
@@ -39,11 +43,21 @@ routes.get("/teacher/:employeeNumber", teacherController.getTeacher);
 
 //Academic Coefficient routes
 routes.post("/coefficient", coefficientController.create);
-routes.get("/coefficient/:matriculationNumber", coefficientController.getCoefficient);
-routes.delete("/coefficient/delete/:matriculationNumber", coefficientController.deleteCoefficient);
+routes.get(
+  "/coefficient/:matriculationNumber",
+  coefficientController.getCoefficient
+);
+routes.delete(
+  "/coefficient/delete/:matriculationNumber",
+  coefficientController.deleteCoefficient
+);
 
 //Historic routes
 routes.post("/historic", historicController.create);
 routes.get("/historic/:matriculationNumber", historicController.getHistoric);
+routes.delete(
+  "/historic/delete/:matriculationNumber",
+  historicController.deleteHistoric
+);
 
 export { routes };

@@ -37,15 +37,21 @@ function App() {
     employee: false,
   });
 
+  const [studentInfo, setStudentInfo] = useState();
+
   return (
     <Router>
       <Layout
         isAuthenticated={isAuthenticated}
         setIsAuthenticated={setIsAuthenticated}
+        studentInfo={studentInfo}
       >
         <Routes>
           <Route exact path="/">
-            <Login setIsAuthenticated={setIsAuthenticated} />
+            <Login
+              setIsAuthenticated={setIsAuthenticated}
+              setStudentInfo={setStudentInfo}
+            />
           </Route>
 
           <Route path="/aluno">
@@ -69,7 +75,7 @@ function App() {
           </Route>
 
           <Route path="/aluno/historico">
-            <Historic />
+            <Historic studentInfo={studentInfo} />
           </Route>
 
           <Route path="/aluno/matricula">

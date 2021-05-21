@@ -4,49 +4,59 @@ import { StudentClass } from "./StudentClass";
 
 @Entity("students")
 class Student {
-    @CreateDateColumn()
-    CreatedAt: Date;
+  @CreateDateColumn()
+  CreatedAt: Date;
 
-    @PrimaryColumn()
-    MatriculationNumber: number;
+  @PrimaryColumn()
+  MatriculationNumber: number;
 
-    @Column()
-    Name: string;
+  @Column()
+  Course: string;
 
-    @Column()
-    BirthDate: Date;
+  @Column()
+  Name: string;
 
-    @Column()
-    CPF: string;
+  @Column()
+  BirthDate: Date;
 
-    @Column()
-    Email: string;
+  @Column()
+  CPF: string;
 
-    @Column()
-    Password: string;
+  @Column()
+  Email: string;
 
-    @Column()
-    Period: number;
+  @Column()
+  Password: string;
 
-    @Column()
-    Classes: Array<StudentClass>
+  @Column()
+  Period: number;
 
+  @Column()
+  Classes: Array<StudentClass>;
 
-    constructor(
-        matriculationNumber: number, name: string, email: string, birthDate: Date,
-        cpf: string, classes: Array<StudentClass>, password: string = '') {
-
-        this.CreatedAt = new Date(Date.now());
-        this.MatriculationNumber = matriculationNumber;
-        this.Name = name;
-        this.BirthDate = birthDate;
-        this.CPF = cpf;
-        this.Email = email;
-        this.Password = password ? bcrypt.hashSync(password, 10) : bcrypt.hashSync("12345", 10);
-        this.Period = 1;
-        this.Classes = classes;
-    }
-
+  constructor(
+    matriculationNumber: number,
+    course: string,
+    name: string,
+    email: string,
+    birthDate: Date,
+    cpf: string,
+    classes: Array<StudentClass>,
+    password: string = ""
+  ) {
+    this.CreatedAt = new Date(Date.now());
+    this.MatriculationNumber = matriculationNumber;
+    this.Course = course;
+    this.Name = name;
+    this.BirthDate = birthDate;
+    this.CPF = cpf;
+    this.Email = email;
+    this.Password = password
+      ? bcrypt.hashSync(password, 10)
+      : bcrypt.hashSync("12345", 10);
+    this.Period = 1;
+    this.Classes = classes;
+  }
 }
 
-export { Student }
+export { Student };
