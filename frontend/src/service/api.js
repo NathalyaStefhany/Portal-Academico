@@ -21,3 +21,19 @@ export const GET_STUDENT_COEFFICIENT = (matriculationNumber) => ({
     method: 'GET',
   },
 });
+
+export const POST_TEACHER_LOGIN = (body) => ({
+  url: `${API}/login/teacher`,
+  config: {
+    method: 'POST',
+    data: body,
+  },
+});
+
+export const POST_EMPLOYEE_LOGIN = (body) => ({
+  url: `${API}/login/admin`,
+  config: {
+    method: 'POST',
+    data: body,
+  },
+});

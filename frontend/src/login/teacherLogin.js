@@ -1,31 +1,61 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
+
+import useFetch from '../hooks/useFetch';
+import { POST_TEACHER_LOGIN } from '../service/api';
 
 import { FormControl, TextField } from '@material-ui/core';
 
 import styles from './styles.module.css';
 
-const TeacherLogin = ({ setIsAuthenticated }) => {
-  const [email, setEmail] = useState('');
+const TeacherLogin = ({ setIsAuthenticated, setTeacherInfo }) => {
+  const [number, setNumber] = useState('');
   const [password, setPassword] = useState('');
+
+  const [login, setLogin] = useState(false);
+
+  const { request } = useFetch();
 
   const navigate = useNavigate();
 
-  const login = () => {
-    if (email === 'renzo@inatel.br' && password === '12345') {
-      setIsAuthenticated({ student: false, teacher: true, employee: false });
-      navigate('/professor');
+  useEffect(() => {
+    if (login) {
+      const sendLogin = async () => {
+        const bodyData = {
+          employeeNumber: parseInt(number),
+          password: password,
+        };
+
+        const { url: url, config: config } = POST_TEACHER_LOGIN(bodyData);
+
+        const { json, error } = await request(url, config);
+
+        if (!error) {
+          setTeacherInfo(json);
+
+          setIsAuthenticated({
+            student: false,
+            teacher: true,
+            employee: false,
+          });
+
+          navigate('/professor');
+        }
+      };
+
+      sendLogin();
+      setLogin(false);
     }
-  };
+  }, [login]);
 
   return (
     <FormControl variant="outlined" className={styles.select}>
       <TextField
         id="outlined-uncontrolled"
-        label="Usuário"
+        label="Número do usuário"
         variant="outlined"
-        onChange={(value) => setEmail(value.target.value)}
+        onChange={(value) => setNumber(value.target.value)}
       />
 
       <TextField
@@ -38,7 +68,7 @@ const TeacherLogin = ({ setIsAuthenticated }) => {
         autoComplete="new-password"
       />
 
-      <button className={styles.enterButton} onClick={login}>
+      <button className={styles.enterButton} onClick={() => setLogin(true)}>
         ENTRAR
       </button>
     </FormControl>
@@ -47,6 +77,7 @@ const TeacherLogin = ({ setIsAuthenticated }) => {
 
 TeacherLogin.propTypes = {
   setIsAuthenticated: PropTypes.func.isRequired,
+  setTeacherInfo: PropTypes.func.isRequired,
 };
 
 export default TeacherLogin;
