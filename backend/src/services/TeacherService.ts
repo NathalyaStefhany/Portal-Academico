@@ -59,7 +59,7 @@ class TeacherService {
 
     if (await bcrypt.compare(password, teacher.Password)) {
       passwordUpdated = bcrypt.hashSync(passwordUpdated, 10);
-      const teacherUpdated = await this.teacherRepository.findOneAndUpdate(
+      await this.teacherRepository.findOneAndUpdate(
         { EmployeeNumber: employeeNumber },
         {
           $set: {
@@ -68,7 +68,7 @@ class TeacherService {
         }
       );
 
-      return teacherUpdated.value;
+      return {Message: "Senha alterada"};
     }
 
     return { Error: "Senha atual incorreta" };

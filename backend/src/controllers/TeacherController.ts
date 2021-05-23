@@ -55,13 +55,13 @@ class TeacherController {
 
       const teacherService = new TeacherService();
 
-      const teacher = await teacherService.updatePassword(
+      const result = await teacherService.updatePassword(
         employeeNumber,
         password,
         passwordUpdated
       );
 
-      return response.json({message: "Senha alterada"});
+      return response.json(result);
     } catch (error) {
       return response.status(500).json({
         message: error.message,

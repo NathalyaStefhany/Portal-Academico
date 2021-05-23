@@ -83,13 +83,13 @@ class StudentController {
 
       const studentService = new StudentService();
 
-      const student = await studentService.updatePassword(
+      const result = await studentService.updatePassword(
         matriculationNumber,
         password,
         passwordUpdated
       );
 
-      return response.json({message: "Senha alterada"});
+      return response.json(result);
     } catch (error) {
       return response.status(500).json({
         message: error.message,

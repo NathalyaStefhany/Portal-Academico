@@ -77,7 +77,7 @@ class AdministratorsService {
           }
         );
 
-      return adminUpdated.value;
+      return { Message: "Senha alterada" };
     }
 
     return { Error: "Senha atual incorreta" };
