@@ -1,10 +1,45 @@
-import React from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 import student from '../../assets/icons/reading-book.svg';
 
+import useFetch from '../../hooks/useFetch';
+import { POST_TEACHER_UPDATE_PASSWORD } from '../../service/api';
+
 import styles from './styles.module.css';
 
-const TeacherPerfil = () => {
+const TeacherPerfil = ({ teacherInfo }) => {
+  const [password, setPassword] = useState();
+  const [newPassword1, setNewPassword1] = useState();
+  const [newPassword2, setNewPassword2] = useState();
+
+  const { request } = useFetch();
+
+  const changePassword = () => {
+    if (newPassword1 === newPassword2) {
+      const update = async () => {
+        const bodyData = {
+          employeeNumber: teacherInfo.employeeNumber,
+          password: password,
+          passwordUpdated: newPassword1,
+        };
+
+        const { url: url, config: config } =
+          POST_TEACHER_UPDATE_PASSWORD(bodyData);
+
+        const { json, error } = await request(url, config);
+
+        if (!error) {
+          console.log(json);
+        } else {
+          console.log('erro!');
+        }
+      };
+
+      update();
+    }
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.title}>
@@ -23,12 +58,12 @@ const TeacherPerfil = () => {
               <td>
                 <tr>
                   <td style={{ fontWeight: '800' }}>Professor:</td>
-                  <td>Renzo Paranaiba Mesquita</td>
+                  <td>{teacherInfo.name}</td>
                 </tr>
 
                 <tr>
                   <td style={{ fontWeight: '800' }}>E-mail:</td>
-                  <td>renzo@inatel.br</td>
+                  <td>{teacherInfo.email}</td>
                 </tr>
               </td>
             </tr>
@@ -42,30 +77,43 @@ const TeacherPerfil = () => {
             <tr>
               <td style={{ fontWeight: '800' }}>Senha Antiga:</td>
               <td>
-                <input />
+                <input
+                  type="password"
+                  onChange={(value) => setPassword(value.target.value)}
+                />
               </td>
             </tr>
             <tr>
               <td style={{ fontWeight: '800' }}>Nova Senha:</td>
               <td>
-                <input />
+                <input
+                  type="password"
+                  onChange={(value) => setNewPassword1(value.target.value)}
+                />
               </td>
             </tr>
             <tr>
               <td style={{ fontWeight: '800' }}>Confirmar Senha:</td>
               <td>
-                <input />
+                <input
+                  type="password"
+                  onChange={(value) => setNewPassword2(value.target.value)}
+                />
               </td>
             </tr>
           </table>
 
           <div>
-            <button>ALTERAR</button>
+            <button onClick={changePassword}>ALTERAR</button>
           </div>
         </div>
       </div>
     </div>
   );
+};
+
+TeacherPerfil.PropTypes = {
+  teacherInfo: PropTypes.object,
 };
 
 export default TeacherPerfil;

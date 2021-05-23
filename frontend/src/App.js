@@ -124,7 +124,7 @@ function App() {
           </Route>
 
           <Route path="/professor/perfil">
-            <TeacherPerfil />
+            <TeacherPerfil teacherInfo={teacherInfo} />
           </Route>
 
           <Route path="/professor/notas">
@@ -144,7 +144,7 @@ function App() {
           </Route>
 
           <Route path="/funcionario/perfil">
-            <EmployeePerfil />
+            <EmployeePerfil employeeInfo={employeeInfo} />
           </Route>
         </Routes>
       </Layout>
