@@ -8,6 +8,14 @@ export const POST_STUDENT_LOGIN = (body) => ({
   },
 });
 
+export const POST_STUDENT_UPDATE_PASSWORD = (body) => ({
+  url: `${API}/student/updatePass`,
+  config: {
+    method: 'POST',
+    data: body,
+  },
+});
+
 export const GET_STUDENT_HISTORIC = (matriculationNumber) => ({
   url: `${API}/historic/${matriculationNumber}`,
   config: {

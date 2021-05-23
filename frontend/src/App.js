@@ -49,6 +49,9 @@ function App() {
         studentInfo={studentInfo}
         teacherInfo={teacherInfo}
         employeeInfo={employeeInfo}
+        setStudentInfo={setStudentInfo}
+        setTeacherInfo={setTeacherInfo}
+        setEmployeeInfo={setEmployeeInfo}
       >
         <Routes>
           <Route exact path="/">
@@ -101,7 +104,7 @@ function App() {
           </Route>
 
           <Route path="/aluno/perfil">
-            <Perfil />
+            <Perfil studentInfo={studentInfo} />
           </Route>
 
           <Route path="/aluno/material">

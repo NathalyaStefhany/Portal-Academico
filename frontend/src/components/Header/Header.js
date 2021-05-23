@@ -9,7 +9,13 @@ import Navbar from '../Navbar/Navbar';
 
 import styles from './styles.module.css';
 
-const Header = ({ isAuthenticated, setIsAuthenticated }) => {
+const Header = ({
+  isAuthenticated,
+  setIsAuthenticated,
+  setStudentInfo,
+  setTeacherInfo,
+  setEmployeeInfo,
+}) => {
   const [fontColor, setFontColor] = useState('home');
 
   return (
@@ -93,13 +99,16 @@ const Header = ({ isAuthenticated, setIsAuthenticated }) => {
         <img src={logout} alt="Icone de logout" />
         <Link
           to="/"
-          onClick={() =>
+          onClick={() => {
             setIsAuthenticated({
               student: false,
               teacher: false,
               employee: false,
-            })
-          }
+            });
+            setStudentInfo(null);
+            setTeacherInfo(null);
+            setEmployeeInfo(null);
+          }}
         >
           Sair
         </Link>
@@ -111,6 +120,9 @@ const Header = ({ isAuthenticated, setIsAuthenticated }) => {
 Header.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
   setIsAuthenticated: PropTypes.func.isRequired,
+  setStudentInfo: PropTypes.func.isRequired,
+  setTeacherInfo: PropTypes.func.isRequired,
+  setEmployeeInfo: PropTypes.func.isRequired,
 };
 
 export default Header;
