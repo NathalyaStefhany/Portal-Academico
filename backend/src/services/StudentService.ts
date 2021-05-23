@@ -8,6 +8,13 @@ import { Class } from "../entities/Class";
 import { ClassDate } from "../entities/ClassDate";
 import { ObjectId } from "mongodb";
 import { ClassTimeTable } from "../entities/ClassTimeTable";
+import { Test } from "../entities/Test";
+
+interface TestExam {
+  Acronym: string;
+  Class: string;
+  TestInf: Array<Test>;
+}
 
 class StudentService {
   private studentRepository: MongoRepository<Student>;
@@ -149,6 +156,31 @@ class StudentService {
     })));
 
     return timeTable[0];
+  }
+
+  async getTests(matriculationNumber: number) {
+    const student = await this.studentRepository.findOne({
+      MatriculationNumber: matriculationNumber
+    });
+
+    if (!student) {
+      return 0;
+    }
+
+    let tests = [];
+    let test: TestExam;
+
+    tests.push(await Promise.all(student.Classes.map(async studentClass => {
+      const classToInsert = await this.classRepository.findOne(studentClass.classId as unknown as string);
+
+      test = {Acronym: classToInsert.Acronym, Class: classToInsert.Class, TestInf: classToInsert.TestDates}
+
+      return test;
+
+    })));
+
+    return tests[0];
+
   }
 }
 

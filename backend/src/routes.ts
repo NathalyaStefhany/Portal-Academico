@@ -46,6 +46,7 @@ routes.delete(
 routes.post("/student/updatePass", studentController.updatePassword);
 routes.put("/student/insertClasses", studentController.insertClass);
 routes.get("/student/timeTable/:matriculationNumber", studentController.getTimeTable);
+routes.get("/student/tests/:matriculationNumber", studentController.getTests);
 
 //Teacher routes
 routes.post("/teacher", teacherController.create);
@@ -77,6 +78,7 @@ routes.get("/subject/:acronym", subjectController.getSubject);
 
 //Class routes
 routes.post("/class", classController.create);
+routes.put("/class/insertTest", classController.insertTest);
 
 //ClassReplacement routes
 routes.post("/replacement", replacementController.create);

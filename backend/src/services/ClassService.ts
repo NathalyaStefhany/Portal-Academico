@@ -24,9 +24,9 @@ class ClassService {
 
         const classExist = await this.classRepository.findOne({
             where: {
-                $and:[
-                    {Class: classParam},
-                    {Acronym: acronym}
+                $and: [
+                    { Class: classParam },
+                    { Acronym: acronym }
                 ]
             }
         });
@@ -40,6 +40,48 @@ class ClassService {
         await this.classRepository.insertOne(subjectClass);
 
         return subjectClass;
+
+    }
+
+    async insertTest(acronym: string, classParam: string, testName: string, date: Date, time: string, local: string) {
+        const classExist = await this.classRepository.findOne({
+            where: {
+                $and: [
+                    { Class: classParam },
+                    { Acronym: acronym }
+                ]
+            }
+        });
+
+        if (!classExist) {
+            return 0;
+        }
+
+        let flag = 0;
+        classExist.TestDates.forEach(t => {
+            if (t.TestName === testName) {
+                flag = 1;
+            }
+        });
+
+        if (flag) {
+            return 1;
+        }
+
+        let testDates = new Array<Test>();
+        testDates = classExist.TestDates;
+        testDates.push(new Test(testName, date, time, local))
+
+        await this.classRepository.findOneAndUpdate(
+            { _id: classExist._id },
+            {
+                $set: {
+                    TestDates: testDates
+                }
+            }
+        );
+
+        return { Message: "Teste inserido com sucesso" };
 
     }
 }

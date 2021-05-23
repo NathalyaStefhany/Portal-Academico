@@ -29,6 +29,33 @@ class ClassController {
             });
         }
     }
+
+    async insertTest(request: Request, response: Response): Promise<Response>{
+        try {
+            const {acronym, classParam, testName, date, time, local} = request.body;
+
+            const classService = new ClassService();
+
+            const result = await classService.insertTest(
+                acronym, classParam, testName, new Date(date), time, local
+            );
+
+            if(result === 0){
+                return response.status(404).json({Message: "Turma não encontrada"})
+            }
+            else if(result === 1){
+                return response.status(409).json({Message: "Teste já cadastrado nessa turma"})
+            }
+            else{
+                return response.json(result);
+            }
+
+        } catch (error) {
+            return response.status(500).json({
+                message: error.message,
+            });
+        }
+    }
 }
 
 export { ClassController }
