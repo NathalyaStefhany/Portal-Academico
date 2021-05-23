@@ -66,12 +66,14 @@ class AuthController {
           const name = student.Name;
           const email = student.Email;
           const course = student.Course;
+          const period = student.Period;
 
           return response.json({
             matriculationNumber,
             name,
             email,
             course,
+            period,
             token,
           });
         } else {

@@ -9,6 +9,7 @@ import { ClassDate } from "../entities/ClassDate";
 import { ObjectId } from "mongodb";
 import { ClassTimeTable } from "../entities/ClassTimeTable";
 import { Test } from "../entities/Test";
+import { Grade } from "../entities/Grade";
 
 interface TestExam {
   Acronym: string;
@@ -22,7 +23,7 @@ class StudentService {
 
   constructor() {
     this.studentRepository = getCustomRepository(StudentRepository);
-    this.classRepository = getCustomRepository(ClassRepository)
+    this.classRepository = getCustomRepository(ClassRepository);
   }
 
   async createStudent(
@@ -94,7 +95,7 @@ class StudentService {
         }
       );
 
-      return { Message: "Senha alterada" }
+      return { Message: "Senha alterada" };
     }
 
     return { Error: "Senha atual incorreta" };
@@ -102,7 +103,7 @@ class StudentService {
 
   async insertClass(matriculationNumber: number, classIds: Array<ObjectId>) {
     const student = await this.studentRepository.findOne({
-      MatriculationNumber: matriculationNumber
+      MatriculationNumber: matriculationNumber,
     });
 
     if (!student) {
@@ -110,7 +111,7 @@ class StudentService {
     }
 
     let classes = new Array<StudentClass>();
-    classIds.forEach(id => {
+    classIds.forEach((id) => {
       const studentClass = new StudentClass(new ObjectId(id), []);
       classes.push(studentClass);
     });
@@ -119,48 +120,108 @@ class StudentService {
       { MatriculationNumber: matriculationNumber },
       {
         $set: {
-          Classes: classes
+          Classes: classes,
         },
       }
     );
 
-    return { Message: "Turmas inseridas com sucesso" }
+    return { Message: "Turmas inseridas com sucesso" };
   }
 
-  async getTimeTable(matriculationNumber: number) {
+  async insertGrade(
+    matriculationNumber: number,
+    acronym: string,
+    classParam: string,
+    description: string,
+    percentage: number,
+    value: number
+  ) {
     const student = await this.studentRepository.findOne({
-      MatriculationNumber: matriculationNumber
+      MatriculationNumber: matriculationNumber,
     });
 
     if (!student) {
       return 0;
     }
 
-    let timeTable = []
+    const classExist = await this.classRepository.findOne({
+      where: {
+        $and: [{ Class: classParam }, { Acronym: acronym }],
+      },
+    });
+
+    if (!classExist) {
+      return 0;
+    }
+
+    const id = classExist._id;
+
+    let classes = student.Classes;
+
+    let classGrades = classes.filter((value) => value.classId.equals(id))[0];
+
+    let grades = classGrades.Grades;
+
+    grades.push(new Grade(description, percentage, value));
+
+    await this.studentRepository.findOneAndUpdate(
+      {
+        MatriculationNumber: matriculationNumber,
+        "Classes.classId": new ObjectId(id),
+      },
+      {
+        $set: {
+          "Classes.$.Grades": grades,
+        },
+      }
+    );
+
+    return { Message: "Nota inserida com sucesso" };
+  }
+
+  async getTimeTable(matriculationNumber: number) {
+    const student = await this.studentRepository.findOne({
+      MatriculationNumber: matriculationNumber,
+    });
+
+    if (!student) {
+      return 0;
+    }
+
+    let timeTable = [];
     let classTime: ClassTimeTable;
 
+    timeTable.push(
+      await Promise.all(
+        student.Classes.map(async (studentClass) => {
+          const classToInsert = await this.classRepository.findOne(
+            studentClass.classId as unknown as string
+          );
 
-    timeTable.push(await Promise.all(student.Classes.map(async (studentClass) => {
+          let classDates = new Array<ClassDate>();
 
-      const classToInsert = await this.classRepository.findOne(studentClass.classId as unknown as string);
+          classToInsert.ClassDate.forEach((e) => {
+            classDates.push(e);
+          });
 
-      let classDates = new Array<ClassDate>();
+          classTime = new ClassTimeTable(
+            classToInsert.Acronym,
+            classToInsert.Class,
+            classToInsert.Classroom,
+            classDates
+          );
 
-      classToInsert.ClassDate.forEach(e => {
-        classDates.push(e);
-      });
-
-      classTime = new ClassTimeTable(classToInsert.Acronym, classToInsert.Class, classToInsert.Classroom, classDates);
-
-      return classTime;
-    })));
+          return classTime;
+        })
+      )
+    );
 
     return timeTable[0];
   }
 
   async getTests(matriculationNumber: number) {
     const student = await this.studentRepository.findOne({
-      MatriculationNumber: matriculationNumber
+      MatriculationNumber: matriculationNumber,
     });
 
     if (!student) {
@@ -170,17 +231,25 @@ class StudentService {
     let tests = [];
     let test: TestExam;
 
-    tests.push(await Promise.all(student.Classes.map(async studentClass => {
-      const classToInsert = await this.classRepository.findOne(studentClass.classId as unknown as string);
+    tests.push(
+      await Promise.all(
+        student.Classes.map(async (studentClass) => {
+          const classToInsert = await this.classRepository.findOne(
+            studentClass.classId as unknown as string
+          );
 
-      test = {Acronym: classToInsert.Acronym, Class: classToInsert.Class, TestInf: classToInsert.TestDates}
+          test = {
+            Acronym: classToInsert.Acronym,
+            Class: classToInsert.Class,
+            TestInf: classToInsert.TestDates,
+          };
 
-      return test;
-
-    })));
+          return test;
+        })
+      )
+    );
 
     return tests[0];
-
   }
 }
 

@@ -103,14 +103,52 @@ class StudentController {
 
       const studentService = new StudentService();
 
-      const result = await studentService.insertClass(matriculationNumber, classIds);
+      const result = await studentService.insertClass(
+        matriculationNumber,
+        classIds
+      );
 
       if (!result) {
         return response.status(404).json({ Error: "Aluno não encontrado" });
       }
 
       return response.json(result);
+    } catch (error) {
+      return response.status(500).json({
+        message: error.message,
+      });
+    }
+  }
 
+  async insertGrade(request: Request, response: Response): Promise<Response> {
+    try {
+      const {
+        matriculationNumber,
+        acronym,
+        classParam,
+        description,
+        percentage,
+        value,
+      } = request.body;
+
+      const studentService = new StudentService();
+
+      const result = await studentService.insertGrade(
+        matriculationNumber,
+        acronym,
+        classParam,
+        description,
+        percentage,
+        value
+      );
+
+      if (!result) {
+        return response
+          .status(404)
+          .json({ Error: "Não foi possível inserir a nota" });
+      }
+
+      return response.json(result);
     } catch (error) {
       return response.status(500).json({
         message: error.message,
@@ -124,14 +162,15 @@ class StudentController {
 
       const studentService = new StudentService();
 
-      const result = await studentService.getTimeTable(parseInt(matriculationNumber));
+      const result = await studentService.getTimeTable(
+        parseInt(matriculationNumber)
+      );
 
       if (!result) {
         return response.status(404).json({ Error: "Aluno não encontrado" });
       }
 
       return response.json(result);
-
     } catch (error) {
       return response.status(500).json({
         message: error.message,
@@ -145,21 +184,21 @@ class StudentController {
 
       const studentService = new StudentService();
 
-      const result = await studentService.getTests(parseInt(matriculationNumber));
+      const result = await studentService.getTests(
+        parseInt(matriculationNumber)
+      );
 
       if (!result) {
         return response.status(404).json({ Error: "Aluno não encontrado" });
       }
 
       return response.json(result);
-
     } catch (error) {
       return response.status(500).json({
         message: error.message,
       });
     }
   }
-
 }
 
 export { StudentController };
