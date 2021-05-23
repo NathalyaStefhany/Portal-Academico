@@ -70,9 +70,9 @@ class AdministratorsController {
 
       const adminService = new AdministratorsService();
 
-      const admin = await adminService.updatePassword(employeeNumber, password, passwordUpdated);
+      const result = await adminService.updatePassword(employeeNumber, password, passwordUpdated);
 
-      return response.json({ message: "Senha alterada" });
+      return response.json(result);
 
     } catch (error) {
       return response.status(500).json({
