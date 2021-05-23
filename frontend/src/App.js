@@ -38,6 +38,8 @@ function App() {
   });
 
   const [studentInfo, setStudentInfo] = useState();
+  const [employeeInfo, setEmployeeInfo] = useState();
+  const [teacherInfo, setTeacherInfo] = useState();
 
   return (
     <Router>
@@ -45,12 +47,16 @@ function App() {
         isAuthenticated={isAuthenticated}
         setIsAuthenticated={setIsAuthenticated}
         studentInfo={studentInfo}
+        teacherInfo={teacherInfo}
+        employeeInfo={employeeInfo}
       >
         <Routes>
           <Route exact path="/">
             <Login
               setIsAuthenticated={setIsAuthenticated}
               setStudentInfo={setStudentInfo}
+              setTeacherInfo={setTeacherInfo}
+              setEmployeeInfo={setEmployeeInfo}
             />
           </Route>
 
@@ -83,7 +89,7 @@ function App() {
           </Route>
 
           <Route path="/aluno/coeficiente">
-            <AcademicCoefficient />
+            <AcademicCoefficient studentInfo={studentInfo} />
           </Route>
 
           <Route path="/aluno/notas">

@@ -16,7 +16,8 @@ class AdministratorsService {
     employeeNumber: number,
     name: string,
     email: string,
-    birthDate: Date
+    birthDate: Date,
+    password: string
   ) {
     const adminExist = await this.admininstratorsRepository.findOne({
       EmployeeNumber: employeeNumber,
@@ -26,7 +27,13 @@ class AdministratorsService {
       return 0;
     }
 
-    const admin = new Administrator(employeeNumber, name, email, birthDate);
+    const admin = new Administrator(
+      employeeNumber,
+      name,
+      email,
+      birthDate,
+      password
+    );
 
     await this.admininstratorsRepository.insertOne(admin);
 

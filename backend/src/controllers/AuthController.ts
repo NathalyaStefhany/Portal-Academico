@@ -23,7 +23,10 @@ class AuthController {
           );
           admin.Password = undefined;
 
-          return response.json({ admin, token });
+          const name = admin.Name;
+          const email = admin.Email;
+
+          return response.json({ name, email, employeeNumber, token });
         } else {
           return response.status(400).json({
             massage: "Senha inválida",
@@ -100,7 +103,10 @@ class AuthController {
           );
           teacher.Password = undefined;
 
-          return response.json({ teacher, token });
+          const name = teacher.Name;
+          const email = teacher.Email;
+
+          return response.json({ name, email, employeeNumber, token });
         } else {
           return response.status(400).json({
             massage: "Senha inválida",

@@ -11,6 +11,8 @@ const Layout = ({
   isAuthenticated,
   setIsAuthenticated,
   studentInfo,
+  teacherInfo,
+  employeeInfo,
 }) => {
   return (
     <>
@@ -25,7 +27,11 @@ const Layout = ({
 
           {children}
 
-          <Footer studentInfo={studentInfo} />
+          <Footer
+            studentInfo={studentInfo}
+            teacherInfo={teacherInfo}
+            employeeInfo={employeeInfo}
+          />
         </div>
       ) : (
         <>{children}</>
@@ -39,6 +45,8 @@ Layout.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
   setIsAuthenticated: PropTypes.func.isRequired,
   studentInfo: PropTypes.object,
+  teacherInfo: PropTypes.object,
+  employeeInfo: PropTypes.object,
 };
 
 export default Layout;

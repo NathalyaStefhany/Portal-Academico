@@ -19,7 +19,7 @@ class TeacherController {
       if (teacher) {
         return response.json(teacher);
       } else {
-        return response.status(409).json({ Error: "Estudante existente" });
+        return response.status(409).json({ Error: "Professor existente" });
       }
     } catch (error) {
       return response.status(500).json({
