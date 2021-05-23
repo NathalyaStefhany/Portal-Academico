@@ -61,7 +61,7 @@ class TeacherController {
         passwordUpdated
       );
 
-      return response.json(teacher);
+      return response.json({message: "Senha alterada"});
     } catch (error) {
       return response.status(500).json({
         message: error.message,

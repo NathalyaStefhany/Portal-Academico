@@ -15,10 +15,18 @@ class ClassReplacement {
     @Column()
     Date: Date;
 
-    constructor(classId: ObjectId, date: Date) {
+    @Column()
+    Hour: string;
+
+    @Column()
+    Room: string;
+
+    constructor(classId: ObjectId, date: Date, hour: string, room: string) {
         this.CreatedAt = new Date(Date.now());
         this.ClassId = classId;
         this.Date = date;
+        this.Hour = hour;
+        this.Room = room
     }
 
 }

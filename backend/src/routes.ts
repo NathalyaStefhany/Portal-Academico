@@ -2,6 +2,8 @@ import { Router } from "express";
 import { AcademicCoefficientController } from "./controllers/AcademicCoefficientController";
 import { AdministratorsController } from "./controllers/AdministratorsController";
 import { AuthController } from "./controllers/AuthController";
+import { ClassController } from "./controllers/ClassController";
+import { ClassReplacementController } from "./controllers/ClassReplacementController";
 import { HistoricController } from "./controllers/HistoricController";
 import { StudentController } from "./controllers/StudentController";
 import { SubjectController } from "./controllers/SubjectController";
@@ -17,6 +19,8 @@ const historicController = new HistoricController();
 const studentController = new StudentController();
 const teacherController = new TeacherController();
 const subjectController = new SubjectController();
+const replacementController = new ClassReplacementController();
+const classController = new ClassController();
 
 //Login
 routes.post("/login/admin", authController.authAdmin);
@@ -68,5 +72,11 @@ routes.delete(
 //Subject routes
 routes.post("/subject", subjectController.create);
 routes.get("/subject/:acronym", subjectController.getSubject);
+
+//Class routes
+routes.post("/class", classController.create);
+
+//ClassReplacement routes
+routes.post("/replacement", replacementController.create);
 
 export { routes };

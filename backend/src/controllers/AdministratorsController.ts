@@ -64,22 +64,16 @@ class AdministratorsController {
     }
   }
 
-  async updatePassword(
-    request: Request,
-    response: Response
-  ): Promise<Response> {
+  async updatePassword(request: Request, response: Response): Promise<Response> {
     try {
       const { employeeNumber, password, passwordUpdated } = request.body;
 
       const adminService = new AdministratorsService();
 
-      const admin = await adminService.updatePassword(
-        employeeNumber,
-        password,
-        passwordUpdated
-      );
+      const admin = await adminService.updatePassword(employeeNumber, password, passwordUpdated);
 
-      return response.json(admin);
+      return response.json({ message: "Senha alterada" });
+
     } catch (error) {
       return response.status(500).json({
         message: error.message,
