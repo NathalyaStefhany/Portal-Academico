@@ -2,12 +2,20 @@ import { getCustomRepository, MongoRepository } from "typeorm";
 import { Student } from "../entities/Student";
 import { StudentRepository } from "../repositories/StudentRepository";
 import bcrypt from "bcryptjs";
+import { StudentClass } from "../entities/StudentClass";
+import { ClassRepository } from "../repositories/ClassRepository";
+import { Class } from "../entities/Class";
+import { ClassDate } from "../entities/ClassDate";
+import { ObjectId } from "mongodb";
+import { ClassTimeTable } from "../entities/ClassTimeTable";
 
 class StudentService {
   private studentRepository: MongoRepository<Student>;
+  private classRepository: MongoRepository<Class>;
 
   constructor() {
     this.studentRepository = getCustomRepository(StudentRepository);
+    this.classRepository = getCustomRepository(ClassRepository)
   }
 
   async createStudent(
@@ -79,10 +87,68 @@ class StudentService {
         }
       );
 
-      return {Message: "Senha alterada"}
+      return { Message: "Senha alterada" }
     }
 
     return { Error: "Senha atual incorreta" };
+  }
+
+  async insertClass(matriculationNumber: number, classIds: Array<ObjectId>) {
+    const student = await this.studentRepository.findOne({
+      MatriculationNumber: matriculationNumber
+    });
+
+    if (!student) {
+      return 0;
+    }
+
+    let classes = new Array<StudentClass>();
+    classIds.forEach(id => {
+      const studentClass = new StudentClass(new ObjectId(id), []);
+      classes.push(studentClass);
+    });
+
+    await this.studentRepository.findOneAndUpdate(
+      { MatriculationNumber: matriculationNumber },
+      {
+        $set: {
+          Classes: classes
+        },
+      }
+    );
+
+    return { Message: "Turmas inseridas com sucesso" }
+  }
+
+  async getTimeTable(matriculationNumber: number) {
+    const student = await this.studentRepository.findOne({
+      MatriculationNumber: matriculationNumber
+    });
+
+    if (!student) {
+      return 0;
+    }
+
+    let timeTable = []
+    let classTime: ClassTimeTable;
+
+
+    timeTable.push(await Promise.all(student.Classes.map(async (studentClass) => {
+
+      const classToInsert = await this.classRepository.findOne(studentClass.classId as unknown as string);
+
+      let classDates = new Array<ClassDate>();
+
+      classToInsert.ClassDate.forEach(e => {
+        classDates.push(e);
+      });
+
+      classTime = new ClassTimeTable(classToInsert.Acronym, classToInsert.Class, classToInsert.Classroom, classDates);
+
+      return classTime;
+    })));
+
+    return timeTable[0];
   }
 }
 

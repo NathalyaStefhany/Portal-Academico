@@ -23,7 +23,12 @@ class ClassService {
         schoolSupplies: Array<SchoolSupply>, students: Array<matriculationNumber>) {
 
         const classExist = await this.classRepository.findOne({
-            Class: classParam
+            where: {
+                $and:[
+                    {Class: classParam},
+                    {Acronym: acronym}
+                ]
+            }
         });
 
         if (classExist) {

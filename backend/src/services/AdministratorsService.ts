@@ -67,8 +67,7 @@ class AdministratorsService {
 
     if (await bcrypt.compare(password, admin.Password)) {
       passwordUpdated = bcrypt.hashSync(passwordUpdated, 10);
-      const adminUpdated =
-        await this.admininstratorsRepository.findOneAndUpdate(
+      await this.admininstratorsRepository.findOneAndUpdate(
           { EmployeeNumber: employeeNumber },
           {
             $set: {
