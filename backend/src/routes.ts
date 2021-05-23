@@ -47,6 +47,7 @@ routes.post("/student/updatePass", studentController.updatePassword);
 routes.put("/student/insertClasses", studentController.insertClass);
 routes.get("/student/timeTable/:matriculationNumber", studentController.getTimeTable);
 routes.get("/student/tests/:matriculationNumber", studentController.getTests);
+routes.get("/student/replacements/:matriculationNumber", studentController.getReplacements);
 
 //Teacher routes
 routes.post("/teacher", teacherController.create);

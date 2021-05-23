@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import { Entity, Column, CreateDateColumn, PrimaryColumn, ObjectIdColumn } from "typeorm";
+import { Entity, Column, CreateDateColumn, ObjectIdColumn } from "typeorm";
 
 @Entity("classReplacement")
 class ClassReplacement {
@@ -13,6 +13,12 @@ class ClassReplacement {
     ClassId: ObjectId;
 
     @Column()
+    Acronym: string;
+
+    @Column()
+    Class: string;
+
+    @Column()
     Date: Date;
 
     @Column()
@@ -21,9 +27,11 @@ class ClassReplacement {
     @Column()
     Room: string;
 
-    constructor(classId: ObjectId, date: Date, hour: string, room: string) {
+    constructor(classId: ObjectId, acronym: string, classParam: string, date: Date, hour: string, room: string) {
         this.CreatedAt = new Date(Date.now());
         this.ClassId = classId;
+        this.Acronym = acronym;
+        this.Class = classParam;
         this.Date = date;
         this.Hour = hour;
         this.Room = room

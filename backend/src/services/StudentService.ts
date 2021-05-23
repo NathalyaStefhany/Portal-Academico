@@ -9,6 +9,8 @@ import { ClassDate } from "../entities/ClassDate";
 import { ObjectId } from "mongodb";
 import { ClassTimeTable } from "../entities/ClassTimeTable";
 import { Test } from "../entities/Test";
+import { ClassReplacement } from "../entities/ClassReplacement";
+import { ClassReplacementRepository } from "../repositories/ClassReplacementRepository";
 
 interface TestExam {
   Acronym: string;
@@ -16,13 +18,23 @@ interface TestExam {
   TestInf: Array<Test>;
 }
 
+interface Replacement {
+  Acronym: string;
+  Class: string;
+  Date: Date;
+  Hour: string;
+  Local: string;
+}
+
 class StudentService {
   private studentRepository: MongoRepository<Student>;
   private classRepository: MongoRepository<Class>;
+  private replacementRepository: MongoRepository<ClassReplacement>;
 
   constructor() {
     this.studentRepository = getCustomRepository(StudentRepository);
-    this.classRepository = getCustomRepository(ClassRepository)
+    this.classRepository = getCustomRepository(ClassRepository);
+    this.replacementRepository = getCustomRepository(ClassReplacementRepository);
   }
 
   async createStudent(
@@ -173,13 +185,53 @@ class StudentService {
     tests.push(await Promise.all(student.Classes.map(async studentClass => {
       const classToInsert = await this.classRepository.findOne(studentClass.classId as unknown as string);
 
-      test = {Acronym: classToInsert.Acronym, Class: classToInsert.Class, TestInf: classToInsert.TestDates}
+      test = { Acronym: classToInsert.Acronym, Class: classToInsert.Class, TestInf: classToInsert.TestDates }
 
       return test;
 
     })));
 
     return tests[0];
+
+  }
+
+  async getReplacements(matriculationNumber: number) {
+    const student = await this.studentRepository.findOne({
+      MatriculationNumber: matriculationNumber
+    });
+
+    if (!student) {
+      return 0;
+    }
+
+    let replacements = []
+    let replacement: Replacement;
+
+    await Promise.all(student.Classes.map(async studentClass => {
+      const replacementToInsert = await this.replacementRepository.find({
+        where: {
+          ClassId: studentClass.classId
+        }
+      });
+
+      if (replacementToInsert.length) {
+        replacements.push(replacementToInsert.map(r => {
+
+          replacement = {
+            Acronym: r.Acronym,
+            Class: r.Class,
+            Date: r.Date,
+            Hour: r.Hour,
+            Local: r.Room
+          }
+
+          return replacement;
+
+        }));
+      };
+    }));
+
+    return replacements[0];
 
   }
 }
