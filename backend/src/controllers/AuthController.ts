@@ -64,9 +64,16 @@ class AuthController {
           student.Password = undefined;
 
           const name = student.Name;
+          const email = student.Email;
           const course = student.Course;
 
-          return response.json({ matriculationNumber, name, course, token });
+          return response.json({
+            matriculationNumber,
+            name,
+            email,
+            course,
+            token,
+          });
         } else {
           return response.status(400).json({
             massage: "Senha inválida",

@@ -13,6 +13,9 @@ const Layout = ({
   studentInfo,
   teacherInfo,
   employeeInfo,
+  setStudentInfo,
+  setTeacherInfo,
+  setEmployeeInfo,
 }) => {
   return (
     <>
@@ -23,6 +26,9 @@ const Layout = ({
           <Header
             isAuthenticated={isAuthenticated}
             setIsAuthenticated={setIsAuthenticated}
+            setStudentInfo={setStudentInfo}
+            setTeacherInfo={setTeacherInfo}
+            setEmployeeInfo={setEmployeeInfo}
           />
 
           {children}
@@ -47,6 +53,9 @@ Layout.propTypes = {
   studentInfo: PropTypes.object,
   teacherInfo: PropTypes.object,
   employeeInfo: PropTypes.object,
+  setStudentInfo: PropTypes.func.isRequired,
+  setTeacherInfo: PropTypes.func.isRequired,
+  setEmployeeInfo: PropTypes.func.isRequired,
 };
 
 export default Layout;

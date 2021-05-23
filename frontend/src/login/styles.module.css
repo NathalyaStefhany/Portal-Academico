@@ -3,18 +3,20 @@
   min-height: 100vh;
 
   background-image: url(../assets/images/background.svg);
-  background-size: auto;
+  background-repeat: no-repeat;
 
   display: flex;
 }
 
 .logo {
-  height: 100%;
+  height: 100vh;
   width: 50%;
 
   text-align: center;
+  align-items: center;
 
-  padding-top: 15.625rem;
+  display: flex;
+  justify-content: center;
 }
 
 .logo img {
@@ -28,12 +30,19 @@
 }
 
 .login {
-  height: 100%;
+  height: 100vh;
   width: 50%;
 
-  text-align: center;
+  display: flex;
+  justify-content: center;
+}
 
-  padding-top: 5rem;
+.loginContainer {
+  height: 460px;
+
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .loginButton button {
