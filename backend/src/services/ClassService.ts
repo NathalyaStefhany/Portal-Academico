@@ -1,3 +1,4 @@
+import { ObjectId } from "bson";
 import { getCustomRepository, MongoRepository } from "typeorm";
 import { Class } from "../entities/Class";
 import { ClassDate } from "../entities/ClassDate";
@@ -7,83 +8,106 @@ import { Test } from "../entities/Test";
 import { ClassRepository } from "../repositories/ClassRepository";
 
 interface matriculationNumber {
-    matriculationNumber: number
+  matriculationNumber: number;
 }
 
 class ClassService {
-    private classRepository: MongoRepository<Class>;
+  private classRepository: MongoRepository<Class>;
 
-    constructor() {
-        this.classRepository = getCustomRepository(ClassRepository);
+  constructor() {
+    this.classRepository = getCustomRepository(ClassRepository);
+  }
+
+  async createClass(
+    acronym: string,
+    classParam: string,
+    classroom: string,
+    classDate: Array<ClassDate>,
+    testDates: Array<Test>,
+    frequencyLimit: number,
+    frequency: Array<Frequency>,
+    schoolSupplies: Array<SchoolSupply>,
+    students: Array<matriculationNumber>
+  ) {
+    const classExist = await this.classRepository.findOne({
+      where: {
+        $and: [{ Class: classParam }, { Acronym: acronym }],
+      },
+    });
+
+    if (classExist) {
+      return 0;
     }
 
-    async createClass(
-        acronym: string, classParam: string, classroom: string, classDate: Array<ClassDate>,
-        testDates: Array<Test>, frequencyLimit: number, frequency: Array<Frequency>,
-        schoolSupplies: Array<SchoolSupply>, students: Array<matriculationNumber>) {
+    const subjectClass = new Class(
+      acronym,
+      classParam,
+      classroom,
+      classDate,
+      testDates,
+      frequencyLimit,
+      frequency,
+      schoolSupplies,
+      students
+    );
 
-        const classExist = await this.classRepository.findOne({
-            where: {
-                $and: [
-                    { Class: classParam },
-                    { Acronym: acronym }
-                ]
-            }
-        });
+    await this.classRepository.insertOne(subjectClass);
 
-        if (classExist) {
-            return 0;
-        }
+    return subjectClass;
+  }
 
-        const subjectClass = new Class(acronym, classParam, classroom, classDate, testDates, frequencyLimit, frequency, schoolSupplies, students);
+  async insertTest(
+    acronym: string,
+    classParam: string,
+    testName: string,
+    date: Date,
+    time: string,
+    local: string
+  ) {
+    const classExist = await this.classRepository.findOne({
+      where: {
+        $and: [{ Class: classParam }, { Acronym: acronym }],
+      },
+    });
 
-        await this.classRepository.insertOne(subjectClass);
-
-        return subjectClass;
-
+    if (!classExist) {
+      return 0;
     }
 
-    async insertTest(acronym: string, classParam: string, testName: string, date: Date, time: string, local: string) {
-        const classExist = await this.classRepository.findOne({
-            where: {
-                $and: [
-                    { Class: classParam },
-                    { Acronym: acronym }
-                ]
-            }
-        });
+    let flag = 0;
+    classExist.TestDates.forEach((t) => {
+      if (t.TestName === testName) {
+        flag = 1;
+      }
+    });
 
-        if (!classExist) {
-            return 0;
-        }
-
-        let flag = 0;
-        classExist.TestDates.forEach(t => {
-            if (t.TestName === testName) {
-                flag = 1;
-            }
-        });
-
-        if (flag) {
-            return 1;
-        }
-
-        let testDates = new Array<Test>();
-        testDates = classExist.TestDates;
-        testDates.push(new Test(testName, date, time, local))
-
-        await this.classRepository.findOneAndUpdate(
-            { _id: classExist._id },
-            {
-                $set: {
-                    TestDates: testDates
-                }
-            }
-        );
-
-        return { Message: "Teste inserido com sucesso" };
-
+    if (flag) {
+      return 1;
     }
+
+    let testDates = new Array<Test>();
+    testDates = classExist.TestDates;
+    testDates.push(new Test(testName, date, time, local));
+
+    await this.classRepository.findOneAndUpdate(
+      { _id: classExist._id },
+      {
+        $set: {
+          TestDates: testDates,
+        },
+      }
+    );
+
+    return { Message: "Teste inserido com sucesso" };
+  }
+
+  async getClassById(_id: ObjectId) {
+    const classParam = await this.classRepository.findOne({
+      _id: _id,
+    });
+
+    return classParam;
+  }
 }
 
-export { ClassService }
+export { ClassService };

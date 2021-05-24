@@ -83,6 +83,7 @@ routes.get("/subject/:acronym", subjectController.getSubject);
 //Class routes
 routes.post("/class", classController.create);
 routes.put("/class/insertTest", classController.insertTest);
+routes.get("/class/:_id", classController.getClass);
 
 //ClassReplacement routes
 routes.post("/replacement", replacementController.create);
