@@ -61,3 +61,19 @@ export const POST_EMPLOYEE_UPDATE_PASSWORD = (body) => ({
     data: body,
   },
 });
+
+export const POST_CREATE_STUDENT = (body) => ({
+  url: `${API}/student`,
+  config: {
+    method: 'POST',
+    data: body,
+  },
+});
+
+export const POST_CREATE_TEACHER = (body) => ({
+  url: `${API}/teacher`,
+  config: {
+    method: 'POST',
+    data: body,
+  },
+});

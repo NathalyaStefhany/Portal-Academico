@@ -24,7 +24,7 @@
 
 .registrationContainer {
   width: 50%;
-  height: 300px;
+  height: 400px;
 
   border: 1px solid var(--blue-dark);
   border-radius: 5px;
@@ -61,4 +61,31 @@
   margin-bottom: 16px;
 
   text-align: center;
+}
+
+.modal {
+  margin: 16px 8px;
+}
+
+.modal p {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.created {
+  color: #2aa100;
+
+  margin-bottom: 32px;
+}
+
+.error {
+  color: var(--red);
+
+  margin-bottom: 16px;
+}
+
+.errorInfo {
+  color: var(--orange);
+
+  margin-bottom: 32px;
 }

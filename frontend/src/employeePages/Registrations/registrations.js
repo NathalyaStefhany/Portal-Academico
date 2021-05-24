@@ -1,8 +1,10 @@
 import React from 'react';
 
 import Button from '../../components/Button/Button';
+import Student from './student';
 
 import styles from './styles.module.css';
+import Teacher from './teacher';
 
 const Registrations = () => {
   return (
@@ -20,71 +22,9 @@ const Registrations = () => {
         }}
       >
         <div style={{ display: 'flex' }}>
-          <div className={styles.registrationContainer}>
-            <p className={styles.registrationTitle}>Alunos</p>
-            <table style={{ height: '100%' }}>
-              <tr>
-                <td>Nome:</td>
-                <td>
-                  <input type="text" />
-                </td>
-              </tr>
-              <tr>
-                <td>E-mail:</td>
-                <td>
-                  <input type="text" />
-                </td>
-              </tr>
-              <tr>
-                <td>Matrícula:</td>
-                <td>
-                  <input type="text" />
-                </td>
-              </tr>
-              <tr>
-                <td>Senha:</td>
-                <td>
-                  <input type="password" autoComplete="new-password" />
-                </td>
-              </tr>
-              <tr>
-                <td></td>
-                <td style={{ height: '100%', paddingBottom: '50px' }}>
-                  <Button title="CONFIRMAR" />
-                </td>
-              </tr>
-            </table>
-          </div>
+          <Student />
 
-          <div className={styles.registrationContainer}>
-            <p className={styles.registrationTitle}>Professores</p>
-            <table style={{ height: '100%' }}>
-              <tr>
-                <td>Nome:</td>
-                <td>
-                  <input type="text" />
-                </td>
-              </tr>
-              <tr>
-                <td>E-mail:</td>
-                <td>
-                  <input type="text" />
-                </td>
-              </tr>
-              <tr>
-                <td>Senha:</td>
-                <td>
-                  <input type="password" autoComplete="new-password" />
-                </td>
-              </tr>
-              <tr>
-                <td></td>
-                <td style={{ height: '100%', paddingBottom: '10px' }}>
-                  <Button title="CONFIRMAR" />
-                </td>
-              </tr>
-            </table>
-          </div>
+          <Teacher />
         </div>
 
         <div style={{ display: 'flex' }}>
