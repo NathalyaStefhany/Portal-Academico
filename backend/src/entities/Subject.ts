@@ -2,8 +2,12 @@ import { ObjectId } from "mongodb";
 import { Entity, Column, CreateDateColumn, PrimaryColumn, ObjectIdColumn } from "typeorm";
 import { Requirement } from "./Requirement";
 
-interface classId {
-    classId: ObjectId
+interface ClassId {
+    ClassId: ObjectId;
+}
+
+interface Course{
+    Course: string;
 }
 
 @Entity("subjects")
@@ -18,10 +22,13 @@ class Subject {
     Name: string;
 
     @Column()
+    CousesIn: Array<Course>;
+
+    @Column()
     Period: number;
 
     @Column()
-    Classes: Array<classId>;
+    Classes: Array<ClassId>;
 
     @Column()
     Requirements: Array<Requirement>;
@@ -30,12 +37,13 @@ class Subject {
     Credits: number;
 
     constructor(
-        acronym: string, name: string, period: number, classes: Array<classId>,
+        acronym: string, name: string, coursesIn:Array<Course>,period: number, classes: Array<ClassId>,
         requirements: Array<Requirement>, credits: number) {
 
         this.CreatedAt = new Date(Date.now());
         this.Acronym = acronym;
         this.Name = name;
+        this.CousesIn = coursesIn;
         this.Period = period;
         this.Classes = classes;
         this.Requirements = requirements;

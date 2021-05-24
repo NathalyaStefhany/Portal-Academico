@@ -83,6 +83,7 @@ routes.delete(
 //Subject routes
 routes.post("/subject", subjectController.create);
 routes.get("/subject/:acronym", subjectController.getSubject);
+routes.get("/subject/requirementsTable/:matriculationNumber", subjectController.getRequiremtsTable);
 
 //Class routes
 routes.post("/class", classController.create);
