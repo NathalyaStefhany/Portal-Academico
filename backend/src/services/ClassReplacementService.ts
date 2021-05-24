@@ -10,8 +10,8 @@ class ClassReplacementService {
         this.classReplacementRepository = getCustomRepository(ClassReplacementRepository);
     }
 
-    async createReplacement(classId: ObjectId, date: Date, hour: string, room: string) {
-        const replacement = new ClassReplacement(classId, date, hour, room);
+    async createReplacement(classId: ObjectId, acronym: string, classParam: string, date: Date, hour: string, room: string) {
+        const replacement = new ClassReplacement(classId, acronym, classParam, date, hour, room);
 
         await this.classReplacementRepository.insertOne(replacement);
 

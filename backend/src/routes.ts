@@ -51,6 +51,10 @@ routes.get(
 );
 routes.get("/student/tests/:matriculationNumber", studentController.getTests);
 routes.put("/student/insertGrade", studentController.insertGrade);
+routes.get(
+  "/student/replacements/:matriculationNumber",
+  studentController.getReplacements
+);
 
 //Teacher routes
 routes.post("/teacher", teacherController.create);

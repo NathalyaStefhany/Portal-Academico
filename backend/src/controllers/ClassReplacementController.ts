@@ -4,11 +4,11 @@ import { ClassReplacementService } from "../services/ClassReplacementService";
 class ClassReplacementController {
     async create(request: Request, response: Response): Promise<Response>{
         try {
-            const {classId, date, hour, room} = request.body;
+            const {classId, acronym, classParam, date, hour, room} = request.body;
 
             const replacementService = new ClassReplacementService();
 
-            const replacement = await replacementService.createReplacement(classId, new Date(date), hour, room);
+            const replacement = await replacementService.createReplacement(classId, acronym, classParam, new Date(date), hour, room);
 
             return response.json(replacement);
 
