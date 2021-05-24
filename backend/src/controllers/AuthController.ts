@@ -78,7 +78,7 @@ class AuthController {
           });
         } else {
           return response.status(400).json({
-            massage: "Senha inválida",
+            message: "Senha inválida",
           });
         }
       } else {

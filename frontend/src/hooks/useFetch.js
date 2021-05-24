@@ -12,7 +12,7 @@ const useFetch = () => {
       response = await axios(url, config);
       json = response.data;
     } catch (err) {
-      error = true;
+      error = err;
     }
 
     return { response, json, error };

@@ -16,6 +16,7 @@
   --light-blue: rgba(0, 83, 166, 0.03);
   --blue: #065cbe;
   --blue-dark: #0054a6;
+  --red: #ff5959;
 }
 
 @media (max-width: 1080px) {

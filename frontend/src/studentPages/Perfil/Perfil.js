@@ -75,7 +75,7 @@ const Perfil = ({ studentInfo }) => {
 
                 <tr>
                   <td style={{ fontWeight: '800' }}>Período:</td>
-                  <td>P9</td>
+                  <td>P{studentInfo.period}</td>
                 </tr>
 
                 <tr>

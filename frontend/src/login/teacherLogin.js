@@ -15,6 +15,8 @@ const TeacherLogin = ({ setIsAuthenticated, setTeacherInfo }) => {
 
   const [login, setLogin] = useState(false);
 
+  const [hasError, setHasError] = useState(false);
+
   const { request } = useFetch();
 
   const navigate = useNavigate();
@@ -41,6 +43,8 @@ const TeacherLogin = ({ setIsAuthenticated, setTeacherInfo }) => {
           });
 
           navigate('/professor');
+        } else {
+          setHasError(true);
         }
       };
 
@@ -67,6 +71,10 @@ const TeacherLogin = ({ setIsAuthenticated, setTeacherInfo }) => {
         style={{ marginTop: '45px' }}
         autoComplete="new-password"
       />
+
+      {hasError && (
+        <p className={styles.error}>Usuário e/ou senha incorretos!</p>
+      )}
 
       <button className={styles.enterButton} onClick={() => setLogin(true)}>
         ENTRAR

@@ -90,3 +90,12 @@
 
   margin: 50px 30px 0px 30px !important;
 }
+
+.error {
+  font-size: 14px;
+  color: var(--red);
+  font-weight: 600;
+  text-align: end;
+
+  margin-top: 5px;
+}
