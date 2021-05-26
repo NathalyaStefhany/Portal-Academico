@@ -80,7 +80,7 @@ function App() {
           </Route>
 
           <Route path="/aluno/provas">
-            <TestsCalendar />
+            <TestsCalendar studentInfo={studentInfo} />
           </Route>
 
           <Route path="/aluno/historico">

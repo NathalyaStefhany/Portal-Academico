@@ -37,6 +37,13 @@ export const GET_STUDENT_TIME_TABLE = (matriculationNumber) => ({
   },
 });
 
+export const GET_STUDENT_TESTS = (matriculationNumber) => ({
+  url: `${API}/student/tests/${matriculationNumber}`,
+  config: {
+    method: 'GET',
+  },
+});
+
 export const POST_TEACHER_LOGIN = (body) => ({
   url: `${API}/login/teacher`,
   config: {
