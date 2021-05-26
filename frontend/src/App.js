@@ -68,7 +68,7 @@ function App() {
           </Route>
 
           <Route path="/aluno/horarioAula">
-            <ClassSchedule />
+            <ClassSchedule studentInfo={studentInfo} />
           </Route>
 
           <Route path="/aluno/horarioAtendimento">

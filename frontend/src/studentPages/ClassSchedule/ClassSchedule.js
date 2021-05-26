@@ -1,4 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+
+import useFetch from '../../hooks/useFetch';
+import { GET_STUDENT_TIME_TABLE } from '../../service/api';
+
+import CreateTimeTable from '../../utils/CreateTimeTable';
 
 import {
   withStyles,
@@ -8,13 +14,12 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  TablePagination,
   Paper,
 } from '@material-ui/core';
 
 import styles from './styles.module.css';
 
-const ClassSchedule = () => {
+const ClassSchedule = ({ studentInfo }) => {
   const StyledTableCell = withStyles((theme) => ({
     head: {
       backgroundColor: '#0054a6',
@@ -36,6 +41,29 @@ const ClassSchedule = () => {
     },
   }))(TableRow);
 
+  const { request } = useFetch();
+
+  const [timeTable, setTimeTable] = useState(CreateTimeTable([]));
+
+  useEffect(() => {
+    const makeRequest = async () => {
+      const { url: url, config: config } = GET_STUDENT_TIME_TABLE(
+        studentInfo.matriculationNumber
+      );
+
+      const { json, error } = await request(url, config);
+
+      if (!error) {
+        setTimeTable(CreateTimeTable(json));
+      } else {
+        console.log('Erro!');
+      }
+    };
+
+    makeRequest();
+  }, []);
+
+  /*
   const rows = [
     {
       hour: '08:00 - 08:50',
@@ -163,7 +191,7 @@ const ClassSchedule = () => {
       friday: { acronyme: null, classroom: null },
       saturday: { acronyme: null, classroom: null },
     },
-  ];
+  ]; */
 
   return (
     <div className={styles.container}>
@@ -190,7 +218,7 @@ const ClassSchedule = () => {
             </TableHead>
 
             <TableBody>
-              {rows.map((row) => (
+              {timeTable.map((row) => (
                 <StyledTableRow key={row.hour}>
                   <StyledTableCell align="center">{row.hour}</StyledTableCell>
 
@@ -269,6 +297,10 @@ const ClassSchedule = () => {
       </div>
     </div>
   );
+};
+
+ClassSchedule.propTypes = {
+  studentInfo: PropTypes.object,
 };
 
 export default ClassSchedule;
