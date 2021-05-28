@@ -357,8 +357,13 @@ class StudentService {
       })
     );
 
-    return grades[0];
+    return grades;
   }
+
+  async insertFrequency(){
+    
+  }
+
 }
 
 export { StudentService };
