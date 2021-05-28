@@ -224,6 +224,29 @@ class StudentController {
       });
     }
   }
+
+  async getGrades(request: Request, response: Response): Promise<Response> {
+    try {
+      const { matriculationNumber } = request.params;
+
+      const studentService = new StudentService();
+
+      const result = await studentService.getGrades(
+        parseInt(matriculationNumber)
+      );
+
+      if (result === 0) {
+        return response.status(404).json({ Error: "Aluno não encontrado" });
+      }
+
+      return response.json(result);
+      
+    } catch (error) {
+      return response.status(500).json({
+        message: error.message,
+      });
+    }
+  }
 }
 
 export { StudentController };

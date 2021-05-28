@@ -27,6 +27,13 @@ interface Replacement {
   Local: string;
 }
 
+interface GradeReturn {
+  Acronym: string;
+  Class: string;
+  Test: string;
+  Grade: number;
+}
+
 class StudentService {
   private studentRepository: MongoRepository<Student>;
   private classRepository: MongoRepository<Class>;
@@ -124,10 +131,13 @@ class StudentService {
       return 0;
     }
 
-    let classes = new Array<StudentClass>();
+    let classes = student.Classes;
     classIds.forEach((id) => {
-      const studentClass = new StudentClass(new ObjectId(id), []);
-      classes.push(studentClass);
+      id = new ObjectId(id);
+      if(!classes.some(c => { c.classId === id})) {
+        const studentClass = new StudentClass(id, []);
+        classes.push(studentClass);
+      }
     });
 
     await this.studentRepository.findOneAndUpdate(
@@ -305,6 +315,49 @@ class StudentService {
     );
 
     return replacements[0];
+  }
+
+  async getGrades(matriculationNumber: number){
+    const student = await this.studentRepository.findOne({
+      MatriculationNumber: matriculationNumber,
+    });
+
+    if (!student) {
+      return 0;
+    }
+
+    let grade: GradeReturn;
+    let grades = []
+
+    await Promise.all(
+      student.Classes.map(async (studentClass) => {
+        const classFound = await this.classRepository.find({
+          where: {
+            _id: studentClass.classId
+          }
+        });
+
+        if(classFound.length){
+          const studentGrades = student.Classes.filter(c => c.classId === studentClass.classId);
+
+          grades.push(
+            studentGrades[0].Grades.map(g => {
+              grade = {
+                Acronym: classFound[0].Acronym,
+                Class: classFound[0].Class,
+                Test: g.Description,
+                Grade: g.Value,
+              }
+
+              return grade;
+            })
+          );
+        }
+
+      })
+    );
+
+    return grades[0];
   }
 }
 
