@@ -295,30 +295,28 @@ class StudentService {
     await Promise.all(
       student.Classes.map(async (studentClass) => {
         const replacementToInsert = await this.replacementRepository.find({
-          where: {
-            ClassId: studentClass.classId,
-          },
+          ClassId: studentClass.classId,
         });
 
         if (replacementToInsert.length) {
-          replacements.push(
-            replacementToInsert.map((r) => {
-              replacement = {
-                Acronym: r.Acronym,
-                Class: r.Class,
-                Date: r.Date,
-                Hour: r.Hour,
-                Local: r.Room,
-              };
+          const rep = replacementToInsert.map((r) => {
+            replacement = {
+              Acronym: r.Acronym,
+              Class: r.Class,
+              Date: r.Date,
+              Hour: r.Hour,
+              Local: r.Room,
+            };
 
-              return replacement;
-            })
-          );
+            return replacement;
+          });
+
+          replacements = replacements.concat(rep);
         }
       })
     );
 
-    return replacements[0];
+    return replacements;
   }
 
   async getGrades(matriculationNumber: number) {

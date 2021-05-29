@@ -76,7 +76,7 @@ function App() {
           </Route>
 
           <Route path="/aluno/reposicao">
-            <ClassReplacement />
+            <ClassReplacement studentInfo={studentInfo} />
           </Route>
 
           <Route path="/aluno/provas">
