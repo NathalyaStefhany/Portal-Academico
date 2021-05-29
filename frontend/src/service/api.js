@@ -44,6 +44,13 @@ export const GET_STUDENT_TESTS = (matriculationNumber) => ({
   },
 });
 
+export const GET_STUDENT_GRADES = (matriculationNumber) => ({
+  url: `${API}/student/grades/${matriculationNumber}`,
+  config: {
+    method: 'GET',
+  },
+});
+
 export const POST_TEACHER_LOGIN = (body) => ({
   url: `${API}/login/teacher`,
   config: {

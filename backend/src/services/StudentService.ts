@@ -134,7 +134,11 @@ class StudentService {
     let classes = student.Classes;
     classIds.forEach((id) => {
       id = new ObjectId(id);
-      if(!classes.some(c => { c.classId === id})) {
+      if (
+        !classes.some((c) => {
+          c.classId === id;
+        })
+      ) {
         const studentClass = new StudentClass(id, []);
         classes.push(studentClass);
       }
@@ -317,7 +321,7 @@ class StudentService {
     return replacements[0];
   }
 
-  async getGrades(matriculationNumber: number){
+  async getGrades(matriculationNumber: number) {
     const student = await this.studentRepository.findOne({
       MatriculationNumber: matriculationNumber,
     });
@@ -327,37 +331,47 @@ class StudentService {
     }
 
     let grade: GradeReturn;
-    let grades = []
+    let grades = [];
 
     await Promise.all(
       student.Classes.map(async (studentClass) => {
         const classFound = await this.classRepository.find({
           where: {
-            _id: studentClass.classId
-          }
+            _id: studentClass.classId,
+          },
         });
 
-        if(classFound.length){
-          const studentGrades = student.Classes.filter(c => c.classId === studentClass.classId);
+        if (classFound.length) {
+          const studentGrades = student.Classes.filter(
+            (c) => c.classId === studentClass.classId
+          );
 
           grades.push(
-            studentGrades[0].Grades.map(g => {
-              grade = {
-                Acronym: classFound[0].Acronym,
-                Class: classFound[0].Class,
-                Test: g.Description,
-                Grade: g.Value,
-              }
+            studentGrades[0].Grades.length
+              ? studentGrades[0].Grades.map((g) => {
+                  grade = {
+                    Acronym: classFound[0].Acronym,
+                    Class: classFound[0].Class,
+                    Test: g.Description,
+                    Grade: g.Value,
+                  };
 
-              return grade;
-            })
+                  return grade;
+                })
+              : [
+                  {
+                    Acronym: classFound[0].Acronym,
+                    Class: classFound[0].Class,
+                    Test: "-",
+                    Grade: "-",
+                  },
+                ]
           );
         }
-
       })
     );
 
-    return grades[0];
+    return grades;
   }
 }
 
