@@ -58,6 +58,13 @@ export const GET_STUDENT_REPLACEMENT = (matriculationNumber) => ({
   },
 });
 
+export const GET_STUDENT_REQUIREMENTS = (matriculationNumber) => ({
+  url: `${API}/subject/requirementsTable/${matriculationNumber}`,
+  config: {
+    method: 'GET',
+  },
+});
+
 export const POST_TEACHER_LOGIN = (body) => ({
   url: `${API}/login/teacher`,
   config: {

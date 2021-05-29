@@ -13,7 +13,9 @@ import FormatDate from '../../utils/FormatDate';
 const ClassReplacement = ({ studentInfo }) => {
   const { request } = useFetch();
 
-  const [replacements, setReplacements] = useState([]);
+  const [replacements, setReplacements] = useState([
+    { turma: '', data: '', horario: '', local: '' },
+  ]);
 
   useEffect(() => {
     const sendRequest = async () => {
@@ -23,7 +25,7 @@ const ClassReplacement = ({ studentInfo }) => {
 
       const { json, error } = await request(url, config);
 
-      if (!error) {
+      if (!error && json.length) {
         setReplacements(
           json
             .map((rep) => {

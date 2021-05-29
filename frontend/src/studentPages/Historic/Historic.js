@@ -50,7 +50,7 @@ const Historic = ({ studentInfo }) => {
 
       const { json, error } = await request(url, config);
 
-      if (!error) setHistoric(json.Subjects);
+      if (!error && json) setHistoric(json.Subjects);
     };
 
     sendRequest();
@@ -80,26 +80,27 @@ const Historic = ({ studentInfo }) => {
             </TableHead>
 
             <TableBody>
-              {historic.length &&
-                historic.map((row, index) => (
-                  <StyledTableRow key={index}>
-                    <StyledTableCell align="center">
-                      <p className={styles.classAcronyme}>{row.Acronym}</p>
-                    </StyledTableCell>
+              {historic.length
+                ? historic.map((row, index) => (
+                    <StyledTableRow key={index}>
+                      <StyledTableCell align="center">
+                        <p className={styles.classAcronyme}>{row.Acronym}</p>
+                      </StyledTableCell>
 
-                    <StyledTableCell align="center">
-                      {row.SubjectName}
-                    </StyledTableCell>
+                      <StyledTableCell align="center">
+                        {row.SubjectName}
+                      </StyledTableCell>
 
-                    <StyledTableCell align="center">
-                      {row.GradeValue}
-                    </StyledTableCell>
+                      <StyledTableCell align="center">
+                        {row.GradeValue}
+                      </StyledTableCell>
 
-                    <StyledTableCell align="center">
-                      {row.SemesterYear}
-                    </StyledTableCell>
-                  </StyledTableRow>
-                ))}
+                      <StyledTableCell align="center">
+                        {row.SemesterYear}
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  ))
+                : null}
             </TableBody>
           </Table>
         </TableContainer>
