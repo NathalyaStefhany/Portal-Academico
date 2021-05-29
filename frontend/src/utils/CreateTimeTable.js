@@ -130,8 +130,6 @@ export default function (data) {
     },
   ];
 
-  console.log(data);
-
   for (let i = 0; i < data.length; i++) {
     for (let j = 0; j < data[i].ClassDates.length; j++) {
       const date = data[i].ClassDates[j];
