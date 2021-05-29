@@ -56,6 +56,7 @@ routes.get(
   studentController.getReplacements
 );
 routes.get("/student/grades/:matriculationNumber", studentController.getGrades);
+routes.get("/student/frequency/:matriculationNumber", studentController.getFrequencies);
 
 //Teacher routes
 routes.post("/teacher", teacherController.create);
@@ -90,6 +91,7 @@ routes.get("/subject/requirementsTable/:matriculationNumber", subjectController.
 routes.post("/class", classController.create);
 routes.put("/class/insertTest", classController.insertTest);
 routes.get("/class/:_id", classController.getClass);
+routes.put("/class/insertFrequency", classController.insertFrequency);
 
 //ClassReplacement routes
 routes.post("/replacement", replacementController.create);
