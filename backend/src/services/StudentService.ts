@@ -374,10 +374,6 @@ class StudentService {
     return grades;
   }
 
-  async insertFrequency(){
-    
-  }
-
 }
 
 export { StudentService };

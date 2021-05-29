@@ -1,5 +1,6 @@
 import { ObjectId } from "bson";
 import { Request, Response } from "express";
+import { Frequency } from "../entities/Frequency";
 import { ClassService } from "../services/ClassService";
 
 class ClassController {
@@ -92,6 +93,33 @@ class ClassController {
       });
     }
   }
+
+  async insertFrequency(request: Request, response: Response): Promise<Response> {
+    try {
+      const {acronym, classParam, frequency} = request.body;
+
+      const classService = new ClassService();
+
+      const frequencyToInsert = new Frequency(
+        new Date(frequency.classDate), frequency.subjectMatter,
+        frequency.classesTaught, frequency.missingStudents
+      );
+
+      const result = await classService.insertFrequency(acronym, classParam, frequencyToInsert);
+
+      if(!result){
+        return response.status(404).json({Message: "Turma não encontrada"})
+      }
+
+      return response.json(result);
+
+    } catch (error) {
+      return response.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+
 }
 
 export { ClassController };

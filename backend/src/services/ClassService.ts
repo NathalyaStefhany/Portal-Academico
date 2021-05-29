@@ -108,6 +108,35 @@ class ClassService {
 
     return classParam;
   }
+
+  async insertFrequency(acronym: string, classParam: string, frquency: Frequency){
+    const classToUpdate = await this.classRepository.findOne({
+      where: {
+        $and: [{ Class: classParam }, { Acronym: acronym }],
+      },
+    });
+
+    if (!classToUpdate) {
+      return 0;
+    }
+    
+    let frequencyToInsert = classToUpdate.Frequency;
+    frequencyToInsert.push(frquency);
+
+    const result = await this.classRepository.findOneAndUpdate(
+      {
+        $and: [{Class: classParam}, {Acronym: acronym}],
+      },
+      {
+        $set:{
+          Frequency: frequencyToInsert
+        },
+      }
+    );
+
+    return result;
+  }
+
 }
 
 export { ClassService };

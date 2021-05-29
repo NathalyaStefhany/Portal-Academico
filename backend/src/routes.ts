@@ -90,6 +90,7 @@ routes.get("/subject/requirementsTable/:matriculationNumber", subjectController.
 routes.post("/class", classController.create);
 routes.put("/class/insertTest", classController.insertTest);
 routes.get("/class/:_id", classController.getClass);
+routes.put("/class/insertFrequency", classController.insertFrequency);
 
 //ClassReplacement routes
 routes.post("/replacement", replacementController.create);
