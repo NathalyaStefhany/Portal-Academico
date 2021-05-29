@@ -16,7 +16,7 @@ class Frequency {
     constructor(classDate: Date, subjectMatter: string, classesTaught: number, missingStudents: Array<number>) {
         this.ClassDate = classDate;
         this.SubjectMatter = subjectMatter;
-        this.ClassesTaught - classesTaught;
+        this.ClassesTaught = classesTaught;
         this.MissingStudents = missingStudents;
     }
 }

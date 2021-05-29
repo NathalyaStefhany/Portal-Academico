@@ -56,6 +56,7 @@ routes.get(
   studentController.getReplacements
 );
 routes.get("/student/grades/:matriculationNumber", studentController.getGrades);
+routes.get("/student/frequency/:matriculationNumber", studentController.getFrequencies);
 
 //Teacher routes
 routes.post("/teacher", teacherController.create);

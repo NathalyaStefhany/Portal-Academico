@@ -111,7 +111,7 @@ class ClassController {
         return response.status(404).json({Message: "Turma não encontrada"})
       }
 
-      return response.json(result);
+      return response.json({Message: "Frequência inserida com sucesso"});
 
     } catch (error) {
       return response.status(500).json({

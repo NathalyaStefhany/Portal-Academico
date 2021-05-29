@@ -34,6 +34,13 @@ interface GradeReturn {
   Grade: number;
 }
 
+interface FrequencyReturn {
+  Acronym: string;
+  Class: string;
+  ClassesTaught: number;
+  Absences: number;
+}
+
 class StudentService {
   private studentRepository: MongoRepository<Student>;
   private classRepository: MongoRepository<Class>;
@@ -347,29 +354,86 @@ class StudentService {
           grades.push(
             studentGrades[0].Grades.length
               ? studentGrades[0].Grades.map((g) => {
-                  grade = {
-                    Acronym: classFound[0].Acronym,
-                    Class: classFound[0].Class,
-                    Test: g.Description,
-                    Grade: g.Value,
-                  };
+                grade = {
+                  Acronym: classFound[0].Acronym,
+                  Class: classFound[0].Class,
+                  Test: g.Description,
+                  Grade: g.Value,
+                };
 
-                  return grade;
-                })
+                return grade;
+              })
               : [
-                  {
-                    Acronym: classFound[0].Acronym,
-                    Class: classFound[0].Class,
-                    Test: "-",
-                    Grade: "-",
-                  },
-                ]
+                {
+                  Acronym: classFound[0].Acronym,
+                  Class: classFound[0].Class,
+                  Test: "-",
+                  Grade: "-",
+                },
+              ]
           );
         }
       })
     );
 
     return grades;
+  }
+
+  async getFrequency(matriculationNumber: number) {
+    const student = await this.studentRepository.findOne({
+      MatriculationNumber: matriculationNumber,
+    });
+
+    if (!student) {
+      return 0;
+    }
+
+    let frequencies = []
+    let frequencyToInsert: FrequencyReturn;
+
+    await Promise.all(
+      student.Classes.map(async (studentClass) => {
+        const classFound = await this.classRepository.findOne({
+          where: {
+            _id: studentClass.classId,
+          },
+        });
+
+        if (classFound.Frequency.length) {
+          let classesTaughtToInsert = 0;
+          let absencesToInsert = 0;
+
+          classFound.Frequency.map(freq => {
+            classesTaughtToInsert += freq.ClassesTaught;
+
+            freq.MissingStudents.some(m => m === matriculationNumber)? 
+            absencesToInsert += freq.ClassesTaught : 
+            absencesToInsert += 0;
+          });
+
+          frequencies.push(
+            frequencyToInsert = {
+              Acronym: classFound.Acronym,
+              Class: classFound.Class,
+              ClassesTaught: classesTaughtToInsert,
+              Absences: absencesToInsert
+            }
+          );
+        }
+        else {
+          frequencies.push(
+            frequencyToInsert = {
+              Acronym: classFound.Acronym,
+              Class: classFound.Class,
+              ClassesTaught: 0,
+              Absences: 0
+            }
+          );
+        }
+      })
+    );
+
+    return frequencies;
   }
 
 }
