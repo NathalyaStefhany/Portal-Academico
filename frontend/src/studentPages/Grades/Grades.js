@@ -1,40 +1,56 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+
 import Table from '../../components/Table/Table';
+
+import useFetch from '../../hooks/useFetch';
+import { GET_STUDENT_GRADES } from '../../service/api';
 
 import styles from './styles.module.css';
 
-const Grades = () => {
-  const grades = [
-    {
-      subject: 'T106 - L1',
-      grades: [
-        { test: 'Exercício 1', grade: 75 },
-        { test: 'Exercício 2', grade: 100 },
-      ],
-    },
-    {
-      subject: 'G008',
-      grades: [
-        { test: 'Exercício 1', grade: 75 },
-        { test: 'Exercício 2', grade: 100 },
-      ],
-    },
-    {
-      subject: 'C213',
-      grades: [{ test: '-', grade: '-' }],
-    },
-    {
-      subject: 'C115 - L1',
-      grades: [
-        { test: 'Exercício 1', grade: 75 },
-        { test: 'Exercício 2', grade: 100 },
-      ],
-    },
-    {
-      subject: 'C317',
-      grades: [{ test: '-', grade: '-' }],
-    },
-  ];
+const Grades = ({ studentInfo }) => {
+  const { request } = useFetch();
+
+  const [grades, setGrades] = useState([]);
+
+  useEffect(() => {
+    const sendRequest = async () => {
+      const { url: url, config: config } = GET_STUDENT_GRADES(
+        studentInfo.matriculationNumber
+      );
+
+      const { json, error } = await request(url, config);
+
+      if (!error) {
+        const allGrades = [];
+        let subject = '';
+        let subjectGrade = [];
+
+        for (let i = 0; i < json.length; i++) {
+          for (let j = 0; j < json[i].length; j++) {
+            if (j === 0) {
+              const aux = json[i][j].Class ? ` - ${json[i][j].Class}` : ' ';
+
+              subject = json[i][j].Acronym + aux;
+            }
+
+            subjectGrade.push({
+              test: json[i][j].Test,
+              grade: json[i][j].Grade,
+            });
+          }
+          if (subjectGrade.length)
+            allGrades.push({ subject: subject, grades: subjectGrade });
+
+          subjectGrade = [];
+        }
+
+        setGrades(allGrades);
+      }
+    };
+
+    sendRequest();
+  }, []);
 
   const header = ['Avaliação', 'Nota'];
 
@@ -46,16 +62,24 @@ const Grades = () => {
       </div>
 
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-        {grades.map((grade, index) => (
-          <div className={styles.table} key={index}>
-            <p className={styles.subject}>{grade.subject}</p>
+        {grades.length ? (
+          <>
+            {grades.map((grade, index) => (
+              <div className={styles.table} key={index}>
+                <p className={styles.subject}>{grade.subject}</p>
 
-            <Table header={header} data={grade.grades} />
-          </div>
-        ))}
+                <Table header={header} data={grade.grades} />
+              </div>
+            ))}
+          </>
+        ) : null}
       </div>
     </div>
   );
+};
+
+Grades.propTypes = {
+  studentInfo: PropTypes.object,
 };
 
 export default Grades;

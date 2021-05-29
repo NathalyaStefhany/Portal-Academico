@@ -96,7 +96,7 @@ function App() {
           </Route>
 
           <Route path="/aluno/notas">
-            <Grades />
+            <Grades studentInfo={studentInfo} />
           </Route>
 
           <Route path="/aluno/materia">
