@@ -112,3 +112,25 @@ export const POST_CREATE_TEACHER = (body) => ({
     data: body,
   },
 });
+
+export const PUT_CREATE_TEST = (body) => ({
+  url: `${API}/class/insertTest`,
+  config: {
+    method: 'PUT',
+    data: body,
+  },
+});
+
+export const GET_ALL_SUBJECTS = () => ({
+  url: `${API}/subjects`,
+  config: {
+    method: 'GET',
+  },
+});
+
+export const GET_CLASS = (classId) => ({
+  url: `${API}/class/${classId}`,
+  config: {
+    method: 'GET',
+  },
+});
