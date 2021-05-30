@@ -98,7 +98,7 @@ class ClassService {
       subjectClass.ClassDate
     );
     teacher.TimeTable.push(timeTable);
-    
+
     await this.teacherRepository.findOneAndUpdate(
       { EmployeeNumber: teacherNumber },
       {
@@ -195,6 +195,37 @@ class ClassService {
     );
 
     return result;
+  }
+
+  async getTeacher(acronym: string, classParam: string){
+    const classFound = await this.classRepository.findOne({
+      where: {
+        $and: [{ Class: classParam }, { Acronym: acronym }],
+      },
+    });
+
+    if (!classFound) {
+      return 0;
+    }
+
+    let teacherFound = await this.teacherRepository.findOne({
+      where:{
+        Classes: classFound._id
+      }
+    });
+
+    if(!teacherFound){
+      return 1;
+    }
+
+    teacherFound.CreatedAt = undefined;
+    teacherFound.Email = undefined;
+    teacherFound.BirthDate = undefined;
+    teacherFound.Password = undefined;
+    teacherFound.TimeTable = undefined;
+    teacherFound.Classes = undefined;
+
+    return teacherFound;
   }
 }
 
