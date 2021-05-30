@@ -7,9 +7,10 @@ class ClassController {
   async create(request: Request, response: Response): Promise<Response> {
     try {
       const {
+        employeeNumber,
         acronym,
         classParam,
-        classRoom,
+        classroom,
         classDate,
         testDates,
         frequencyLimit,
@@ -21,9 +22,10 @@ class ClassController {
       const classService = new ClassService();
 
       const subjectClass = await classService.createClass(
+        employeeNumber,
         acronym,
         classParam,
-        classRoom,
+        classroom,
         classDate,
         testDates,
         frequencyLimit,
@@ -32,10 +34,14 @@ class ClassController {
         students
       );
 
-      if (subjectClass) {
-        return response.json(subjectClass);
-      } else {
+      if (subjectClass === 1) {
+        return response.status(404).json({ Error: "Matéria ou professor não encontrado" });
+      }
+      else if (subjectClass === 0) {
         return response.status(409).json({ Error: "Turma existente" });
+      }
+      else {
+        return response.json(subjectClass);
       }
     } catch (error) {
       return response.status(500).json({
@@ -96,7 +102,7 @@ class ClassController {
 
   async insertFrequency(request: Request, response: Response): Promise<Response> {
     try {
-      const {acronym, classParam, frequency} = request.body;
+      const { acronym, classParam, frequency } = request.body;
 
       const classService = new ClassService();
 
@@ -107,11 +113,11 @@ class ClassController {
 
       const result = await classService.insertFrequency(acronym, classParam, frequencyToInsert);
 
-      if(!result){
-        return response.status(404).json({Message: "Turma não encontrada"})
+      if (!result) {
+        return response.status(404).json({ Message: "Turma não encontrada" })
       }
 
-      return response.json({Message: "Frequência inserida com sucesso"});
+      return response.json({ Message: "Frequência inserida com sucesso" });
 
     } catch (error) {
       return response.status(500).json({

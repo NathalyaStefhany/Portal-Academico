@@ -68,6 +68,50 @@ class TeacherController {
       });
     }
   }
+
+  async insertTimeTable(request: Request, response: Response): Promise<Response> {
+    try {
+      const { employeeNumber, timeTable } = request.body;
+
+      const teacherService = new TeacherService();
+
+      const result = await teacherService.insertTimeTable(employeeNumber, timeTable);
+
+      if (result === 0) {
+        return response.status(404).json({ Message: "Professor não encontrado" });
+      }
+      else {
+        return response.json(result);
+      }
+
+    } catch (error) {
+      return response.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+
+  async getTimeTable(request: Request, response: Response): Promise<Response> {
+    try {
+      const { employeeNumber } = request.params;
+
+      const teacherService = new TeacherService();
+
+      const result = await teacherService.getTimeTable(parseInt(employeeNumber));
+
+      if (result === 0) {
+        return response.status(404).json({ Message: "Professor não encontrado" });
+      }
+      else {
+        return response.json(result);
+      }
+    } catch (error) {
+      return response.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+
 }
 
 export { TeacherController };

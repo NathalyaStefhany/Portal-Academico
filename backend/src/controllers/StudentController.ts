@@ -240,7 +240,7 @@ class StudentController {
       }
 
       return response.json(result);
-      
+
     } catch (error) {
       return response.status(500).json({
         message: error.message,
@@ -250,7 +250,7 @@ class StudentController {
 
   async getFrequencies(request: Request, response: Response): Promise<Response> {
     try {
-      const {matriculationNumber} = request.params;
+      const { matriculationNumber } = request.params;
 
       const studentService = new StudentService();
 
@@ -265,6 +265,30 @@ class StudentController {
       return response.json(result);
 
     } catch (error) {
+      return response.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+
+  async getOpeningHours(request: Request, response: Response): Promise<Response> {
+    try {
+      const { matriculationNumber } = request.params;
+
+      const studentService = new StudentService();
+
+      const result = await studentService.getOpeningHours(
+        parseInt(matriculationNumber)
+      );
+
+      if (result === 0) {
+        return response.status(404).json({ Error: "Aluno não encontrado" });
+      }
+
+      return response.json(result);
+
+    } catch (error) {
+      console.log(error);
       return response.status(500).json({
         message: error.message,
       });
