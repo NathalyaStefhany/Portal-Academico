@@ -10,6 +10,7 @@ import { Test } from "../entities/Test";
 import { ClassRepository } from "../repositories/ClassRepository";
 import { SubjectRepository } from "../repositories/SubjectRepository";
 import { TeacherRepository } from "../repositories/TeacherRepository";
+import { TimeTable } from "../entities/TimeTable";
 
 interface matriculationNumber {
   matriculationNumber: number;
@@ -89,11 +90,19 @@ class ClassService {
     );
 
     teacher.Classes.push(subjectClass._id);
+
+    const timeTable = new TimeTable(
+      subjectClass.Acronym, 
+      subjectClass.Class, 
+      subjectClass.Classroom, 
+      subjectClass.ClassDate);
+    teacher.TimeTable.push(timeTable);
     await this.teacherRepository.findOneAndUpdate(
       { EmployeeNumber: teacherNumber },
       {
         $set: {
-          Classes: teacher.Classes
+          Classes: teacher.Classes,
+          TimeTable: teacher.TimeTable
         },
       }
     );
