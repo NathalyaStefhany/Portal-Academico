@@ -107,3 +107,31 @@
   margin-top: 30px;
   margin-bottom: 20px;
 }
+
+.modal {
+  margin: 16px 8px;
+  text-align: center;
+}
+
+.modal p {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.created {
+  color: #2aa100;
+
+  margin-bottom: 32px;
+}
+
+.error {
+  color: var(--red);
+
+  margin-bottom: 32px;
+}
+
+.errorInfo {
+  color: var(--orange);
+
+  margin-bottom: 32px;
+}

@@ -1,10 +1,10 @@
 import { ObjectId } from "bson";
 import { getCustomRepository, MongoRepository } from "typeorm";
 import { Class } from "../entities/Class";
+import { Subject } from "../entities/Subject";
 import { ClassDate } from "../entities/ClassDate";
 import { Frequency } from "../entities/Frequency";
 import { SchoolSupply } from "../entities/SchoolSupply";
-import { Subject } from "../entities/Subject";
 import { Teacher } from "../entities/Teacher";
 import { Test } from "../entities/Test";
 import { ClassRepository } from "../repositories/ClassRepository";
@@ -154,7 +154,11 @@ class ClassService {
     return classParam;
   }
 
-  async insertFrequency(acronym: string, classParam: string, frquency: Frequency) {
+  async insertFrequency(
+    acronym: string,
+    classParam: string,
+    frquency: Frequency
+  ) {
     const classToUpdate = await this.classRepository.findOne({
       where: {
         $and: [{ Class: classParam }, { Acronym: acronym }],
@@ -181,7 +185,6 @@ class ClassService {
 
     return result;
   }
-
 }
 
 export { ClassService };

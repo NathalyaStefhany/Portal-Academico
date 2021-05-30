@@ -11,31 +11,6 @@ import FormatDate from '../../utils/FormatDate';
 import FormatDateToShow from '../../utils/FormatDateToShow';
 
 const TestsCalendar = ({ studentInfo }) => {
-  /*
-  const rows = [
-    {
-      turma: 'G008',
-      prova: 'Prova 1',
-      data: '22/04/2021',
-      horario: '17:30 - 19:10',
-      local: 'I-9',
-    },
-    {
-      turma: 'C213',
-      prova: 'Trabalho 1',
-      data: '03/05/2021',
-      horario: '19:30 - 21:10',
-      local: 'I-17',
-    },
-    {
-      turma: 'T106 - L1',
-      prova: 'Prova 1',
-      data: '08/05/2021',
-      horario: '15:30 - 17:10',
-      local: 'I-22',
-    },
-  ]; */
-
   const { request } = useFetch();
   const [tests, setTests] = useState([
     { turma: null, prova: null, data: null, horario: null, local: null },
@@ -49,7 +24,7 @@ const TestsCalendar = ({ studentInfo }) => {
 
       const { json, error } = await request(url, config);
 
-      if (!error) {
+      if (!error && json) {
         const testData = json.map((subject) => {
           if (subject.TestInf.length) {
             const turma = subject.Class ? ` - ${subject.Class}` : '';
@@ -86,7 +61,7 @@ const TestsCalendar = ({ studentInfo }) => {
             : 1
         );
 
-        setTests(sortedTests);
+        if (sortedTests.length) setTests(sortedTests);
       }
     };
 

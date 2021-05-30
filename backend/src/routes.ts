@@ -56,7 +56,10 @@ routes.get(
   studentController.getReplacements
 );
 routes.get("/student/grades/:matriculationNumber", studentController.getGrades);
-routes.get("/student/frequency/:matriculationNumber", studentController.getFrequencies);
+routes.get(
+  "/student/frequency/:matriculationNumber",
+  studentController.getFrequencies
+);
 routes.get("/student/openingHours/:matriculationNumber", studentController.getOpeningHours);
 
 //Teacher routes
@@ -87,8 +90,12 @@ routes.delete(
 
 //Subject routes
 routes.post("/subject", subjectController.create);
+routes.get("/subjects", subjectController.getAllSubjects);
 routes.get("/subject/:acronym", subjectController.getSubject);
-routes.get("/subject/requirementsTable/:matriculationNumber", subjectController.getRequiremtsTable);
+routes.get(
+  "/subject/requirementsTable/:matriculationNumber",
+  subjectController.getRequiremtsTable
+);
 
 //Class routes
 routes.post("/class", classController.create);

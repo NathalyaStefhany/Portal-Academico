@@ -10,7 +10,9 @@ import styles from './styles.module.css';
 
 const AcademicCoefficient = ({ studentInfo }) => {
   const { request } = useFetch();
-  const [coefficient, setCoefficient] = useState([]);
+  const [coefficient, setCoefficient] = useState([
+    { semestre: '', crs: '', cre: '', mediana: '' },
+  ]);
 
   useEffect(() => {
     const sendRequest = async () => {
@@ -20,7 +22,7 @@ const AcademicCoefficient = ({ studentInfo }) => {
 
       const { json, error } = await request(url, config);
 
-      if (!error) setCoefficient(json.Values);
+      if (!error && json) setCoefficient(json.Values);
     };
 
     sendRequest();
@@ -54,10 +56,11 @@ const AcademicCoefficient = ({ studentInfo }) => {
           </div>
         </div>
       </div>
-
-      <div className={styles.table}>
-        {coefficient.length && <Table header={header} data={coefficient} />}
-      </div>
+      {coefficient.length && (
+        <div className={styles.table}>
+          <Table header={header} data={coefficient} />
+        </div>
+      )}
     </div>
   );
 };

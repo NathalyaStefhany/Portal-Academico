@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import student from '../../assets/icons/reading-book.svg';
+import Modal from '../../components/Modal/Modal';
+import Button from '../../components/Button/Button';
 
 import useFetch from '../../hooks/useFetch';
 
@@ -14,6 +16,9 @@ const Perfil = ({ studentInfo }) => {
   const [password, setPassword] = useState();
   const [newPassword1, setNewPassword1] = useState();
   const [newPassword2, setNewPassword2] = useState();
+
+  const [showModal, setShowModal] = useState(false);
+  const [message, setMessage] = useState('');
 
   const { request } = useFetch();
 
@@ -31,14 +36,19 @@ const Perfil = ({ studentInfo }) => {
 
         const { json, error } = await request(url, config);
 
-        if (!error) {
-          console.log('atualizado!');
+        if (!error && !json.Error) {
+          setMessage(0);
+          setShowModal(true);
         } else {
-          console.log('erro!');
+          setMessage(1);
+          setShowModal(true);
         }
       };
 
       update();
+    } else {
+      setMessage(2);
+      setShowModal(true);
     }
   };
 
@@ -125,6 +135,24 @@ const Perfil = ({ studentInfo }) => {
           </div>
         </div>
       </div>
+
+      {showModal && (
+        <Modal height="150px">
+          <div className={styles.modal}>
+            {message === 0 ? (
+              <p className={styles.created}>Senha atualizada com sucesso!</p>
+            ) : message === 1 ? (
+              <p className={styles.error}>
+                Não foi possível atualizar a senha!
+              </p>
+            ) : (
+              <p className={styles.errorInfo}>Senhas diferentes!</p>
+            )}
+
+            <Button title="FECHAR" onClick={() => setShowModal(false)} />
+          </div>
+        </Modal>
+      )}
     </div>
   );
 };

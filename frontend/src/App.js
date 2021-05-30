@@ -116,7 +116,7 @@ function App() {
           </Route>
 
           <Route path="/aluno/requisitos">
-            <Requirements />
+            <Requirements studentInfo={studentInfo} />
           </Route>
 
           <Route path="/professor">
