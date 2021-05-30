@@ -49,7 +49,7 @@ class ClassService {
     }
 
     let teacher = await this.teacherRepository.findOne({
-      EmployeeNumber: teacherNumber
+      EmployeeNumber: teacherNumber,
     });
 
     if (!teacher) {
@@ -57,7 +57,7 @@ class ClassService {
     }
 
     let subject = await this.subjectRepository.findOne({
-      Acronym: acronym
+      Acronym: acronym,
     });
 
     if (!subject) {
@@ -83,7 +83,7 @@ class ClassService {
       { Acronym: acronym },
       {
         $set: {
-          Classes: subject.Classes
+          Classes: subject.Classes,
         },
       }
     );
@@ -93,7 +93,7 @@ class ClassService {
       { EmployeeNumber: teacherNumber },
       {
         $set: {
-          Classes: teacher.Classes
+          Classes: teacher.Classes,
         },
       }
     );
@@ -178,7 +178,7 @@ class ClassService {
       },
       {
         $set: {
-          Frequency: frequencyToInsert
+          Frequency: frequencyToInsert,
         },
       }
     );

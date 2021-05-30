@@ -168,6 +168,25 @@ class StudentService {
       }
     );
 
+    await Promise.all(
+      classIds.map(async (id) => {
+        const allStudents = await (
+          await this.classRepository.findOne({ _id: new ObjectId(id) })
+        ).Students;
+
+        allStudents.push({ matriculationNumber: matriculationNumber });
+
+        await this.classRepository.findOneAndUpdate(
+          { _id: new ObjectId(id) },
+          {
+            $set: {
+              Students: allStudents,
+            },
+          }
+        );
+      })
+    );
+
     return { Message: "Turmas inseridas com sucesso" };
   }
 
@@ -362,23 +381,23 @@ class StudentService {
           grades.push(
             studentGrades[0].Grades.length
               ? studentGrades[0].Grades.map((g) => {
-                grade = {
-                  Acronym: classFound[0].Acronym,
-                  Class: classFound[0].Class,
-                  Test: g.Description,
-                  Grade: g.Value,
-                };
+                  grade = {
+                    Acronym: classFound[0].Acronym,
+                    Class: classFound[0].Class,
+                    Test: g.Description,
+                    Grade: g.Value,
+                  };
 
-                return grade;
-              })
+                  return grade;
+                })
               : [
-                {
-                  Acronym: classFound[0].Acronym,
-                  Class: classFound[0].Class,
-                  Test: "-",
-                  Grade: "-",
-                },
-              ]
+                  {
+                    Acronym: classFound[0].Acronym,
+                    Class: classFound[0].Class,
+                    Test: "-",
+                    Grade: "-",
+                  },
+                ]
           );
         }
       })
@@ -396,7 +415,7 @@ class StudentService {
       return 0;
     }
 
-    let frequencies = []
+    let frequencies = [];
     let frequencyToInsert: FrequencyReturn;
 
     await Promise.all(
@@ -411,31 +430,30 @@ class StudentService {
           let classesTaughtToInsert = 0;
           let absencesToInsert = 0;
 
-          classFound.Frequency.map(freq => {
+          classFound.Frequency.map((freq) => {
             classesTaughtToInsert += freq.ClassesTaught;
 
-            freq.MissingStudents.some(m => m === matriculationNumber) ?
-              absencesToInsert += freq.ClassesTaught :
-              absencesToInsert += 0;
+            freq.MissingStudents.some((m) => m === matriculationNumber)
+              ? (absencesToInsert += freq.ClassesTaught)
+              : (absencesToInsert += 0);
           });
 
           frequencies.push(
-            frequencyToInsert = {
+            (frequencyToInsert = {
               Acronym: classFound.Acronym,
               Class: classFound.Class,
               ClassesTaught: classesTaughtToInsert,
-              Absences: absencesToInsert
-            }
+              Absences: absencesToInsert,
+            })
           );
-        }
-        else {
+        } else {
           frequencies.push(
-            frequencyToInsert = {
+            (frequencyToInsert = {
               Acronym: classFound.Acronym,
               Class: classFound.Class,
               ClassesTaught: 0,
-              Absences: 0
-            }
+              Absences: 0,
+            })
           );
         }
       })
@@ -467,24 +485,33 @@ class StudentService {
           const allClasses = [];
 
           const subjectClasses = await this.subjectRepository.findOne({
-            Acronym: classFound.Acronym
+            Acronym: classFound.Acronym,
           });
 
           if (subjectClasses) {
-            subjectClasses.Classes.map(c => {
+            subjectClasses.Classes.map((c) => {
               allClasses.push(c.ClassId);
             });
 
             const teachers = await this.teacherRepository.find({
               where: {
-                Classes: { $in: allClasses }
-              }
+                Classes: { $in: allClasses },
+              },
             });
 
-            teachers.map(teacher => {
-              const teacherSchedule = teacher.TimeTable.filter(t => t.Classroom === "Atendimento");
-              teacherSchedule.map(ts => {
-                openingHours.push(new ClassTimeTable(ts.Acronym, ts.Class, "Sala do professor", ts.Date));
+            teachers.map((teacher) => {
+              const teacherSchedule = teacher.TimeTable.filter(
+                (t) => t.Classroom === "Atendimento"
+              );
+              teacherSchedule.map((ts) => {
+                openingHours.push(
+                  new ClassTimeTable(
+                    ts.Acronym,
+                    ts.Class,
+                    "Sala do professor",
+                    ts.Date
+                  )
+                );
               });
             });
           }
@@ -493,7 +520,6 @@ class StudentService {
     );
 
     return openingHours;
-
   }
 }
 
