@@ -2,6 +2,7 @@ import { getCustomRepository, MongoRepository } from "typeorm";
 import { Teacher } from "../entities/Teacher";
 import { TeacherRepository } from "../repositories/TeacherRepository";
 import bcrypt from "bcryptjs";
+import { TimeTable } from "../entities/TimeTable";
 
 class TeacherService {
   private teacherRepository: MongoRepository<Teacher>;
@@ -68,11 +69,49 @@ class TeacherService {
         }
       );
 
-      return {Message: "Senha alterada"};
+      return { Message: "Senha alterada" };
     }
 
     return { Error: "Senha atual incorreta" };
   }
+
+  async insertTimeTable(employeeNumber: number, timeTable: TimeTable) {
+    const teacher = await this.teacherRepository.findOne({
+      EmployeeNumber: employeeNumber,
+    });
+
+    if (!teacher) {
+      return 0;
+    }
+
+    let timeTableToInsert = teacher.TimeTable;
+    timeTableToInsert.push(timeTable);
+
+    const result = await this.teacherRepository.findOneAndUpdate(
+      { EmployeeNumber: employeeNumber },
+      {
+        $set: {
+          TimeTable: timeTableToInsert,
+        },
+      }
+    );
+
+    return result;
+  }
+
+  async getTimeTable(employeeNumber: number) {
+    const teacher = await this.teacherRepository.findOne({
+      EmployeeNumber: employeeNumber,
+    });
+
+    if (!teacher) {
+      return 0;
+    }
+
+    return teacher.TimeTable;
+  }
+
+
 }
 
 export { TeacherService };

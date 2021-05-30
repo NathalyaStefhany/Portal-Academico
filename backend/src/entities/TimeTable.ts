@@ -1,15 +1,24 @@
 import { Column } from "typeorm";
+import { ClassDate } from "./ClassDate";
 
 class TimeTable {
     @Column()
-    Description: string;
-    
-    @Column()
-    Hour: string;
+    Acronym: string;
 
-    constructor(description: string, hour: string) {
-        this.Description = description;
-        this.Hour = hour;
+    @Column()
+    Class: string;
+
+    @Column()
+    Classroom: string;
+
+    @Column()
+    Date: Array<ClassDate>;
+
+    constructor(acronym: string, classParam: string, classroom: string, date: Array<ClassDate>) {
+        this.Acronym = acronym;
+        this.Class = classParam;
+        this.Classroom = classroom;
+        this.Date = date;
     }
 }
 

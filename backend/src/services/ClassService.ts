@@ -4,8 +4,12 @@ import { Class } from "../entities/Class";
 import { ClassDate } from "../entities/ClassDate";
 import { Frequency } from "../entities/Frequency";
 import { SchoolSupply } from "../entities/SchoolSupply";
+import { Subject } from "../entities/Subject";
+import { Teacher } from "../entities/Teacher";
 import { Test } from "../entities/Test";
 import { ClassRepository } from "../repositories/ClassRepository";
+import { SubjectRepository } from "../repositories/SubjectRepository";
+import { TeacherRepository } from "../repositories/TeacherRepository";
 
 interface matriculationNumber {
   matriculationNumber: number;
@@ -13,12 +17,17 @@ interface matriculationNumber {
 
 class ClassService {
   private classRepository: MongoRepository<Class>;
+  private teacherRepository: MongoRepository<Teacher>;
+  private subjectRepository: MongoRepository<Subject>;
 
   constructor() {
     this.classRepository = getCustomRepository(ClassRepository);
+    this.teacherRepository = getCustomRepository(TeacherRepository);
+    this.subjectRepository = getCustomRepository(SubjectRepository);
   }
 
   async createClass(
+    teacherNumber: number,
     acronym: string,
     classParam: string,
     classroom: string,
@@ -39,6 +48,22 @@ class ClassService {
       return 0;
     }
 
+    let teacher = await this.teacherRepository.findOne({
+      EmployeeNumber: teacherNumber
+    });
+
+    if (!teacher) {
+      return 1;
+    }
+
+    let subject = await this.subjectRepository.findOne({
+      Acronym: acronym
+    });
+
+    if (!subject) {
+      return 1;
+    }
+
     const subjectClass = new Class(
       acronym,
       classParam,
@@ -52,6 +77,26 @@ class ClassService {
     );
 
     await this.classRepository.insertOne(subjectClass);
+
+    subject.Classes.push({ ClassId: subjectClass._id });
+    await this.subjectRepository.findOneAndUpdate(
+      { Acronym: acronym },
+      {
+        $set: {
+          Classes: subject.Classes
+        },
+      }
+    );
+
+    teacher.Classes.push(subjectClass._id);
+    await this.teacherRepository.findOneAndUpdate(
+      { EmployeeNumber: teacherNumber },
+      {
+        $set: {
+          Classes: teacher.Classes
+        },
+      }
+    );
 
     return subjectClass;
   }
@@ -109,7 +154,7 @@ class ClassService {
     return classParam;
   }
 
-  async insertFrequency(acronym: string, classParam: string, frquency: Frequency){
+  async insertFrequency(acronym: string, classParam: string, frquency: Frequency) {
     const classToUpdate = await this.classRepository.findOne({
       where: {
         $and: [{ Class: classParam }, { Acronym: acronym }],
@@ -119,16 +164,16 @@ class ClassService {
     if (!classToUpdate) {
       return 0;
     }
-    
+
     let frequencyToInsert = classToUpdate.Frequency;
     frequencyToInsert.push(frquency);
 
     const result = await this.classRepository.findOneAndUpdate(
       {
-        $and: [{Class: classParam}, {Acronym: acronym}],
+        $and: [{ Class: classParam }, { Acronym: acronym }],
       },
       {
-        $set:{
+        $set: {
           Frequency: frequencyToInsert
         },
       }

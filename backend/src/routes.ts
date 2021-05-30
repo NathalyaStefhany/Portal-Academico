@@ -57,11 +57,14 @@ routes.get(
 );
 routes.get("/student/grades/:matriculationNumber", studentController.getGrades);
 routes.get("/student/frequency/:matriculationNumber", studentController.getFrequencies);
+routes.get("/student/openingHours/:matriculationNumber", studentController.getOpeningHours);
 
 //Teacher routes
 routes.post("/teacher", teacherController.create);
 routes.get("/teacher/:employeeNumber", teacherController.getTeacher);
 routes.post("/teacher/updatePass", teacherController.updatePassword);
+routes.put("/teacher/insertTimeTable", teacherController.insertTimeTable);
+routes.get("/teacher/timeTable/:employeeNumber", teacherController.getTimeTable);
 
 //Academic Coefficient routes
 routes.post("/coefficient", coefficientController.create);

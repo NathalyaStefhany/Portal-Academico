@@ -12,6 +12,10 @@ import { Test } from "../entities/Test";
 import { ClassReplacement } from "../entities/ClassReplacement";
 import { ClassReplacementRepository } from "../repositories/ClassReplacementRepository";
 import { Grade } from "../entities/Grade";
+import { Subject } from "../entities/Subject";
+import { SubjectRepository } from "../repositories/SubjectRepository";
+import { Teacher } from "../entities/Teacher";
+import { TeacherRepository } from "../repositories/TeacherRepository";
 
 interface TestExam {
   Acronym: string;
@@ -45,6 +49,8 @@ class StudentService {
   private studentRepository: MongoRepository<Student>;
   private classRepository: MongoRepository<Class>;
   private replacementRepository: MongoRepository<ClassReplacement>;
+  private subjectRepository: MongoRepository<Subject>;
+  private teacherRepository: MongoRepository<Teacher>;
 
   constructor() {
     this.studentRepository = getCustomRepository(StudentRepository);
@@ -52,6 +58,8 @@ class StudentService {
     this.replacementRepository = getCustomRepository(
       ClassReplacementRepository
     );
+    this.subjectRepository = getCustomRepository(SubjectRepository);
+    this.teacherRepository = getCustomRepository(TeacherRepository);
   }
 
   async createStudent(
@@ -406,9 +414,9 @@ class StudentService {
           classFound.Frequency.map(freq => {
             classesTaughtToInsert += freq.ClassesTaught;
 
-            freq.MissingStudents.some(m => m === matriculationNumber)? 
-            absencesToInsert += freq.ClassesTaught : 
-            absencesToInsert += 0;
+            freq.MissingStudents.some(m => m === matriculationNumber) ?
+              absencesToInsert += freq.ClassesTaught :
+              absencesToInsert += 0;
           });
 
           frequencies.push(
@@ -436,6 +444,57 @@ class StudentService {
     return frequencies;
   }
 
+  async getOpeningHours(matriculationNumber: number) {
+    const student = await this.studentRepository.findOne({
+      MatriculationNumber: matriculationNumber,
+    });
+
+    if (!student) {
+      return 0;
+    }
+
+    let openingHours = new Array<ClassTimeTable>();
+
+    await Promise.all(
+      student.Classes.map(async (studentClass) => {
+        const classFound = await this.classRepository.findOne({
+          where: {
+            _id: studentClass.classId,
+          },
+        });
+
+        if (classFound) {
+          const allClasses = [];
+
+          const subjectClasses = await this.subjectRepository.findOne({
+            Acronym: classFound.Acronym
+          });
+
+          if (subjectClasses) {
+            subjectClasses.Classes.map(c => {
+              allClasses.push(c.ClassId);
+            });
+
+            const teachers = await this.teacherRepository.find({
+              where: {
+                Classes: { $in: allClasses }
+              }
+            });
+
+            teachers.map(teacher => {
+              const teacherSchedule = teacher.TimeTable.filter(t => t.Classroom === "Atendimento");
+              teacherSchedule.map(ts => {
+                openingHours.push(new ClassTimeTable(ts.Acronym, ts.Class, "Sala do professor", ts.Date));
+              });
+            });
+          }
+        }
+      })
+    );
+
+    return openingHours;
+
+  }
 }
 
 export { StudentService };
