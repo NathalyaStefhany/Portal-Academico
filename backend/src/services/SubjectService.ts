@@ -71,6 +71,12 @@ class SubjectService {
     return subject;
   }
 
+  async getAllSubjects() {
+    const subject = await this.subjectRepository.find();
+
+    return subject;
+  }
+
   async getSubjectByAcronym(acronym: string) {
     const subject = await this.subjectRepository.findOne({
       Acronym: acronym,

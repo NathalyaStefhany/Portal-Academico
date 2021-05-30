@@ -1,1 +1,11 @@
-{}
+{
+    "reporter": "/frontend/node_modules/mochawesome/src/mochawesome.js",
+    "reporterOptions": {
+        "reportDir": "cypress/reports",
+        "reportFilename": "report",
+        "overwrite": false,
+        "html": false,
+        "json": true,
+        "charts": true
+    }
+}

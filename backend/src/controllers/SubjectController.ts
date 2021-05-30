@@ -53,6 +53,29 @@ class SubjectController {
       });
     }
   }
+
+  async getAllSubjects(
+    request: Request,
+    response: Response
+  ): Promise<Response> {
+    try {
+      const subjectService = new SubjectService();
+
+      const subjects = await subjectService.getAllSubjects();
+
+      const allSubjects = subjects.map((subject) => ({
+        Acronym: subject.Acronym,
+        Classes: subject.Classes,
+      }));
+
+      return response.json(allSubjects);
+    } catch (error) {
+      return response.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+
   async getRequiremtsTable(
     request: Request,
     response: Response

@@ -1,11 +1,13 @@
 import { ObjectId } from "bson";
 import { getCustomRepository, MongoRepository } from "typeorm";
 import { Class } from "../entities/Class";
+import { Subject } from "../entities/Subject";
 import { ClassDate } from "../entities/ClassDate";
 import { Frequency } from "../entities/Frequency";
 import { SchoolSupply } from "../entities/SchoolSupply";
 import { Test } from "../entities/Test";
 import { ClassRepository } from "../repositories/ClassRepository";
+import { SubjectRepository } from "../repositories/SubjectRepository";
 
 interface matriculationNumber {
   matriculationNumber: number;
@@ -13,9 +15,11 @@ interface matriculationNumber {
 
 class ClassService {
   private classRepository: MongoRepository<Class>;
+  private subjectRepository: MongoRepository<Subject>;
 
   constructor() {
     this.classRepository = getCustomRepository(ClassRepository);
+    this.subjectRepository = getCustomRepository(SubjectRepository);
   }
 
   async createClass(
@@ -52,6 +56,31 @@ class ClassService {
     );
 
     await this.classRepository.insertOne(subjectClass);
+
+    const subject = await this.subjectRepository.findOne({
+      Acronym: acronym,
+    });
+
+    const classId = await this.classRepository.findOne({
+      where: {
+        $and: [{ Class: classParam }, { Acronym: acronym }],
+      },
+    });
+
+    const allClasses = subject.Classes;
+
+    allClasses.push({ ClassId: classId._id });
+
+    await this.subjectRepository.findOneAndUpdate(
+      {
+        Acronym: acronym,
+      },
+      {
+        $set: {
+          Classes: allClasses,
+        },
+      }
+    );
 
     return subjectClass;
   }
@@ -109,7 +138,11 @@ class ClassService {
     return classParam;
   }
 
-  async insertFrequency(acronym: string, classParam: string, frquency: Frequency){
+  async insertFrequency(
+    acronym: string,
+    classParam: string,
+    frquency: Frequency
+  ) {
     const classToUpdate = await this.classRepository.findOne({
       where: {
         $and: [{ Class: classParam }, { Acronym: acronym }],
@@ -119,24 +152,23 @@ class ClassService {
     if (!classToUpdate) {
       return 0;
     }
-    
+
     let frequencyToInsert = classToUpdate.Frequency;
     frequencyToInsert.push(frquency);
 
     const result = await this.classRepository.findOneAndUpdate(
       {
-        $and: [{Class: classParam}, {Acronym: acronym}],
+        $and: [{ Class: classParam }, { Acronym: acronym }],
       },
       {
-        $set:{
-          Frequency: frequencyToInsert
+        $set: {
+          Frequency: frequencyToInsert,
         },
       }
     );
 
     return result;
   }
-
 }
 
 export { ClassService };
