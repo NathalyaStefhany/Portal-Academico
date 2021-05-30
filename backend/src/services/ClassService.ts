@@ -50,7 +50,7 @@ class ClassService {
     }
 
     let teacher = await this.teacherRepository.findOne({
-      EmployeeNumber: teacherNumber
+      EmployeeNumber: teacherNumber,
     });
 
     if (!teacher) {
@@ -58,7 +58,7 @@ class ClassService {
     }
 
     let subject = await this.subjectRepository.findOne({
-      Acronym: acronym
+      Acronym: acronym,
     });
 
     if (!subject) {
@@ -84,7 +84,7 @@ class ClassService {
       { Acronym: acronym },
       {
         $set: {
-          Classes: subject.Classes
+          Classes: subject.Classes,
         },
       }
     );
@@ -95,8 +95,10 @@ class ClassService {
       subjectClass.Acronym, 
       subjectClass.Class, 
       subjectClass.Classroom, 
-      subjectClass.ClassDate);
+      subjectClass.ClassDate
+    );
     teacher.TimeTable.push(timeTable);
+    
     await this.teacherRepository.findOneAndUpdate(
       { EmployeeNumber: teacherNumber },
       {
@@ -187,7 +189,7 @@ class ClassService {
       },
       {
         $set: {
-          Frequency: frequencyToInsert
+          Frequency: frequencyToInsert,
         },
       }
     );
