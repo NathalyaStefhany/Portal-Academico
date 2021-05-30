@@ -42,9 +42,11 @@ const Tests = () => {
       const { json, error } = await request(url, config);
 
       if (!error) {
-        setAllSubjects(json);
+        const allSub = json.filter((subject) => subject.Classes.length);
 
-        setAcronym(json.length ? json[0].Acronym : null);
+        setAllSubjects(allSub);
+
+        setAcronym(json.length ? allSub[0].Acronym : null);
       }
     };
 
@@ -138,7 +140,7 @@ const Tests = () => {
         <tr>
           <td>Turma:</td>
           <td>
-            <select>
+            <select disabled={allClasses[0] === ''}>
               {allClasses?.length &&
                 allClasses.map((value) => (
                   <option value={value}>{value}</option>
