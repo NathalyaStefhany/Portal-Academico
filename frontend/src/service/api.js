@@ -72,6 +72,13 @@ export const GET_STUDENT_REQUIREMENTS = (matriculationNumber) => ({
   },
 });
 
+export const GET_STUDENT_OPENING_HOURS = (matriculationNumber) => ({
+  url: `${API}/student/openingHours/${matriculationNumber}`,
+  config: {
+    method: 'GET',
+  },
+});
+
 export const POST_TEACHER_LOGIN = (body) => ({
   url: `${API}/login/teacher`,
   config: {

@@ -72,7 +72,7 @@ function App() {
           </Route>
 
           <Route path="/aluno/horarioAtendimento">
-            <OpeningHours />
+            <OpeningHours studentInfo={studentInfo} />
           </Route>
 
           <Route path="/aluno/reposicao">

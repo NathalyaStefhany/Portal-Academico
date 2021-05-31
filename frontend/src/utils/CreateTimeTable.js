@@ -192,9 +192,10 @@ export default function (data, user) {
         const weekday = Weekday(date.Weekday);
         const acronyme = data[i].Acronym;
         const classParam = data[i].Class ? ` - ${data[i].Class}` : '';
-        const classroom = data[i].Classroom
-          ? `(Local: ${data[i].Classroom})`
-          : null;
+        const classroom =
+          data[i].Classroom && user !== 'opening'
+            ? `(Local: ${data[i].Classroom})`
+            : `(Sala do prof.)`;
 
         if (date.Time === '08:00') {
           timeTable[0][weekday].acronyme = `${acronyme}${classParam}`;

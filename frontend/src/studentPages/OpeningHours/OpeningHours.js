@@ -1,4 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+
+import useFetch from '../../hooks/useFetch';
+import { GET_STUDENT_OPENING_HOURS } from '../../service/api';
+
+import CreateTimeTable from '../../utils/CreateTimeTable';
 
 import {
   withStyles,
@@ -8,13 +14,12 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  TablePagination,
   Paper,
 } from '@material-ui/core';
 
 import styles from './styles.module.css';
 
-const OpeningHours = () => {
+const OpeningHours = ({ studentInfo }) => {
   const StyledTableCell = withStyles((theme) => ({
     head: {
       backgroundColor: '#0054a6',
@@ -36,134 +41,24 @@ const OpeningHours = () => {
     },
   }))(TableRow);
 
-  const rows = [
-    {
-      hour: '08:00 - 08:50',
-      monday: { acronyme: null, classroom: null },
-      tuesday: { acronyme: null, classroom: null },
-      wednesday: { acronyme: null, classroom: null },
-      thursday: { acronyme: null, classroom: null },
-      friday: { acronyme: null, classroom: null },
-      saturday: { acronyme: null, classroom: null },
-    },
-    {
-      hour: '08:50 - 09:40',
-      monday: { acronyme: null, classroom: null },
-      tuesday: { acronyme: null, classroom: null },
-      wednesday: { acronyme: null, classroom: null },
-      thursday: { acronyme: null, classroom: null },
-      friday: { acronyme: null, classroom: null },
-      saturday: { acronyme: null, classroom: null },
-    },
-    {
-      hour: '10:00 - 10:50',
-      monday: { acronyme: null, classroom: null },
-      tuesday: { acronyme: null, classroom: null },
-      wednesday: { acronyme: null, classroom: null },
-      thursday: { acronyme: null, classroom: null },
-      friday: { acronyme: null, classroom: null },
-      saturday: { acronyme: null, classroom: null },
-    },
-    {
-      hour: '10:50 - 11:40',
-      monday: { acronyme: null, classroom: null },
-      tuesday: { acronyme: null, classroom: null },
-      wednesday: { acronyme: null, classroom: null },
-      thursday: { acronyme: null, classroom: null },
-      friday: { acronyme: null, classroom: null },
-      saturday: { acronyme: null, classroom: null },
-    },
-    {
-      hour: '13:30 - 14:20',
-      monday: { acronyme: 'C317', classroom: null },
-      tuesday: { acronyme: 'C115 - L1', classroom: '(Local : I-17)' },
-      wednesday: { acronyme: null, classroom: null },
-      thursday: { acronyme: null, classroom: null },
-      friday: { acronyme: null, classroom: null },
-      saturday: { acronyme: null, classroom: null },
-    },
-    {
-      hour: '14:20 - 15:10',
-      monday: { acronyme: 'C317', classroom: null },
-      tuesday: { acronyme: 'C115 - L1', classroom: '(Local : I-17)' },
-      wednesday: { acronyme: null, classroom: null },
-      thursday: { acronyme: null, classroom: null },
-      friday: { acronyme: null, classroom: null },
-      saturday: { acronyme: null, classroom: null },
-    },
-    {
-      hour: '15:30 - 16:20',
-      monday: { acronyme: 'C317', classroom: null },
-      tuesday: { acronyme: null, classroom: null },
-      wednesday: { acronyme: null, classroom: null },
-      thursday: { acronyme: null, classroom: null },
-      friday: { acronyme: null, classroom: null },
-      saturday: { acronyme: null, classroom: null },
-    },
-    {
-      hour: '16:20 - 17:10',
-      monday: { acronyme: 'C317', classroom: null },
-      tuesday: { acronyme: null, classroom: null },
-      wednesday: { acronyme: null, classroom: null },
-      thursday: { acronyme: null, classroom: null },
-      friday: { acronyme: null, classroom: null },
-      saturday: { acronyme: null, classroom: null },
-    },
-    {
-      hour: '17:30 - 18:20',
-      monday: { acronyme: null, classroom: null },
-      tuesday: { acronyme: 'AC8 - I', classroom: null },
-      wednesday: { acronyme: null, classroom: null },
-      thursday: { acronyme: 'G008', classroom: '(Local : I-9)' },
-      friday: { acronyme: null, classroom: null },
-      saturday: { acronyme: 'G008', classroom: '(Local : I-9)' },
-    },
-    {
-      hour: '18:20 - 19:10',
-      monday: { acronyme: null, classroom: null },
-      tuesday: { acronyme: 'AC8 - I', classroom: null },
-      wednesday: { acronyme: null, classroom: null },
-      thursday: { acronyme: 'G008', classroom: '(Local : I-9)' },
-      friday: { acronyme: null, classroom: null },
-      saturday: { acronyme: 'G008', classroom: '(Local : I-9)' },
-    },
-    {
-      hour: '19:30 - 20:20',
-      monday: { acronyme: 'C213', classroom: '(Local : I-17)' },
-      tuesday: { acronyme: null, classroom: null },
-      wednesday: { acronyme: null, classroom: null },
-      thursday: { acronyme: 'C213 - L1', classroom: '(Prédio VI - 1.2)' },
-      friday: { acronyme: null, classroom: null },
-      saturday: { acronyme: null, classroom: null },
-    },
-    {
-      hour: '20:20 - 21:10',
-      monday: { acronyme: 'C213', classroom: '(Local : I-17)' },
-      tuesday: { acronyme: null, classroom: null },
-      wednesday: { acronyme: null, classroom: null },
-      thursday: { acronyme: 'C213 - L1', classroom: '(Prédio VI - 1.2)' },
-      friday: { acronyme: null, classroom: null },
-      saturday: { acronyme: null, classroom: null },
-    },
-    {
-      hour: '21:30 - 22:20',
-      monday: { acronyme: null, classroom: null },
-      tuesday: { acronyme: null, classroom: null },
-      wednesday: { acronyme: null, classroom: null },
-      thursday: { acronyme: 'T106 - L1', classroom: '(Local : I-16)' },
-      friday: { acronyme: null, classroom: null },
-      saturday: { acronyme: null, classroom: null },
-    },
-    {
-      hour: '22:10 - 23:10',
-      monday: { acronyme: null, classroom: null },
-      tuesday: { acronyme: null, classroom: null },
-      wednesday: { acronyme: null, classroom: null },
-      thursday: { acronyme: 'T106 - L1', classroom: '(Local : I-16)' },
-      friday: { acronyme: null, classroom: null },
-      saturday: { acronyme: null, classroom: null },
-    },
-  ];
+  const { request } = useFetch();
+
+  const [timeTable, setTimeTable] = useState(CreateTimeTable([]));
+
+  useEffect(() => {
+    const sendRequest = async () => {
+      const { url: url, config: config } = GET_STUDENT_OPENING_HOURS(
+        studentInfo.matriculationNumber
+      );
+
+      const { json, error } = await request(url, config);
+
+      if (!error && json?.length)
+        setTimeTable(CreateTimeTable(json, 'opening'));
+    };
+
+    sendRequest();
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -190,7 +85,7 @@ const OpeningHours = () => {
             </TableHead>
 
             <TableBody>
-              {rows.map((row) => (
+              {timeTable?.map((row) => (
                 <StyledTableRow key={row.hour}>
                   <StyledTableCell align="center">{row.hour}</StyledTableCell>
 
@@ -269,6 +164,10 @@ const OpeningHours = () => {
       </div>
     </div>
   );
+};
+
+OpeningHours.propTypes = {
+  studentInfo: PropTypes.object,
 };
 
 export default OpeningHours;
