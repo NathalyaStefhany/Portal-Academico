@@ -95,6 +95,13 @@ export const POST_TEACHER_UPDATE_PASSWORD = (body) => ({
   },
 });
 
+export const GET_TEACHER_TIME_TABLE = (employeeNumber) => ({
+  url: `${API}/teacher/timeTable/${employeeNumber}`,
+  config: {
+    method: 'GET',
+  },
+});
+
 export const PUT_INSERT_GRADE = (body) => ({
   url: `${API}/student/insertGrade`,
   config: {

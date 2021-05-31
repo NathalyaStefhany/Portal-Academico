@@ -120,7 +120,7 @@ function App() {
           </Route>
 
           <Route path="/professor">
-            <TeacherHome />
+            <TeacherHome teacherInfo={teacherInfo} />
           </Route>
 
           <Route path="/professor/perfil">

@@ -110,8 +110,6 @@ class TeacherService {
 
     return teacher.TimeTable;
   }
-
-
 }
 
 export { TeacherService };
