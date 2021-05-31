@@ -170,7 +170,7 @@ class StudentService {
 
     await Promise.all(
       classIds.map(async (id) => {
-        const allStudents = await (
+        const allStudents = (
           await this.classRepository.findOne({ _id: new ObjectId(id) })
         ).Students;
 

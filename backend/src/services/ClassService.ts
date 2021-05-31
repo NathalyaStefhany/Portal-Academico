@@ -10,6 +10,7 @@ import { Test } from "../entities/Test";
 import { ClassRepository } from "../repositories/ClassRepository";
 import { SubjectRepository } from "../repositories/SubjectRepository";
 import { TeacherRepository } from "../repositories/TeacherRepository";
+import { TimeTable } from "../entities/TimeTable";
 
 interface matriculationNumber {
   matriculationNumber: number;
@@ -89,11 +90,21 @@ class ClassService {
     );
 
     teacher.Classes.push(subjectClass._id);
+
+    const timeTable = new TimeTable(
+      subjectClass.Acronym,
+      subjectClass.Class,
+      subjectClass.Classroom,
+      subjectClass.ClassDate
+    );
+    teacher.TimeTable.push(timeTable);
+
     await this.teacherRepository.findOneAndUpdate(
       { EmployeeNumber: teacherNumber },
       {
         $set: {
           Classes: teacher.Classes,
+          TimeTable: teacher.TimeTable,
         },
       }
     );
@@ -184,6 +195,37 @@ class ClassService {
     );
 
     return result;
+  }
+
+  async getTeacher(acronym: string, classParam: string) {
+    const classFound = await this.classRepository.findOne({
+      where: {
+        $and: [{ Class: classParam }, { Acronym: acronym }],
+      },
+    });
+
+    if (!classFound) {
+      return 0;
+    }
+
+    let teacherFound = await this.teacherRepository.findOne({
+      where: {
+        Classes: classFound._id,
+      },
+    });
+
+    if (!teacherFound) {
+      return 1;
+    }
+
+    teacherFound.CreatedAt = undefined;
+    teacherFound.Email = undefined;
+    teacherFound.BirthDate = undefined;
+    teacherFound.Password = undefined;
+    teacherFound.TimeTable = undefined;
+    teacherFound.Classes = undefined;
+
+    return teacherFound;
   }
 }
 

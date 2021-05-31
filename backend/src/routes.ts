@@ -102,6 +102,7 @@ routes.post("/class", classController.create);
 routes.put("/class/insertTest", classController.insertTest);
 routes.get("/class/:_id", classController.getClass);
 routes.put("/class/insertFrequency", classController.insertFrequency);
+routes.get("/class/getTeacher/:acronym/:classParam", classController.getTeacher);
 
 //ClassReplacement routes
 routes.post("/replacement", replacementController.create);

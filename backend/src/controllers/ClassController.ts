@@ -134,6 +134,34 @@ class ClassController {
       });
     }
   }
+
+  async getTeacher(request: Request, response: Response): Promise<Response> {
+    try {
+      let { acronym, classParam } = request.params;
+
+      const classService = new ClassService();
+
+      if (classParam === '""') {
+        classParam = "";
+      }
+
+      const result = await classService.getTeacher(acronym, classParam);
+
+      if (result === 0) {
+        return response.status(404).json({ Message: "Turma não encontrada" });
+      } else if (result === 1) {
+        return response
+          .status(404)
+          .json({ Message: "Professor não encontrado" });
+      } else {
+        return response.json(result);
+      }
+    } catch (error) {
+      return response.status(500).json({
+        message: error.message,
+      });
+    }
+  }
 }
 
 export { ClassController };
