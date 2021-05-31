@@ -103,7 +103,7 @@ const Tests = () => {
           const { url: url, config: config } = PUT_CREATE_TEST(bodyData);
 
           const { json, error } = await request(url, config);
-          console.log(error);
+
           if (!error) {
             setMessage(0);
             setShowModal(true);

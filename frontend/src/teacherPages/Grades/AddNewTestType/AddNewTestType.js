@@ -6,14 +6,15 @@ import Modal from '../../../components/Modal/Modal';
 import styles from './styles.module.css';
 
 const AddNewTestType = ({
+  testType,
+  setTestType,
   testTypeOptions,
   setTestTypeOptions,
   setModalIsOpen,
   allTestsCreated,
   setAllTestsCreated,
+  subject,
 }) => {
-  const [testType, setTestType] = useState('');
-
   const addNewTest = () => {
     let index;
 
@@ -35,7 +36,6 @@ const AddNewTestType = ({
     options.splice(index, 1);
     setTestTypeOptions(options);
 
-    setTestType('');
     setModalIsOpen(false);
   };
 
@@ -46,7 +46,7 @@ const AddNewTestType = ({
         <div />
 
         <div style={{ display: 'flex' }}>
-          <b>Turma: </b> <p style={{ marginLeft: '5px' }}>C213</p>
+          <b>Turma: </b> <p style={{ marginLeft: '5px' }}>{subject}</p>
         </div>
 
         <div style={{ display: 'flex', marginTop: '10px' }}>

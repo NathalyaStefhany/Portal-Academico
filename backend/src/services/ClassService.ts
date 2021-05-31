@@ -148,7 +148,7 @@ class ClassService {
 
   async getClassById(_id: ObjectId) {
     const classParam = await this.classRepository.findOne({
-      _id: _id,
+      _id: new ObjectId(_id),
     });
 
     return classParam;

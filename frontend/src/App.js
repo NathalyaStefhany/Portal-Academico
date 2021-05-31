@@ -128,7 +128,7 @@ function App() {
           </Route>
 
           <Route path="/professor/notas">
-            <TeacherGrades />
+            <TeacherGrades teacherInfo={teacherInfo} />
           </Route>
 
           <Route path="/professor/frequencia">

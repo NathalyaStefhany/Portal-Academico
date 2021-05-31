@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 
 import {
-  FormControl,
-  InputLabel,
-  Select,
   Table,
   TableBody,
   TableCell,
@@ -14,25 +12,37 @@ import {
   withStyles,
 } from '@material-ui/core';
 
-import add from '../../assets/icons/add.svg';
-import elaboration from '../../assets/icons/elaboration.svg';
-import checkFilled from '../../assets/icons/check-filled.svg';
-
-import styles from './styles.module.css';
 import AddNewTestType from './AddNewTestType/AddNewTestType';
 import Modal from '../../components/Modal/Modal';
 import Button from '../../components/Button/Button';
 
-const TeacherGrades = () => {
-  const [subject, setSubject] = useState('C317');
+import add from '../../assets/icons/add.svg';
+import elaboration from '../../assets/icons/elaboration.svg';
+import checkFilled from '../../assets/icons/check-filled.svg';
+
+import useFetch from '../../hooks/useFetch';
+import { GET_STUDENT, PUT_INSERT_GRADE } from '../../service/api';
+
+import styles from './styles.module.css';
+import SelectClass from './SelectClass';
+
+const TeacherGrades = ({ teacherInfo }) => {
+  const [subject, setSubject] = useState('');
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  const [testTypeOptions, setTestTypeOptions] = useState(['NP1', 'NP2', 'NP3']);
+  const [testType, setTestType] = useState('');
+  const [testTypeOptions, setTestTypeOptions] = useState([
+    'NP1',
+    'NP2',
+    'NP3',
+    'NL1',
+    'NL2',
+    'NL3',
+  ]);
 
   const [allTestsCreated, setAllTestsCreated] = useState([]);
 
-  const [typeTestToSave, setTypeTestToSave] = useState('');
   const [saveModalIsOpen, setSaveModalIsOpen] = useState(false);
 
   const [grades, setGrades] = useState([]);
@@ -58,28 +68,68 @@ const TeacherGrades = () => {
     },
   }))(TableRow);
 
-  const rows = [
-    {
-      curso: 'C317',
-      per: '9',
-      mat: '1370',
-      nome: 'André Fillipi',
-    },
-    {
-      curso: 'C317',
-      per: '9',
-      mat: '1376',
-      nome: 'João Gustavo Rangel de Oliveira',
-    },
-    {
-      curso: 'C317',
-      per: '9',
-      mat: '1369',
-      nome: 'Nathalya Stefhany Pereira',
-    },
-  ];
+  const { request } = useFetch();
 
-  function addGrade(mat, grade, type) {
+  const [allClasses, setAllClasses] = useState();
+  const [allStudents, setAllStudents] = useState();
+
+  useEffect(async () => {
+    const sendRequest = async (student, id) => {
+      const { url: url, config: config } = GET_STUDENT(student);
+
+      const { json, error } = await request(url, config);
+
+      if (!error) {
+        const studentGrades = json?.Classes?.filter(
+          (classParam) => classParam.classId === id
+        )[0]?.Grades;
+
+        return {
+          curso: json.Course,
+          per: json.Period,
+          mat: student,
+          nome: json.Name,
+          grades: studentGrades,
+        };
+      }
+    };
+
+    if (subject && allClasses) {
+      const classParam = allClasses?.filter(
+        (value) => value.subject === subject
+      )[0];
+
+      const students = classParam?.students;
+
+      const id = classParam?.id;
+
+      if (students)
+        setAllStudents(
+          await Promise.all(
+            students.map((student) =>
+              sendRequest(student.matriculationNumber, id)
+            )
+          )
+        );
+    }
+  }, [subject, allClasses]);
+
+  useEffect(() => {
+    if (allStudents && allStudents.length) {
+      const student = allStudents[0];
+
+      if (student.grades.length) {
+        setAllTestsCreated(
+          student.grades.map((grade) => ({
+            type: grade.Description,
+            state: 'saved',
+          }))
+        );
+      }
+    }
+  }, [allStudents]);
+
+  function addGrade(mat, grade) {
     let allGrades = grades;
 
     for (var i = 0; i < grades.length; i++) {
@@ -87,29 +137,83 @@ const TeacherGrades = () => {
         allGrades.splice(i, 1);
       }
     }
-    allGrades.push({ matricula: `${mat}`, nota: grade });
+    allGrades.push({ matricula: mat, nota: grade });
 
     setGrades(allGrades);
   }
+
+  const insertGrade = async (typeTest) => {
+    allStudents.map((student) => {
+      const subjectArray = subject.split(' ');
+
+      const acronym = subjectArray[0];
+      let classParam = '';
+
+      if (subjectArray.length > 0) classParam = subjectArray[2];
+
+      const gradeValue = grades.filter(
+        (grade) => grade.matricula === student.mat
+      )[0]?.nota;
+
+      let newStudent = student;
+      let newGrades = [].concat(student.grades, [
+        {
+          Description: typeTest,
+          Percentage: 0.5,
+          Value: gradeValue ? parseInt(gradeValue) : 0,
+        },
+      ]);
+
+      newStudent.grades = newGrades;
+
+      const body = {
+        matriculationNumber: student.mat,
+        acronym: acronym,
+        classParam: classParam,
+        description: typeTest,
+        percentage: 0.5,
+        value: gradeValue ? parseInt(gradeValue) : 0,
+      };
+
+      const { url: url, config: config } = PUT_INSERT_GRADE(body);
+
+      const { json, error } = request(url, config);
+
+      setTestType('');
+    });
+  };
+
+  useEffect(() => {
+    if (allTestsCreated && allTestsCreated.length) {
+      const testTypeOpt = testTypeOptions;
+
+      allTestsCreated.map((test) => {
+        for (let i = 0; i < testTypeOptions.length; i++) {
+          if (testTypeOptions[i] === test.type) testTypeOpt.splice(i, 1);
+        }
+      });
+
+      setTestTypeOptions(testTypeOpt);
+    }
+  }, [allTestsCreated]);
 
   function saveGrades() {
     let tests = allTestsCreated;
 
     for (var i = 0; i < allTestsCreated.length; i++) {
-      if (allTestsCreated[i].type === typeTestToSave) {
+      if (allTestsCreated[i].type === testType) {
         tests.splice(i, 1);
       }
     }
 
-    tests.push({ type: `${typeTestToSave}`, state: 'saved' });
+    tests.push({ type: `${testType}`, state: 'saved' });
 
-    setTypeTestToSave('');
     setAllTestsCreated(tests);
-  }
 
-  useEffect(() => {
-    if (typeTestToSave !== '') setSaveModalIsOpen(true);
-  }, [typeTestToSave]);
+    insertGrade(testType);
+
+    setGrades([]);
+  }
 
   return (
     <div className={styles.container}>
@@ -119,51 +223,13 @@ const TeacherGrades = () => {
       </div>
 
       <div style={{ display: 'flex' }}>
-        <div className={styles.leftContainer}>
-          <FormControl variant="outlined" className={styles.select}>
-            <InputLabel id="demo-simple-select-outlined-label">
-              Turma
-            </InputLabel>
-            <Select
-              native
-              labelId="demo-simple-select-outlined-label"
-              id="demo-simple-select-outlined"
-              value={subject}
-              onChange={(value) => setSubject(value.target.value)}
-              label="Disciplina"
-            >
-              <option value="C317">C317</option>
-            </Select>
-          </FormControl>
-
-          <p>Legenda</p>
-
-          <div style={{ display: 'flex' }} className={styles.subtitle}>
-            <img
-              src={add}
-              alt="Icone do sinal de mais"
-              style={{ marginLeft: '4px' }}
-            />
-            <p style={{ marginLeft: '15px' }}>Incluir Avaliação</p>
-          </div>
-
-          <div style={{ display: 'flex' }} className={styles.subtitle}>
-            <img
-              src={elaboration}
-              alt="Icone de alerta de elaboração de nota"
-            />
-            <p>Avaliação em Elaboração</p>
-          </div>
-
-          <div style={{ display: 'flex' }} className={styles.subtitle}>
-            <img
-              src={checkFilled}
-              alt="Icone de avaliação publicada"
-              style={{ marginLeft: '4px' }}
-            />
-            <p style={{ marginLeft: '15px' }}>Avaliação Publicada</p>
-          </div>
-        </div>
+        <SelectClass
+          teacherInfo={teacherInfo}
+          subject={subject}
+          setSubject={setSubject}
+          allClasses={allClasses}
+          setAllClasses={setAllClasses}
+        />
 
         <div className={styles.table}>
           <TableContainer component={Paper}>
@@ -199,7 +265,7 @@ const TeacherGrades = () => {
               </TableHead>
 
               <TableBody>
-                {rows.map((row) => (
+                {allStudents?.map((row) => (
                   <StyledTableRow key={row.mat}>
                     <StyledTableCell align="center">
                       {row.curso}
@@ -217,18 +283,22 @@ const TeacherGrades = () => {
                           <input
                             className={styles.inputGrade}
                             onChange={(gradeInput) =>
-                              addGrade(
-                                row.mat,
-                                gradeInput.target.value,
-                                value.type
-                              )
+                              addGrade(row.mat, gradeInput.target.value)
                             }
-                          ></input>
+                            value={
+                              grades.filter(
+                                (grade) => grade.matricula === row.mat
+                              )[0]?.nota
+                            }
+                          />
                         ) : (
-                          grades.map((value) => {
-                            if (value.matricula === row.mat)
-                              return <p>{value.nota}</p>;
-                          })
+                          <p>
+                            {
+                              row.grades.filter(
+                                (grade) => grade?.Description === value.type
+                              )[0]?.Value
+                            }
+                          </p>
                         )}
                       </StyledTableCell>
                     ))}
@@ -252,7 +322,7 @@ const TeacherGrades = () => {
                         <button
                           className={styles.saveGrades}
                           disabled={value.state === 'saved'}
-                          onClick={() => setTypeTestToSave(value.type)}
+                          onClick={() => setSaveModalIsOpen(true)}
                           style={{
                             backgroundColor: `${
                               value.state === 'saved' ? '#666666' : '#0054a6'
@@ -273,11 +343,14 @@ const TeacherGrades = () => {
 
         {modalIsOpen && (
           <AddNewTestType
+            testType={testType}
+            setTestType={setTestType}
             testTypeOptions={testTypeOptions}
             setTestTypeOptions={setTestTypeOptions}
             setModalIsOpen={setModalIsOpen}
             allTestsCreated={allTestsCreated}
             setAllTestsCreated={setAllTestsCreated}
+            subject={subject}
           />
         )}
 
@@ -317,6 +390,10 @@ const TeacherGrades = () => {
       </div>
     </div>
   );
+};
+
+TeacherGrades.propTypes = {
+  teacherInfo: PropTypes.object,
 };
 
 export default TeacherGrades;

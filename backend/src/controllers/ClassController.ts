@@ -35,12 +35,12 @@ class ClassController {
       );
 
       if (subjectClass === 1) {
-        return response.status(404).json({ Error: "Matéria ou professor não encontrado" });
-      }
-      else if (subjectClass === 0) {
+        return response
+          .status(404)
+          .json({ Error: "Matéria ou professor não encontrado" });
+      } else if (subjectClass === 0) {
         return response.status(409).json({ Error: "Turma existente" });
-      }
-      else {
+      } else {
         return response.json(subjectClass);
       }
     } catch (error) {
@@ -91,8 +91,9 @@ class ClassController {
 
       const acronym = classParams.Acronym;
       const classParam = classParams.Class;
+      const students = classParams.Students;
 
-      return response.json({ acronym, classParam });
+      return response.json({ acronym, classParam, students });
     } catch (error) {
       return response.status(500).json({
         message: error.message,
@@ -100,32 +101,39 @@ class ClassController {
     }
   }
 
-  async insertFrequency(request: Request, response: Response): Promise<Response> {
+  async insertFrequency(
+    request: Request,
+    response: Response
+  ): Promise<Response> {
     try {
       const { acronym, classParam, frequency } = request.body;
 
       const classService = new ClassService();
 
       const frequencyToInsert = new Frequency(
-        new Date(frequency.classDate), frequency.subjectMatter,
-        frequency.classesTaught, frequency.missingStudents
+        new Date(frequency.classDate),
+        frequency.subjectMatter,
+        frequency.classesTaught,
+        frequency.missingStudents
       );
 
-      const result = await classService.insertFrequency(acronym, classParam, frequencyToInsert);
+      const result = await classService.insertFrequency(
+        acronym,
+        classParam,
+        frequencyToInsert
+      );
 
       if (!result) {
-        return response.status(404).json({ Message: "Turma não encontrada" })
+        return response.status(404).json({ Message: "Turma não encontrada" });
       }
 
       return response.json({ Message: "Frequência inserida com sucesso" });
-
     } catch (error) {
       return response.status(500).json({
         message: error.message,
       });
     }
   }
-
 }
 
 export { ClassController };

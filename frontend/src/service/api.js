@@ -16,6 +16,13 @@ export const POST_STUDENT_UPDATE_PASSWORD = (body) => ({
   },
 });
 
+export const GET_STUDENT = (matriculationNumber) => ({
+  url: `${API}/student/${matriculationNumber}`,
+  config: {
+    method: 'GET',
+  },
+});
+
 export const GET_STUDENT_HISTORIC = (matriculationNumber) => ({
   url: `${API}/historic/${matriculationNumber}`,
   config: {
@@ -73,10 +80,25 @@ export const POST_TEACHER_LOGIN = (body) => ({
   },
 });
 
+export const GET_TEACHER = (employeeNumber) => ({
+  url: `${API}/teacher/${employeeNumber}`,
+  config: {
+    method: 'GET',
+  },
+});
+
 export const POST_TEACHER_UPDATE_PASSWORD = (body) => ({
   url: `${API}/teacher/updatePass`,
   config: {
     method: 'POST',
+    data: body,
+  },
+});
+
+export const PUT_INSERT_GRADE = (body) => ({
+  url: `${API}/student/insertGrade`,
+  config: {
+    method: 'PUT',
     data: body,
   },
 });
