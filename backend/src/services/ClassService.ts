@@ -168,7 +168,7 @@ class ClassService {
   async insertFrequency(
     acronym: string,
     classParam: string,
-    frquency: Frequency
+    frequency: Frequency
   ) {
     const classToUpdate = await this.classRepository.findOne({
       where: {
@@ -181,7 +181,7 @@ class ClassService {
     }
 
     let frequencyToInsert = classToUpdate.Frequency;
-    frequencyToInsert.push(frquency);
+    frequencyToInsert.push(frequency);
 
     const result = await this.classRepository.findOneAndUpdate(
       {

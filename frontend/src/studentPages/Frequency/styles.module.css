@@ -23,6 +23,8 @@
 }
 
 .table {
+  width: 45%;
+  align-self: center;
   margin: 20px 30px 0px 30px;
 }
 
@@ -35,6 +37,8 @@
   border-right: var(--white);
   border-top: none;
   border-width: thin;
+
+  height: 50px;
 }
 
 .table tr > td:not(:first-of-type) {
@@ -57,13 +61,6 @@
   border-style: solid;
   border-top: none;
   border-bottom: none !important;
-  border-width: thin;
-}
-
-.monthsBorder {
-  border-style: solid;
-  border-top: none;
-  border-right: none;
   border-width: thin;
 }
 

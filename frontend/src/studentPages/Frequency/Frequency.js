@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+
+import useFetch from '../../hooks/useFetch';
 
 import {
   withStyles,
@@ -8,13 +11,13 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  TablePagination,
   Paper,
 } from '@material-ui/core';
 
 import styles from './styles.module.css';
+import { GET_STUDENT_FREQUENCY } from '../../service/api';
 
-const Frequency = () => {
+const Frequency = ({ studentInfo }) => {
   const StyledTableCell = withStyles((theme) => ({
     head: {
       backgroundColor: '#0054a6',
@@ -36,34 +39,27 @@ const Frequency = () => {
     },
   }))(TableRow);
 
-  const rows = [
-    {
-      turma: 'C317',
-      fev: { teo: 0, lab: '-', jus: 0 },
-      mar: { teo: 0, lab: '-', jus: 0 },
-      abr: { teo: 0, lab: '-', jus: 0 },
-      mai: { teo: '-', lab: '-', jus: '-' },
-      jun: { teo: '-', lab: '-', jus: '-' },
-      jul: { teo: '-', lab: '-', jus: '-' },
-      aulasMin: 24,
-      limPrev: 0,
-      total: 0,
-      sit: '-',
-    },
-    {
-      turma: 'G008',
-      fev: { teo: 0, lab: '-', jus: 0 },
-      mar: { teo: 0, lab: '-', jus: 0 },
-      abr: { teo: 0, lab: '-', jus: 0 },
-      mai: { teo: '-', lab: '-', jus: '-' },
-      jun: { teo: '-', lab: '-', jus: '-' },
-      jul: { teo: '-', lab: '-', jus: '-' },
-      aulasMin: 16,
-      limPrev: 20,
-      total: 0,
-      sit: '-',
-    },
-  ];
+  const { request } = useFetch();
+
+  const [frequency, setFrequency] = useState([]);
+
+  useEffect(() => {
+    const sendRequest = async () => {
+      const { url: url, config: config } = GET_STUDENT_FREQUENCY(
+        studentInfo.matriculationNumber
+      );
+
+      const { json, error } = await request(url, config);
+
+      if (!error) {
+        setFrequency(json);
+      }
+    };
+
+    sendRequest();
+  }, []);
+
+  const regex = /[0-9]/;
 
   return (
     <div className={styles.container}>
@@ -80,180 +76,45 @@ const Frequency = () => {
                 <StyledTableCell align="center" className={styles.oneRowBorder}>
                   Turma
                 </StyledTableCell>
-                <StyledTableCell align="center"></StyledTableCell>
-                <StyledTableCell align="center">Fev</StyledTableCell>
-                <StyledTableCell align="center"></StyledTableCell>
-                <StyledTableCell
-                  align="center"
-                  className={styles.monthsBorder}
-                ></StyledTableCell>
-                <StyledTableCell align="center">Mar</StyledTableCell>
-                <StyledTableCell align="center"></StyledTableCell>
-                <StyledTableCell
-                  align="center"
-                  className={styles.monthsBorder}
-                ></StyledTableCell>
-                <StyledTableCell align="center">Abr</StyledTableCell>
-                <StyledTableCell align="center"></StyledTableCell>
-                <StyledTableCell
-                  align="center"
-                  className={styles.monthsBorder}
-                ></StyledTableCell>
-                <StyledTableCell align="center">Mai</StyledTableCell>
-                <StyledTableCell align="center"></StyledTableCell>
-                <StyledTableCell
-                  align="center"
-                  className={styles.monthsBorder}
-                ></StyledTableCell>
-                <StyledTableCell align="center">Jun</StyledTableCell>
-                <StyledTableCell align="center"></StyledTableCell>
-                <StyledTableCell
-                  align="center"
-                  className={styles.monthsBorder}
-                ></StyledTableCell>
-                <StyledTableCell align="center">Jul</StyledTableCell>
-                <StyledTableCell align="center"></StyledTableCell>
-                <StyledTableCell align="center" className={styles.oneRowBorder}>
-                  Aulas
-                </StyledTableCell>
-                <StyledTableCell align="center" className={styles.oneRowBorder}>
-                  Lim.
-                </StyledTableCell>
-                <StyledTableCell align="center" className={styles.oneRowBorder}>
-                  Total
-                </StyledTableCell>
-                <StyledTableCell align="center" className={styles.oneRowBorder}>
-                  Sit.
-                </StyledTableCell>
-              </TableRow>
-              <TableRow style={{ padding: '10px' }}>
-                <StyledTableCell align="center" width="30px"></StyledTableCell>
                 <StyledTableCell align="center">Teo</StyledTableCell>
                 <StyledTableCell align="center">Lab</StyledTableCell>
-                <StyledTableCell align="center">Jus</StyledTableCell>
-                <StyledTableCell align="center">Teo</StyledTableCell>
-                <StyledTableCell align="center">Lab</StyledTableCell>
-                <StyledTableCell align="center">Jus</StyledTableCell>
-                <StyledTableCell align="center">Teo</StyledTableCell>
-                <StyledTableCell align="center">Lab</StyledTableCell>
-                <StyledTableCell align="center">Jus</StyledTableCell>
-                <StyledTableCell align="center">Teo</StyledTableCell>
-                <StyledTableCell align="center">Lab</StyledTableCell>
-                <StyledTableCell align="center">Jus</StyledTableCell>
-                <StyledTableCell align="center">Teo</StyledTableCell>
-                <StyledTableCell align="center">Lab</StyledTableCell>
-                <StyledTableCell align="center">Jus</StyledTableCell>
-                <StyledTableCell align="center">Teo</StyledTableCell>
-                <StyledTableCell align="center">Lab</StyledTableCell>
-                <StyledTableCell align="center">Jus</StyledTableCell>
-                <StyledTableCell align="center">Minist.</StyledTableCell>
-                <StyledTableCell align="center">Prev.</StyledTableCell>
-                <StyledTableCell align="center"></StyledTableCell>
-                <StyledTableCell align="center"></StyledTableCell>
+                <StyledTableCell align="center">Aulas Minis.</StyledTableCell>
+                <StyledTableCell align="center">Limite</StyledTableCell>
               </TableRow>
             </TableHead>
 
             <TableBody>
-              {rows.map((row) => (
+              {frequency.map((row) => (
                 <StyledTableRow key={row.turma}>
-                  <StyledTableCell align="center">{row.turma}</StyledTableCell>
-
                   <StyledTableCell align="center">
-                    {row.fev.teo}
+                    {row.Acronym}
                   </StyledTableCell>
 
                   <StyledTableCell align="center">
-                    {row.fev.lab}
+                    {!regex.test(row.Class) ? row.Absences : '-'}
                   </StyledTableCell>
 
                   <StyledTableCell align="center">
-                    {row.fev.jus}
+                    {regex.test(row.Class) ? row.Absences : '-'}
                   </StyledTableCell>
 
                   <StyledTableCell align="center">
-                    {row.mar.teo}
+                    {row.ClassesTaught}
                   </StyledTableCell>
 
-                  <StyledTableCell align="center">
-                    {row.mar.lab}
-                  </StyledTableCell>
-
-                  <StyledTableCell align="center">
-                    {row.mar.jus}
-                  </StyledTableCell>
-
-                  <StyledTableCell align="center">
-                    {row.abr.teo}
-                  </StyledTableCell>
-
-                  <StyledTableCell align="center">
-                    {row.abr.lab}
-                  </StyledTableCell>
-
-                  <StyledTableCell align="center">
-                    {row.abr.jus}
-                  </StyledTableCell>
-
-                  <StyledTableCell align="center">
-                    {row.mai.teo}
-                  </StyledTableCell>
-
-                  <StyledTableCell align="center">
-                    {row.mai.lab}
-                  </StyledTableCell>
-
-                  <StyledTableCell align="center">
-                    {row.mai.jus}
-                  </StyledTableCell>
-
-                  <StyledTableCell align="center">
-                    {row.jun.teo}
-                  </StyledTableCell>
-
-                  <StyledTableCell align="center">
-                    {row.jun.lab}
-                  </StyledTableCell>
-
-                  <StyledTableCell align="center">
-                    {row.jun.jus}
-                  </StyledTableCell>
-
-                  <StyledTableCell align="center">
-                    {row.jul.teo}
-                  </StyledTableCell>
-
-                  <StyledTableCell align="center">
-                    {row.jul.lab}
-                  </StyledTableCell>
-
-                  <StyledTableCell align="center">
-                    {row.jul.jus}
-                  </StyledTableCell>
-
-                  <StyledTableCell align="center">
-                    {row.aulasMin}
-                  </StyledTableCell>
-
-                  <StyledTableCell align="center">
-                    {row.limPrev}
-                  </StyledTableCell>
-
-                  <StyledTableCell align="center">{row.total}</StyledTableCell>
-
-                  <StyledTableCell align="center">{row.sit}</StyledTableCell>
+                  <StyledTableCell align="center">{row.Limit}</StyledTableCell>
                 </StyledTableRow>
               ))}
             </TableBody>
           </Table>
         </TableContainer>
       </div>
-
-      <p className={styles.info}>
-        O número máximo de faltas justificadas não poderá ultrapassar o limite
-        de <b>10%</b> da carga horária <b>prevista</b> para cada disciplina.
-      </p>
     </div>
   );
+};
+
+Frequency.propTypes = {
+  studentInfo: PropTypes.object,
 };
 
 export default Frequency;

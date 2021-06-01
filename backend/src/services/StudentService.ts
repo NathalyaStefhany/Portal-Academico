@@ -43,6 +43,7 @@ interface FrequencyReturn {
   Class: string;
   ClassesTaught: number;
   Absences: number;
+  Limit: number;
 }
 
 class StudentService {
@@ -444,6 +445,7 @@ class StudentService {
               Class: classFound.Class,
               ClassesTaught: classesTaughtToInsert,
               Absences: absencesToInsert,
+              Limit: classFound.FrequencyLimit,
             })
           );
         } else {
@@ -453,6 +455,7 @@ class StudentService {
               Class: classFound.Class,
               ClassesTaught: 0,
               Absences: 0,
+              Limit: classFound.FrequencyLimit,
             })
           );
         }
