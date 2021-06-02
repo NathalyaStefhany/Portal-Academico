@@ -2,6 +2,8 @@ import { ObjectId } from "bson";
 import { Request, Response } from "express";
 import { Frequency } from "../entities/Frequency";
 import { ClassService } from "../services/ClassService";
+import {Binary} from "mongodb";
+import { SchoolSupply } from "../entities/SchoolSupply";
 
 class ClassController {
   async create(request: Request, response: Response): Promise<Response> {
@@ -162,6 +164,39 @@ class ClassController {
       });
     }
   }
+
+  async uploadFile(request: Request, response: Response): Promise<Response> {
+    try {
+      let {acronym, classParam} = request.params;
+
+      const classService = new ClassService();
+
+      if (classParam === '""') {
+        classParam = "";
+      }
+
+      /* let data = request.files.data as unknown as Binary;
+      let name = request.files.name as unknown as string;
+
+      let schoolSupply = new SchoolSupply(name, data);
+
+      const result = await classService.insertFile(acronym, classParam, schoolSupply); */
+
+      const result = false;
+
+      if (!result) {
+        return response.status(404).json({ Message: "Turma não encontrada" });
+      } else {
+        return response.json(result);
+      }
+      
+    } catch (error) {
+      return response.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+
 }
 
 export { ClassController };

@@ -227,6 +227,35 @@ class ClassService {
 
     return teacherFound;
   }
+
+  async insertFile(acronym: string, classParam: string, file: SchoolSupply) {
+    const classFound = await this.classRepository.findOne({
+      where: {
+        $and: [{ Class: classParam }, { Acronym: acronym }],
+      },
+    });
+
+    if (!classFound) {
+      return 0;
+    }
+
+    let schoolSupply = classFound.SchoolSupplies;
+    schoolSupply.push(file);
+
+    const result = await this.classRepository.findOneAndUpdate(
+      {
+        $and: [{ Class: classParam }, { Acronym: acronym }],
+      },
+      {
+        $set: {
+          SchoolSupply: schoolSupply
+        },
+      }
+    );
+
+    return result;
+
+  }
 }
 
 export { ClassService };
