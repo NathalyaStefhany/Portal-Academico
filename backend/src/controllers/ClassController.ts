@@ -2,8 +2,10 @@ import { ObjectId } from "bson";
 import { Request, Response } from "express";
 import { Frequency } from "../entities/Frequency";
 import { ClassService } from "../services/ClassService";
-import {Binary} from "mongodb";
+import fs from "fs";
+import { Binary } from "mongodb";
 import { SchoolSupply } from "../entities/SchoolSupply";
+import { busboy, File } from "busboy-express";
 
 class ClassController {
   async create(request: Request, response: Response): Promise<Response> {
@@ -167,7 +169,7 @@ class ClassController {
 
   async uploadFile(request: Request, response: Response): Promise<Response> {
     try {
-      let {acronym, classParam} = request.params;
+      let { acronym, classParam } = request.params;
 
       const classService = new ClassService();
 
@@ -175,22 +177,41 @@ class ClassController {
         classParam = "";
       }
 
-      /* let data = request.files.data as unknown as Binary;
-      let name = request.files.name as unknown as string;
+      if (request.files) {
+        let file = request.files.uploadedFile[0];
 
-      let schoolSupply = new SchoolSupply(name, data);
+        if (file.size <= 16777216) {
 
-      const result = await classService.insertFile(acronym, classParam, schoolSupply); */
+          fs.readFile(file.path, async function (error, data) {
+            if (!error) {
+              const schoolSupply = new SchoolSupply(file.filename, new Binary(data));
+              const result = await classService.insertFile(acronym, classParam, schoolSupply);
 
-      const result = false;
+              busboy.cleanup(request);
 
-      if (!result) {
-        return response.status(404).json({ Message: "Turma não encontrada" });
-      } else {
-        return response.json(result);
+              if (!result) {
+                return response.status(404).json({ Message: "Turma não encontrada" });
+              } else {
+                return response.json(result);
+              }
+            }
+            else {
+              console.log(error);
+            }
+          });
+        }
+        else {
+          busboy.cleanup(request);
+          return response.status(400).json({ Message: "Arquivo ultrapassou limite de 16Mb" });
+        }
       }
-      
+      else {
+        busboy.cleanup(request);
+        return response.status(400).json({ Message: "Arquivo não inserido" });
+      }
     } catch (error) {
+      busboy.cleanup(request);
+
       return response.status(500).json({
         message: error.message,
       });
