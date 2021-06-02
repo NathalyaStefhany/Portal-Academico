@@ -112,7 +112,7 @@ function App() {
           </Route>
 
           <Route path="/aluno/frequencia">
-            <Frequency />
+            <Frequency studentInfo={studentInfo} />
           </Route>
 
           <Route path="/aluno/requisitos">
