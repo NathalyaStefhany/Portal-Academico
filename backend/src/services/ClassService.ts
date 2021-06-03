@@ -11,6 +11,7 @@ import { ClassRepository } from "../repositories/ClassRepository";
 import { SubjectRepository } from "../repositories/SubjectRepository";
 import { TeacherRepository } from "../repositories/TeacherRepository";
 import { TimeTable } from "../entities/TimeTable";
+import fs from "fs";
 
 interface matriculationNumber {
   matriculationNumber: number;
@@ -226,6 +227,78 @@ class ClassService {
     teacherFound.Classes = undefined;
 
     return teacherFound;
+  }
+
+  async insertFile(acronym: string, classParam: string, file: SchoolSupply) {
+    const classFound = await this.classRepository.findOne({
+      where: {
+        $and: [{ Class: classParam }, { Acronym: acronym }],
+      },
+    });
+
+    if (!classFound) {
+      return 0;
+    }
+
+    let schoolSupply = classFound.SchoolSupplies;
+    schoolSupply.push(file);
+
+    const result = await this.classRepository.findOneAndUpdate(
+      {
+        $and: [{ Class: classParam }, { Acronym: acronym }],
+      },
+      {
+        $set: {
+          SchoolSupplies: schoolSupply
+        },
+      }
+    );
+
+    return {Message: "Upload feito com sucesso"};
+  }
+
+  async getFile(acronym: string, classParam: string, id: ObjectId){
+    const classFound = await this.classRepository.findOne({
+      where: {
+        $and: [{ Class: classParam }, { Acronym: acronym }],
+      },
+    });
+
+    if (!classFound) {
+      return 0;
+    }
+
+    const content = classFound.SchoolSupplies.filter(s => s._id.equals(id));
+
+    if (!content){
+      return 0;
+    }
+
+    let buffer = content[0].Content.buffer
+    fs.writeFileSync(process.env.HOME + "\\Downloads\\" + content[0].Description, buffer);
+
+    return {Message: "Download feito com sucesso"}
+  }
+
+  async listSupplies(acronym: string, classParam: string){
+    const classFound = await this.classRepository.findOne({
+      where: {
+        $and: [{ Class: classParam }, { Acronym: acronym }],
+      },
+    });
+
+    if (!classFound) {
+      return 0;
+    }
+
+    let supplyList = [];
+    classFound.SchoolSupplies.map(s => {
+      s.Content = undefined;
+      supplyList.push(s);
+    });
+
+    return supplyList;
+
   }
 }
 

@@ -117,7 +117,7 @@ class SubjectService {
 
     const subjectsToverify = await this.subjectRepository.find({
       where: {
-        CousesIn: { $eq: student.Course },
+        "CousesIn.Course": { $eq: student.Course },
       },
     });
 
@@ -140,7 +140,7 @@ class SubjectService {
     classes.push(
       await Promise.all(
         classIds.map(async (id) => {
-          return await this.classRepository.findOne(id as unknown as string);
+          return await this.classRepository.findOne({_id: id});
         })
       )
     );

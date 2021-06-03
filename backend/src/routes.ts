@@ -1,3 +1,4 @@
+import { busboy } from "busboy-express";
 import { Router } from "express";
 import { AcademicCoefficientController } from "./controllers/AcademicCoefficientController";
 import { AdministratorsController } from "./controllers/AdministratorsController";
@@ -103,6 +104,13 @@ routes.put("/class/insertTest", classController.insertTest);
 routes.get("/class/:_id", classController.getClass);
 routes.put("/class/insertFrequency", classController.insertFrequency);
 routes.get("/class/getTeacher/:acronym/:classParam", classController.getTeacher);
+routes.post(
+  "/class/upload/:acronym/:classParam",
+  busboy({fields: ["uploadedFile"], files: ["uploadedFile"]}), 
+  classController.uploadFile
+);
+routes.get("/class/download/:acronym/:classParam/:id", classController.downloadFile);
+routes.get("/class/listFiles/:acronym/:classParam", classController.listFiles);
 
 //ClassReplacement routes
 routes.post("/replacement", replacementController.create);

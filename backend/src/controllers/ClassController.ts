@@ -2,6 +2,10 @@ import { ObjectId } from "bson";
 import { Request, Response } from "express";
 import { Frequency } from "../entities/Frequency";
 import { ClassService } from "../services/ClassService";
+import fs from "fs";
+import { Binary } from "mongodb";
+import { SchoolSupply } from "../entities/SchoolSupply";
+import { busboy, File } from "busboy-express";
 
 class ClassController {
   async create(request: Request, response: Response): Promise<Response> {
@@ -163,6 +167,108 @@ class ClassController {
       });
     }
   }
+
+  async uploadFile(request: Request, response: Response): Promise<Response> {
+    try {
+      let { acronym, classParam } = request.params;
+
+      const classService = new ClassService();
+
+      if (classParam === '""') {
+        classParam = "";
+      }
+
+      if (request.files) {
+        let file = request.files.uploadedFile[0];
+
+        if (file.size <= 16777216) {
+
+          fs.readFile(file.path, async function (error, data) {
+            if (!error) {
+              const schoolSupply = new SchoolSupply(file.filename, new Binary(data));
+              const result = await classService.insertFile(acronym, classParam, schoolSupply);
+
+              busboy.cleanup(request);
+
+              if (!result) {
+                return response.status(404).json({ Message: "Turma não encontrada" });
+              } else {
+                return response.json(result);
+              }
+            }
+            else {
+              console.log(error);
+            }
+          });
+        }
+        else {
+          busboy.cleanup(request);
+          return response.status(400).json({ Message: "Arquivo ultrapassou limite de 16Mb" });
+        }
+      }
+      else {
+        busboy.cleanup(request);
+        return response.status(400).json({ Message: "Arquivo não inserido" });
+      }
+    } catch (error) {
+      busboy.cleanup(request);
+
+      return response.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+
+  async downloadFile(request: Request, response: Response): Promise<Response>{
+    try {
+      let { acronym, classParam, id } = request.params;
+
+      const classService = new ClassService();
+
+      if (classParam === '""') {
+        classParam = "";
+      }
+
+      const result = await classService.getFile(acronym, classParam, new ObjectId(id));
+
+      if(!result){
+        return response.status(404).json({Message: "Turma ou documento não encontrado"});
+      }
+
+      return response.json(result);
+      
+    } catch (error) {
+      return response.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+
+  async listFiles(request: Request, response: Response): Promise<Response>{
+    try {
+      let { acronym, classParam } = request.params;
+
+      const classService = new ClassService();
+
+      if (classParam === '""') {
+        classParam = "";
+      }
+
+      const result = await classService.listSupplies(acronym, classParam);
+
+      if(!result){
+        return response.status(404).json({Message: "Turma não encontrada"});
+      }
+
+      return response.json(result);
+      
+    } catch (error) {
+      return response.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+
 }
 
 export { ClassController };
