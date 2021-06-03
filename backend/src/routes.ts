@@ -109,6 +109,8 @@ routes.post(
   busboy({fields: ["uploadedFile"], files: ["uploadedFile"]}), 
   classController.uploadFile
 );
+routes.get("/class/download/:acronym/:classParam/:id", classController.downloadFile);
+routes.get("/class/listFiles/:acronym/:classParam", classController.listFiles);
 
 //ClassReplacement routes
 routes.post("/replacement", replacementController.create);

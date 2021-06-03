@@ -218,6 +218,56 @@ class ClassController {
     }
   }
 
+  async downloadFile(request: Request, response: Response): Promise<Response>{
+    try {
+      let { acronym, classParam, id } = request.params;
+
+      const classService = new ClassService();
+
+      if (classParam === '""') {
+        classParam = "";
+      }
+
+      const result = await classService.getFile(acronym, classParam, new ObjectId(id));
+
+      if(!result){
+        return response.status(404).json({Message: "Turma ou documento não encontrado"});
+      }
+
+      return response.json(result);
+      
+    } catch (error) {
+      return response.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+
+  async listFiles(request: Request, response: Response): Promise<Response>{
+    try {
+      let { acronym, classParam } = request.params;
+
+      const classService = new ClassService();
+
+      if (classParam === '""') {
+        classParam = "";
+      }
+
+      const result = await classService.listSupplies(acronym, classParam);
+
+      if(!result){
+        return response.status(404).json({Message: "Turma não encontrada"});
+      }
+
+      return response.json(result);
+      
+    } catch (error) {
+      return response.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+
 }
 
 export { ClassController };

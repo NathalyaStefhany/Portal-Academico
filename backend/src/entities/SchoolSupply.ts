@@ -15,6 +15,7 @@ class SchoolSupply {
     Content: Binary;
 
     constructor(description: string, content: Binary) {
+        this._id = new ObjectId();
         this.Description = description;
         this.CreationDate = new Date(Date.now());
         this.Content = content;
