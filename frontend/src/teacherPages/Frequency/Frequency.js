@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 
 import {
   FormControl,
@@ -21,88 +22,257 @@ import research from '../../assets/icons/research.svg';
 
 import styles from './styles.module.css';
 import Info from './Info/Info';
+import useFetch from '../../hooks/useFetch';
+import GetSubjects from './GetSubjects';
+import FormatDateToShow from '../../utils/FormatDateToShow';
+import {
+  GET_STUDENT,
+  GET_STUDENT_FREQUENCY,
+  PUT_INSERT_FREQUENCY,
+} from '../../service/api';
 
-const TeacherFrequency = () => {
-  const [subject, setSubject] = useState('C317');
+const StyledTableCell = withStyles((theme) => ({
+  head: {
+    backgroundColor: '#0054a6',
+    color: theme.palette.common.white,
+    fontSize: 16,
+    fontWeight: 500,
+  },
+  body: {
+    fontSize: 14,
+    color: '#333333',
+  },
+}))(TableCell);
+
+const StyledTableRow = withStyles(() => ({
+  root: {
+    '&:nth-of-type(even)': {
+      backgroundColor: 'rgba(0, 83, 166, 0.03)',
+    },
+  },
+}))(TableRow);
+
+const TeacherFrequency = ({ teacherInfo }) => {
+  const [subject, setSubject] = useState('');
   const [month, setMonth] = useState('Fevereiro');
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [newFrequency, setNewFrequency] = useState(false);
   const [date, setDate] = useState();
   const [numClasses, setNumClasses] = useState();
   const [topic, setTopic] = useState();
-  const [frequency, setFrequency] = useState([
-    {
-      dia: '19/02/2021',
-      numAulas: 2,
-      assunto: 'Apresentação das ferramentas e revisão de Python.',
-    },
-  ]);
 
-  const StyledTableCell = withStyles((theme) => ({
-    head: {
-      backgroundColor: '#0054a6',
-      color: theme.palette.common.white,
-      fontSize: 16,
-      fontWeight: 500,
-    },
-    body: {
-      fontSize: 14,
-      color: '#333333',
-    },
-  }))(TableCell);
+  const currentDate = new Date();
+  const dates =
+    currentDate.getMonth() < 6
+      ? {
+          Fevereiro: ['2021-02-01', '2021-02-28'],
+          Março: ['2021-03-01', '2021-03-31'],
+          Abril: ['2021-04-01', '2021-04-30'],
+          Maio: ['2021-05-01', '2021-05-31'],
+          Junho: ['2021-06-01', '2021-06-30'],
+        }
+      : {
+          Agosto: ['2021-08-01', '2021-08-31'],
+          Setembro: ['2021-09-01', '2021-09-30'],
+          Outubro: ['2021-10-01', '2021-10-31'],
+          Novembro: ['2021-11-01', '2021-11-30'],
+          Dezembro: ['2021-12-01', '2021-12-31'],
+        };
 
-  const StyledTableRow = withStyles(() => ({
-    root: {
-      '&:nth-of-type(even)': {
-        backgroundColor: 'rgba(0, 83, 166, 0.03)',
-      },
-    },
-  }))(TableRow);
+  const months = Object.keys(dates);
 
-  const students = [
-    {
-      matricula: '1376',
-      nome: 'João Gustavo Rangel de Oliveira',
-      faltasDia: 0,
-      justificativas: 0,
-      totalFaltas: 0,
-    },
-    {
-      matricula: '1369',
-      nome: 'Nathalya Stefhany Pereira',
-      faltasDia: 0,
-      justificativas: 0,
-      totalFaltas: 0,
-    },
+  const { request } = useFetch();
+
+  const [allSubjects, setAllSubjects] = useState([]);
+  const [allFrequency, setAllFrequency] = useState([]);
+  const [allStudents, setAllStudents] = useState([]);
+  const [classesTaught, setClassesTaught] = useState('-');
+  const [studentsInfo, setStudentsInfo] = useState([]);
+  const [allAbsences, setAllAbsences] = useState([]);
+
+  const getMonth = [
+    'Janeiro',
+    'Fevereiro',
+    'Março',
+    'Abril',
+    'Maio',
+    'Junho',
+    'Julho',
+    'Agosto',
+    'Setembro',
+    'Outubro',
+    'Novembro',
+    'Dezembro',
   ];
 
-  const dates = {
-    Fevereiro: ['2021-02-01', '2021-02-28'],
-    Marco: ['2021-03-01', '2021-03-31'],
-    Abril: ['2021-04-01', '2021-04-30'],
-    Maio: ['2021-05-01', '2021-05-31'],
-    Junho: ['2021-06-01', '2021-06-30'],
+  useEffect(() => {
+    if (!newFrequency)
+      GetSubjects(teacherInfo.employeeNumber, request, setAllSubjects);
+  }, [newFrequency]);
+
+  useEffect(() => {
+    if (allSubjects.length) {
+      setSubject(allSubjects[0].subject);
+    }
+  }, [allSubjects]);
+
+  useEffect(() => {
+    if (subject) {
+      const frequency = allSubjects.filter((sub) => sub.subject === subject)[0]
+        ?.frequency;
+
+      setAllFrequency(
+        frequency.filter(
+          (freq) =>
+            getMonth[FormatDateToShow(freq.ClassDate).substr(3, 2) - 1] ===
+            month
+        )
+      );
+
+      setAllStudents(
+        allSubjects.filter((sub) => sub.subject === subject)[0]?.students
+      );
+    }
+  }, [subject, month]);
+
+  useEffect(() => {
+    if (subject) {
+      const allFreq = allSubjects.filter((sub) => sub.subject === subject)[0]
+        ?.frequency;
+
+      let classesNumber = 0;
+
+      for (let i = 0; i < allFreq.length; i++)
+        classesNumber += allFreq[i].ClassesTaught;
+
+      setClassesTaught(classesNumber);
+    }
+  }, [subject]);
+
+  useEffect(async () => {
+    const getAbsence = async (mat) => {
+      const { url, config } = GET_STUDENT_FREQUENCY(mat);
+
+      const { json, error } = await request(url, config);
+
+      if (!error) {
+        const sub = subject.split(' ');
+        const acronym = sub[0];
+        const classParam = sub.length > 1 ? sub[2] : '';
+
+        return json?.filter(
+          (freq) => freq.Acronym === acronym && freq.Class === classParam
+        )[0].Absences;
+      }
+    };
+
+    const getStudentInfo = async (mat) => {
+      const { url, config } = GET_STUDENT(mat);
+
+      const { json, error } = await request(url, config);
+
+      if (!error) {
+        const absence = await getAbsence(mat);
+
+        return {
+          matricula: mat,
+          nome: json.Name,
+          faltas: absence,
+        };
+      }
+    };
+
+    setStudentsInfo(
+      await Promise.all(
+        allStudents.map((student) =>
+          getStudentInfo(student.matriculationNumber)
+        )
+      )
+    );
+
+    const check = [];
+
+    for (let i = 0; i < allStudents.length; i++)
+      check.push({ mat: allStudents[i].matriculationNumber, absence: 0 });
+
+    setAllAbsences(check);
+  }, [allStudents]);
+
+  const processingAbsence = (isChecked, mat) => {
+    if (isChecked) {
+      setAllAbsences(
+        allAbsences.map((item) =>
+          item.mat === mat ? { ...item, absence: parseInt(numClasses) } : item
+        )
+      );
+    } else {
+      setAllAbsences(
+        allAbsences.map((item) =>
+          item.mat === mat ? { ...item, absence: 0 } : item
+        )
+      );
+    }
   };
 
   function addNewFrequency() {
-    const freq = frequency;
+    if (date && numClasses && topic) {
+      const freq = allFrequency;
 
-    freq.push({
-      dia:
-        date.substr(8, 2) + '/' + date.substr(5, 2) + '/' + date.substr(0, 4),
-      numAulas: numClasses,
-      assunto: topic,
-    });
+      freq.push({
+        ClassDate: date,
+        ClassesTaught: numClasses,
+        SubjectMatter: topic,
+      });
 
-    setFrequency(freq);
-    setNewFrequency(true);
-    setModalIsOpen(false);
+      setAllFrequency(freq);
+      setNewFrequency(true);
+      setModalIsOpen(false);
+    }
   }
+
+  useEffect(() => {
+    if (!newFrequency && topic && date && numClasses) {
+      const insertFrequency = async (students) => {
+        const sub = subject.split(' ');
+        const acronym = sub[0];
+        const classParam = sub.length > 1 ? sub[2] : '';
+
+        const body = {
+          acronym: acronym,
+          classParam: classParam,
+          frequency: {
+            classDate: date,
+            subjectMatter: topic,
+            classesTaught: parseInt(numClasses),
+            missingStudents: students,
+          },
+        };
+
+        console.log(body);
+
+        const { url, config } = PUT_INSERT_FREQUENCY(body);
+
+        const { json, erorr } = await request(url, config);
+
+        setTopic();
+        setDate();
+        setNumClasses();
+      };
+
+      const students = [];
+
+      allAbsences.map((abs) => {
+        if (abs.absence !== 0) students.push(abs.mat);
+      });
+
+      insertFrequency(students);
+    }
+  }, [newFrequency]);
 
   return (
     <div className={styles.container}>
       <div className={styles.title}>
-        <h1>Publicação de Notas</h1>
+        <h1>Publicação da Frequência</h1>
         <div />
       </div>
 
@@ -120,7 +290,9 @@ const TeacherFrequency = () => {
               onChange={(value) => setSubject(value.target.value)}
               label="Disciplina"
             >
-              <option value="C317">C317</option>
+              {allSubjects?.map((sub) => (
+                <option value={sub.subject}>{sub.subject}</option>
+              ))}
             </Select>
           </FormControl>
 
@@ -134,11 +306,9 @@ const TeacherFrequency = () => {
               onChange={(value) => setMonth(value.target.value)}
               label="Disciplina"
             >
-              <option value="Fevereiro">Fevereiro</option>
-              <option value="Marco">Março</option>
-              <option value="Abril">Abril</option>
-              <option value="Maio">Maio</option>
-              <option value="Junho">Junho</option>
+              {months.map((month) => (
+                <option value={month}>{month}</option>
+              ))}
             </Select>
           </FormControl>
 
@@ -160,7 +330,7 @@ const TeacherFrequency = () => {
                 </TableHead>
 
                 <TableBody>
-                  {frequency.map((row) => (
+                  {allFrequency?.map((row) => (
                     <StyledTableRow key={row.dia}>
                       <StyledTableCell align="center">
                         <img src={research} />
@@ -170,17 +340,17 @@ const TeacherFrequency = () => {
                         <div style={{ display: 'flex' }}>
                           <p>
                             <b>Dia: </b>
-                            {row.dia}
+                            {FormatDateToShow(row.ClassDate)}
                           </p>
                           <p style={{ marginLeft: '30px' }}>
                             <b>Nº de Aulas: </b>
-                            {row.numAulas}
+                            {row.ClassesTaught}
                           </p>
                         </div>
 
                         <p style={{ textAlign: 'start', marginTop: '5px' }}>
                           <b>Assunto: </b>
-                          {row.assunto}
+                          {row.SubjectMatter}
                         </p>
                       </StyledTableCell>
                     </StyledTableRow>
@@ -207,19 +377,12 @@ const TeacherFrequency = () => {
             textAlign: 'center',
           }}
         >
-          <Info />
+          <Info classesTaught={classesTaught} />
 
           {newFrequency && (
             <>
               <p style={{ marginTop: '30px', marginBottom: '15px' }}>
-                <b>
-                  Registro de faltas do dia{' '}
-                  {date.substr(8, 2) +
-                    '/' +
-                    date.substr(5, 2) +
-                    '/' +
-                    date.substr(0, 4)}
-                </b>
+                <b>Registro de faltas do dia {FormatDateToShow(date)}</b>
               </p>
 
               <TableContainer
@@ -238,10 +401,23 @@ const TeacherFrequency = () => {
                   </TableHead>
 
                   <TableBody>
-                    {students.map((row) => (
+                    {studentsInfo.map((row, index) => (
                       <StyledTableRow key={row.matricula}>
                         <StyledTableCell>
-                          <input type="checkbox" className={styles.checkbox} />
+                          <input
+                            type="checkbox"
+                            className={styles.checkbox}
+                            onChange={(value) =>
+                              processingAbsence(
+                                value.target.checked,
+                                row.matricula
+                              )
+                            }
+                            checked={
+                              allAbsences[index].absence ===
+                              parseInt(numClasses)
+                            }
+                          />
                         </StyledTableCell>
                         <StyledTableCell>
                           <p style={{ textAlign: 'start' }}>
@@ -250,15 +426,11 @@ const TeacherFrequency = () => {
                           <div style={{ display: 'flex', marginTop: '5px' }}>
                             <p style={{ marginRight: '30px' }}>
                               <b>Faltas do dia: </b>
-                              {row.faltasDia}
-                            </p>
-                            <p style={{ marginRight: '30px' }}>
-                              <b>Jus: </b>
-                              {row.justificativas}
+                              {allAbsences[index].absence}
                             </p>
                             <p>
                               <b>Total: </b>
-                              {row.totalFaltas}
+                              {row.faltas}
                             </p>
                           </div>
                         </StyledTableCell>
@@ -324,6 +496,10 @@ const TeacherFrequency = () => {
       )}
     </div>
   );
+};
+
+TeacherFrequency.propTypes = {
+  teacherInfo: PropTypes.object,
 };
 
 export default TeacherFrequency;

@@ -6,7 +6,7 @@ import styles from './styles.module.css';
 const Footer = ({ studentInfo, teacherInfo, employeeInfo }) => {
   const date = new Date();
 
-  const semester = date.getMonth() < 5 ? '1º' : '1º';
+  const semester = date.getMonth() < 6 ? '1º' : '2º';
   const year = date.getFullYear();
 
   return (
