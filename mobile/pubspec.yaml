@@ -24,6 +24,8 @@ dependencies:
   flutter:
     sdk: flutter
   google_fonts: ^2.0.0
+  http: any
+  flutter_dotenv: ^2.1.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -46,6 +48,7 @@ flutter:
     - assets/images/Inatel_Branco.png
     - assets/images/Lines_Background.png
     - assets/images/reading_book.png
+    - .env
 
   # To add custom fonts to your application, add a fonts section here
   fonts:

@@ -11,4 +11,5 @@ class AppColors {
   static final Color mediumBlue = Color.fromRGBO(6, 92, 190, 0.2);
   static final Color blue = Color(0xFF065CBE);
   static final Color darkBlue = Color(0xFF0054A6);
+  static final Color red = Color(0xFFFF5B1A);
 }

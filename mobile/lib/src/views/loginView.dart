@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mobile/src/components/numberTextField.dart';
 import 'package:mobile/src/core/appTextStyles.dart';
+import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'dart:convert';
 
 class LoginView extends StatefulWidget {
   @override
@@ -8,17 +12,43 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView>{
+  String url = DotEnv().env['URL'] + "/login/student";
   StringBuffer matricula = new StringBuffer();
   StringBuffer senha = new StringBuffer();
   List cursos = [
     'Engenharia da Computação', 'Engenharia Biomédica', 'Engenharia de Automação'
   ];
   String curso;
+  bool error = false;
+
+  Future<bool> login() async {
+    http.Response response = await http.post(
+      Uri.parse(url), 
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: json.encode({
+        "matriculationNumber": int.parse(matricula.toString()),
+        "password": senha.toString()
+      })
+    ); 
+
+    Map data = json.decode(response.body);
+
+    if(data['matriculationNumber'] != null) return true;
+    else{
+      setState(() {
+        error = true;
+      });
+
+      return false;
+    }
+  }
 
   Widget _loginBody(){
     return Container(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 45),
+        padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 30),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -64,28 +94,40 @@ class _LoginViewState extends State<LoginView>{
               alignment: Alignment.bottomLeft,
             ),
 
-            SizedBox(height: 40),
-            ElevatedButton(
-              child: Text(
-                "Entrar".toUpperCase(),
-                style: AppTextStyles.buttonWhite,
-              ),
-              style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.orange),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)
-                  ),
+            SizedBox(height: 5),
+            Container(
+              child: error ? Text(
+                'Usuário e/ou senha incorretos!',
+                style: AppTextStyles.bodyRed14,
+              ) : Text(''),
+              alignment: Alignment.bottomLeft,
+            ),
+
+            SizedBox(height: 20),
+            Container(
+              alignment: Alignment.bottomCenter,
+              child: ElevatedButton(
+                child: Text(
+                  "Entrar".toUpperCase(),
+                  style: AppTextStyles.buttonWhite,
                 ),
-                minimumSize: MaterialStateProperty.all<Size>(Size(400, 60))
+                style: ButtonStyle(
+                  foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                  backgroundColor: MaterialStateProperty.all<Color>(Colors.orange),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)
+                    ),
+                  ),
+                  minimumSize: MaterialStateProperty.all<Size>(Size(400, 60))
+                ),
+                
+                onPressed: () async {
+                  if (await login()) {
+                    Navigator.of(context).pushReplacementNamed('/home');
+                  }
+                },
               ),
-              
-              onPressed: () {
-                if (matricula.toString() == '123' && senha.toString() == '123') {
-                  Navigator.of(context).pushReplacementNamed('/home');
-                }
-              },
             ),
           ],
         ),
@@ -148,5 +190,3 @@ class _LoginViewState extends State<LoginView>{
     );
   }
 }
-
-
