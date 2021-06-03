@@ -30,7 +30,7 @@ const StyledTableRow = withStyles(() => ({
   root: {},
 }))(TableRow);
 
-const Info = () => {
+const Info = ({ classesTaught }) => {
   return (
     <TableContainer
       component={Paper}
@@ -54,7 +54,7 @@ const Info = () => {
               Carga Horária
             </StyledTableCell>
             <StyledTableCell align="center">40</StyledTableCell>
-            <StyledTableCell align="center">8</StyledTableCell>
+            <StyledTableCell align="center">{classesTaught}</StyledTableCell>
           </StyledTableRow>
           <StyledTableRow>
             <StyledTableCell style={{ fontWeight: 600 }}>
@@ -70,14 +70,6 @@ const Info = () => {
             </StyledTableCell>
             <StyledTableCell colSpan={2} align="center">
               0
-            </StyledTableCell>
-          </StyledTableRow>
-          <StyledTableRow>
-            <StyledTableCell style={{ fontWeight: 600 }}>
-              Registro Acadêmico (GRA)
-            </StyledTableCell>
-            <StyledTableCell colSpan={2} align="center">
-              Não
             </StyledTableCell>
           </StyledTableRow>
         </TableBody>

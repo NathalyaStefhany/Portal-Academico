@@ -95,6 +95,7 @@ const TeacherGrades = ({ teacherInfo }) => {
     };
 
     if (subject && allClasses) {
+      setAllStudents([]);
       const classParam = allClasses?.filter(
         (value) => value.subject === subject
       )[0];
@@ -126,7 +127,7 @@ const TeacherGrades = ({ teacherInfo }) => {
           }))
         );
       }
-    }
+    } else setAllTestsCreated([]);
   }, [allStudents]);
 
   function addGrade(mat, grade) {

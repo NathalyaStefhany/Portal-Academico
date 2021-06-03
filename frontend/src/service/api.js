@@ -124,6 +124,14 @@ export const PUT_INSERT_GRADE = (body) => ({
   },
 });
 
+export const PUT_INSERT_FREQUENCY = (body) => ({
+  url: `${API}/class/insertFrequency`,
+  config: {
+    method: 'PUT',
+    data: body,
+  },
+});
+
 export const POST_EMPLOYEE_LOGIN = (body) => ({
   url: `${API}/login/admin`,
   config: {

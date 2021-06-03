@@ -96,8 +96,9 @@ class ClassController {
       const acronym = classParams.Acronym;
       const classParam = classParams.Class;
       const students = classParams.Students;
+      const frequency = classParams.Frequency;
 
-      return response.json({ acronym, classParam, students });
+      return response.json({ acronym, classParam, students, frequency });
     } catch (error) {
       return response.status(500).json({
         message: error.message,
