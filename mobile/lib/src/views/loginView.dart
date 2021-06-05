@@ -48,11 +48,11 @@ class _LoginViewState extends State<LoginView>{
   Widget _loginBody(){
     return Container(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 30),
+        padding: const EdgeInsets.symmetric(horizontal: 30.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(height: MediaQuery.of(context).size.height/3.2),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.1),
             DropdownButtonFormField(
               value: curso,
               onChanged: (value) {
@@ -93,42 +93,7 @@ class _LoginViewState extends State<LoginView>{
               ),
               alignment: Alignment.bottomLeft,
             ),
-
-            SizedBox(height: 5),
-            Container(
-              child: error ? Text(
-                'Usuário e/ou senha incorretos!',
-                style: AppTextStyles.bodyRed14,
-              ) : Text(''),
-              alignment: Alignment.bottomLeft,
-            ),
-
-            SizedBox(height: 20),
-            Container(
-              alignment: Alignment.bottomCenter,
-              child: ElevatedButton(
-                child: Text(
-                  "Entrar".toUpperCase(),
-                  style: AppTextStyles.buttonWhite,
-                ),
-                style: ButtonStyle(
-                  foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                  backgroundColor: MaterialStateProperty.all<Color>(Colors.orange),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15)
-                    ),
-                  ),
-                  minimumSize: MaterialStateProperty.all<Size>(Size(400, 60))
-                ),
-                
-                onPressed: () async {
-                  if (await login()) {
-                    Navigator.of(context).pushReplacementNamed('/home');
-                  }
-                },
-              ),
-            ),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.13),
           ],
         ),
       ),     
@@ -138,6 +103,7 @@ class _LoginViewState extends State<LoginView>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           Container(
@@ -161,7 +127,7 @@ class _LoginViewState extends State<LoginView>{
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 30, left: 40, right: 40),
+            padding: const EdgeInsets.only(top: 40, left: 40, right: 40),
             child: SafeArea(
               top: true,
               child: Column(
@@ -181,9 +147,46 @@ class _LoginViewState extends State<LoginView>{
             ),
           ),
           Container(
-            child: SingleChildScrollView(
-              child: _loginBody()
+            alignment: Alignment(-0.4, 0.4),
+            padding: const EdgeInsets.symmetric(vertical: 30),
+            child: SizedBox(
+              height: 400,
+              child: SingleChildScrollView(
+                  child: _loginBody()
+              ),
             ),
+          ),
+          Container(
+            alignment: Alignment.bottomCenter,
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+            child: ElevatedButton(
+              child: Text(
+                "Entrar".toUpperCase(),
+                style: AppTextStyles.buttonWhite,
+              ),
+              style: ButtonStyle(
+                  foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.orange),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15)),
+                  ),
+                  minimumSize: MaterialStateProperty.all<Size>(Size(400, 60))),
+              onPressed: () async {
+                if (await login()) {
+                  Navigator.of(context).pushReplacementNamed('/home');
+                }
+              },
+            ),
+          ),
+          SizedBox(height: 5),
+          Container(
+            child: error ? Text(
+              'Usuário e/ou senha incorretos!',
+              style: AppTextStyles.bodyRed14,
+            ) : Text(''),
+            alignment: Alignment.bottomCenter,
           ),
         ],
       )
