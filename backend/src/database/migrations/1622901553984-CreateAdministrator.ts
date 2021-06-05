@@ -1,8 +1,8 @@
-import { MigrationInterface } from "typeorm";
+import {MigrationInterface, QueryRunner} from "typeorm";
 import { MongoQueryRunner } from "typeorm/driver/mongodb/MongoQueryRunner";
 import { Administrator } from "../../entities/Administrator";
 
-export class CreateAdministrators1619205490167 implements MigrationInterface {
+export class CreateAdministrator1622901553984 implements MigrationInterface {
 
     public async up(queryRunner: MongoQueryRunner): Promise<void> {
         try {
@@ -18,16 +18,14 @@ export class CreateAdministrators1619205490167 implements MigrationInterface {
                     new Date("26 Feb 1972")
                 )
             );
-            
+
         } catch (error) {
             console.log(error)
         }
-
-
     }
 
-    public async down(queryRunner: MongoQueryRunner): Promise<void> {
-
+    public async down(queryRunner: QueryRunner): Promise<void> {
+        console.log("Administrator migration revert not implemented yet")
     }
 
 }
