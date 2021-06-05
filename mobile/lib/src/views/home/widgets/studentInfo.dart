@@ -3,6 +3,11 @@ import 'package:mobile/src/core/appColors.dart';
 import 'package:mobile/src/core/appTextStyles.dart';
 
 class StudentInfo extends StatelessWidget {
+  final data;
+
+  StudentInfo({this.data});
+  
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -15,7 +20,7 @@ class StudentInfo extends StatelessWidget {
             color: Colors.grey.withOpacity(0.5),
             spreadRadius: 10,
             blurRadius: 7,
-            offset: Offset(0, 3), // changes position of shadow
+            offset: Offset(0, 3),
           ),
         ],
       ),
@@ -45,7 +50,7 @@ class StudentInfo extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.fromLTRB(20, 20, 10, 20),
                     child: Text(
-                      'Olá, João!',
+                      'Olá, ' + data["name"].substring(0, data["name"].indexOf(' ')),
                       textAlign: TextAlign.left,
                       style: AppTextStyles.titleWhite
                     ),
@@ -53,7 +58,7 @@ class StudentInfo extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.fromLTRB(20, 0, 10, 10),
                     child: Text(
-                      'Matricula: 1234', 
+                      'Matricula: ' + data["matriculationNumber"].toString(), 
                       textAlign: TextAlign.left,
                       style: AppTextStyles.bodyWhite
                     ),
@@ -61,7 +66,7 @@ class StudentInfo extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.fromLTRB(20, 0, 10, 5),
                     child: Text(
-                      'joaosilva@gec.inatel.br',
+                      'Curso: ' + data["course"],
                       textAlign: TextAlign.left,
                       style: AppTextStyles.bodyWhite,
                     ),

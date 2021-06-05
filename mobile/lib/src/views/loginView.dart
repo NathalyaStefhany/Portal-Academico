@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:mobile/src/views/home/homeView.dart';
+
 class LoginView extends StatefulWidget {
   @override
   _LoginViewState createState() => _LoginViewState();
@@ -21,6 +23,8 @@ class _LoginViewState extends State<LoginView>{
   String curso;
   bool error = false;
 
+  Map data;
+
   Future<bool> login() async {
     http.Response response = await http.post(
       Uri.parse(url), 
@@ -33,7 +37,9 @@ class _LoginViewState extends State<LoginView>{
       })
     ); 
 
-    Map data = json.decode(response.body);
+    setState(() {
+      data = json.decode(response.body);
+    });
 
     if(data['matriculationNumber'] != null) return true;
     else{
@@ -175,7 +181,9 @@ class _LoginViewState extends State<LoginView>{
                   minimumSize: MaterialStateProperty.all<Size>(Size(400, 60))),
               onPressed: () async {
                 if (await login()) {
-                  Navigator.of(context).pushReplacementNamed('/home');
+                  Navigator.of(context).push(new MaterialPageRoute(
+                    builder: (BuildContext context) => new HomeView(data: data)
+                  ));
                 }
               },
             ),

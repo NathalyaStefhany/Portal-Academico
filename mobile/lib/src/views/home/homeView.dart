@@ -5,10 +5,12 @@ import 'package:mobile/src/views/home/widgets/studentInfo.dart';
 import 'package:mobile/src/views/menuView.dart';
 
 class HomeView extends StatefulWidget {
+  final Map<dynamic, dynamic> data;
+
+  HomeView({this.data});
+
   @override
-  State<StatefulWidget> createState() {
-    return HomeViewState();
-  }
+  HomeViewState createState() => HomeViewState();
 }
 
 class HomeViewState extends State<HomeView> {
@@ -35,7 +37,7 @@ class HomeViewState extends State<HomeView> {
           children: [
             SizedBox(height: 16),
             Container(
-                child: StudentInfo(),
+                child: StudentInfo(data: widget.data),
             ),
             Container(
               child: ClassSchedule(),
