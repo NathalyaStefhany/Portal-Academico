@@ -62,6 +62,7 @@ routes.get(
   studentController.getFrequencies
 );
 routes.get("/student/openingHours/:matriculationNumber", studentController.getOpeningHours);
+routes.get("/student/classes/:matriculationNumber", studentController.listClasses);
 
 //Teacher routes
 routes.post("/teacher", teacherController.create);

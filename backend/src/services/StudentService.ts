@@ -524,6 +524,34 @@ class StudentService {
 
     return openingHours;
   }
+
+  async listClasses(matriculationNumber: number){
+    const student = await this.studentRepository.findOne({
+      MatriculationNumber: matriculationNumber,
+    });
+
+    if (!student) {
+      return 0;
+    }
+
+    let classes = [];
+
+    await Promise.all(student.Classes.map(async (c) => {
+      const result = await this.classRepository.findOne({
+        _id: c.classId
+      });
+
+      const classInfo = {
+        Acronym: result.Class === "" ? result.Acronym : 
+        result.Acronym + "-" + result.Class,
+        ClassId: result._id
+      };
+
+      classes.push(classInfo);
+    }));
+
+    return classes;
+  }
 }
 
 export { StudentService };
