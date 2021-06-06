@@ -1,9 +1,12 @@
 <p align="center"> 
+  <img alt="Node.js CI" src="https://github.com/NathalyaStefhany/Portal-Academico/actions/workflows/node.js.yml/badge.svg">
+  
   <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/NathalyaStefhany/Portal-Academico?color=%2304D361">
  
   <a href="https://github.comNathalyaStefhany/Portal-Academico/commits/master">
     <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/NathalyaStefhany/Portal-Academico">
-  </a> 
+  </a>   
+
 </p>
 
 # Portal Acadêmico
