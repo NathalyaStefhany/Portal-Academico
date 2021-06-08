@@ -5,9 +5,9 @@ import 'package:mobile/src/views/home/widgets/studentInfo.dart';
 import 'package:mobile/src/views/menuView.dart';
 
 class HomeView extends StatefulWidget {
-  final Map<dynamic, dynamic> data;
+  final Map<dynamic, dynamic> studentInfo;
 
-  HomeView({this.data});
+  HomeView({this.studentInfo});
 
   @override
   HomeViewState createState() => HomeViewState();
@@ -19,7 +19,7 @@ class HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: MenuView(),
+      drawer: MenuView(studentInfo: widget.studentInfo),
       appBar: AppBar(
         leading: Builder(
           builder: (context) => IconButton(
@@ -37,7 +37,7 @@ class HomeViewState extends State<HomeView> {
           children: [
             SizedBox(height: 16),
             Container(
-                child: StudentInfo(data: widget.data),
+                child: StudentInfo(studentInfo: widget.studentInfo),
             ),
             Container(
               child: ClassSchedule(),
