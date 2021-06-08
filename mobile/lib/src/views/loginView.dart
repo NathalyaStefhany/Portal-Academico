@@ -23,7 +23,7 @@ class _LoginViewState extends State<LoginView>{
   String curso;
   bool error = false;
 
-  Map data;
+  Map studentInfo;
 
   Future<bool> login() async {
     http.Response response = await http.post(
@@ -38,10 +38,10 @@ class _LoginViewState extends State<LoginView>{
     ); 
 
     setState(() {
-      data = json.decode(response.body);
+      studentInfo = json.decode(response.body);
     });
 
-    if(data['matriculationNumber'] != null) return true;
+    if(studentInfo['matriculationNumber'] != null) return true;
     else{
       setState(() {
         error = true;
@@ -182,7 +182,7 @@ class _LoginViewState extends State<LoginView>{
               onPressed: () async {
                 if (await login()) {
                   Navigator.of(context).push(new MaterialPageRoute(
-                    builder: (BuildContext context) => new HomeView(data: data)
+                    builder: (BuildContext context) => new HomeView(studentInfo: studentInfo)
                   ));
                 }
               },

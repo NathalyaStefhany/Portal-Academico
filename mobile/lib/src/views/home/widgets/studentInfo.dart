@@ -3,11 +3,10 @@ import 'package:mobile/src/core/appColors.dart';
 import 'package:mobile/src/core/appTextStyles.dart';
 
 class StudentInfo extends StatelessWidget {
-  final data;
+  final Map<dynamic, dynamic> studentInfo;
 
-  StudentInfo({this.data});
+  StudentInfo({this.studentInfo});
   
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -50,7 +49,7 @@ class StudentInfo extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.fromLTRB(20, 20, 10, 20),
                     child: Text(
-                      'Olá, ' + data["name"].substring(0, data["name"].indexOf(' ')),
+                      'Olá, ' + studentInfo["name"].substring(0, studentInfo["name"].indexOf(' ')),
                       textAlign: TextAlign.left,
                       style: AppTextStyles.titleWhite
                     ),
@@ -58,7 +57,7 @@ class StudentInfo extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.fromLTRB(20, 0, 10, 10),
                     child: Text(
-                      'Matricula: ' + data["matriculationNumber"].toString(), 
+                      'Matricula: ' + studentInfo["matriculationNumber"].toString(), 
                       textAlign: TextAlign.left,
                       style: AppTextStyles.bodyWhite
                     ),
@@ -66,7 +65,7 @@ class StudentInfo extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.fromLTRB(20, 0, 10, 5),
                     child: Text(
-                      'Curso: ' + data["course"],
+                      'Curso: ' + studentInfo["course"],
                       textAlign: TextAlign.left,
                       style: AppTextStyles.bodyWhite,
                     ),

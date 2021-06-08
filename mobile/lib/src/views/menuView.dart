@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/src/core/appTextStyles.dart';
+import 'package:mobile/src/views/home/homeView.dart';
+import 'package:mobile/src/views/testsView.dart';
 
 class MenuView extends StatelessWidget {
+  final Map<dynamic, dynamic> studentInfo;
+
+  MenuView({this.studentInfo});
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -12,7 +18,9 @@ class MenuView extends StatelessWidget {
             leading: Icon(Icons.home),
             title: Text('Início', style: AppTextStyles.bodyBold),
             onTap: (){
-              Navigator.of(context).pushReplacementNamed('/home');
+              Navigator.of(context).push(new MaterialPageRoute(
+                builder: (BuildContext context) => new HomeView(studentInfo: studentInfo)
+              ));
             },
           ),
           ListTile(
@@ -67,7 +75,9 @@ class MenuView extends StatelessWidget {
             leading: Icon(Icons.text_snippet_outlined),
             title: Text('Provas', style: AppTextStyles.bodyBold),
             onTap: (){
-              Navigator.of(context).pushReplacementNamed('/tests');
+              Navigator.of(context).push(new MaterialPageRoute(
+                builder: (BuildContext context) => new TestsView(studentInfo: studentInfo)
+              ));
             },
           ),
           ListTile(
