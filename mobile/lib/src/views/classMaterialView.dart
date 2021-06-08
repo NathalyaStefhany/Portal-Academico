@@ -1,10 +1,14 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mobile/src/core/appColors.dart';
 import 'package:mobile/src/core/appTextStyles.dart';
 import 'package:mobile/src/views/menuView.dart';
 import 'package:http/http.dart' as http;
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:pdf/pdf.dart';
 
 class Material {
   final String acronym;
@@ -81,16 +85,21 @@ class _ClassMaterialViewState extends State<ClassMaterialView> {
     });
   }
 
+  createPdf() async {
+    
+    setState(() {});
+}
+
   downloadFile(String subject, String docId) async {
     String url;
 
     if (!subject.contains('-')) {
-      url = DotEnv().env['URL'] + '/class/listFiles/$subject/""';
+      url = DotEnv().env['URL'] + '/class/download/$subject/""/$docId';
     } else {
       var fullSubject = subject.split("-");
       String acronym = fullSubject[0].trim();
       String classValue = fullSubject[1].trim();
-      url = DotEnv().env['URL'] + '/class/listFiles/$acronym/$classValue';
+      url = DotEnv().env['URL'] + '/class/download/$acronym/$classValue/$docId';
     }
 
     http.Response response = await http.get(
@@ -99,6 +108,17 @@ class _ClassMaterialViewState extends State<ClassMaterialView> {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
+
+    var result = await json.decode(response.body);
+    print(result[0]["Description"]);
+
+    var bytes = base64Decode(result[0]["Content"]);
+    final output = await getTemporaryDirectory();
+    final file = File("${output.path}/${result[0]["Description"]}");
+    await file.writeAsBytes(bytes.buffer.asUint8List());
+
+    print("${output.path}/${result[0]["Description"]}");
+    await OpenFile.open("${output.path}/${result[0]["Description"]}");
   }
 
   void asyncInit() async {

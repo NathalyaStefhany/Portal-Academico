@@ -274,10 +274,7 @@ class ClassService {
       return 0;
     }
 
-    let buffer = content[0].Content.buffer
-    fs.writeFileSync(process.env.HOME + "\\Downloads\\" + content[0].Description, buffer);
-
-    return {Message: "Download feito com sucesso"}
+    return content;
   }
 
   async listSupplies(acronym: string, classParam: string){
