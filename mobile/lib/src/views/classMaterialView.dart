@@ -85,11 +85,6 @@ class _ClassMaterialViewState extends State<ClassMaterialView> {
     });
   }
 
-  createPdf() async {
-    
-    setState(() {});
-}
-
   downloadFile(String subject, String docId) async {
     String url;
 
