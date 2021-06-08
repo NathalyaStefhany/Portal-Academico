@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mobile/src/core/appColors.dart';
@@ -10,31 +9,28 @@ import 'package:http/http.dart' as http;
 class Material {
   final String acronym;
   final String title;
+  final String docId;
 
-  Material(this.acronym, this.title);
+  Material(this.acronym, this.title, this.docId);
 }
 
 class ClassMaterialView extends StatefulWidget {
-  final Map<dynamic, dynamic> data;
+  final Map<dynamic, dynamic> studentInfo;
 
-  ClassMaterialView({this.data});
+  ClassMaterialView({this.studentInfo});
 
   @override
   _ClassMaterialViewState createState() => _ClassMaterialViewState();
 }
 
 class _ClassMaterialViewState extends State<ClassMaterialView> {
-  final List<Material> material = [
-    Material('C213', 'Aula 1 - Introdução aos Sistemas de Controle.pdf'),
-    Material('C317', 'Aula 1 - Milestone 1 Planejamento.docx')
-  ];
-
+  List<Material> material = [];
   List subjects = [];
-
   String subject = "";
+  String matriculationNumber;
 
-  Future<void> listSubjects() async {
-    String url = DotEnv().env['URL'] + "/student/classes/1420";
+  listSubjects() async {
+    String url = DotEnv().env['URL'] + "/student/classes/$matriculationNumber";
     http.Response response = await http.get(
       Uri.parse(url),
       headers: {
@@ -54,10 +50,74 @@ class _ClassMaterialViewState extends State<ClassMaterialView> {
     });
   }
 
+  listMaterial(String subject) async {
+    String url;
+
+    if (!subject.contains('-')) {
+      url = DotEnv().env['URL'] + '/class/listFiles/$subject/""';
+    } else {
+      var fullSubject = subject.split("-");
+      String acronym = fullSubject[0].trim();
+      String classValue = fullSubject[1].trim();
+      url = DotEnv().env['URL'] + '/class/listFiles/$acronym/$classValue';
+    }
+
+    http.Response response = await http.get(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    List result = await json.decode(response.body);
+    List<Material> materialsOfGet = [];
+
+    result.forEach((mat) {
+      materialsOfGet.add(new Material(subject, mat["Description"], mat["_id"]));
+    });
+
+    setState(() {
+      material = materialsOfGet;
+    });
+  }
+
+  downloadFile(String subject, String docId) async {
+    String url;
+
+    if (!subject.contains('-')) {
+      url = DotEnv().env['URL'] + '/class/listFiles/$subject/""';
+    } else {
+      var fullSubject = subject.split("-");
+      String acronym = fullSubject[0].trim();
+      String classValue = fullSubject[1].trim();
+      url = DotEnv().env['URL'] + '/class/listFiles/$acronym/$classValue';
+    }
+
+    http.Response response = await http.get(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+  }
+
+  void asyncInit() async {
+    await listSubjects();
+    await listMaterial(subject);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    matriculationNumber = widget.studentInfo["matriculationNumber"].toString();
+    asyncInit();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: MenuView(),
+        drawer: MenuView(studentInfo: widget.studentInfo),
         appBar: AppBar(
           leading: Builder(
               builder: (context) => IconButton(
@@ -81,6 +141,7 @@ class _ClassMaterialViewState extends State<ClassMaterialView> {
                   onChanged: (value) {
                     setState(() {
                       subject = value;
+                      listMaterial(subject);
                     });
                   },
                   focusColor: AppColors.green,
@@ -161,7 +222,7 @@ class _ClassMaterialViewState extends State<ClassMaterialView> {
                                     color: AppColors.darkBlue,
                                   ),
                                   onPressed: () {
-                                    listSubjects();
+                                    downloadFile(material[i].acronym, material[i].docId);
                                   })
                             ])
                     ],

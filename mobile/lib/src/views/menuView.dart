@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/src/core/appTextStyles.dart';
+import 'package:mobile/src/views/classMaterialView.dart';
 import 'package:mobile/src/views/home/homeView.dart';
 import 'package:mobile/src/views/testsView.dart';
 
@@ -30,7 +31,9 @@ class MenuView extends StatelessWidget {
             leading: Icon(Icons.folder_open),
             title: Text('Material de Aula', style: AppTextStyles.bodyBold),
             onTap: (){
-              Navigator.of(context).pushReplacementNamed('/classMaterial');
+              Navigator.of(context).push(new MaterialPageRoute(
+                builder: (BuildContext context) => new ClassMaterialView(studentInfo: studentInfo)
+              ));
             },
           ),
           ListTile(
