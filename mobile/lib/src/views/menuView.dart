@@ -5,6 +5,7 @@ import 'package:mobile/src/views/frequencyView.dart';
 import 'package:mobile/src/views/gradeView.dart';
 import 'package:mobile/src/views/historicView.dart';
 import 'package:mobile/src/views/home/homeView.dart';
+import 'package:mobile/src/views/replacementView.dart';
 import 'package:mobile/src/views/testsView.dart';
 
 class MenuView extends StatelessWidget {
@@ -96,7 +97,9 @@ class MenuView extends StatelessWidget {
             leading: Icon(Icons.event),
             title: Text('Reposição de Aula', style: AppTextStyles.bodyBold),
             onTap: (){
-              Navigator.of(context).pushReplacementNamed('/replacement');
+              Navigator.of(context).push(new MaterialPageRoute(
+                builder: (BuildContext context) => new ReplacementView(studentInfo: studentInfo)
+              ));
             },
           ),
         ],
