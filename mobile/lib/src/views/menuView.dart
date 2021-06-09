@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/src/core/appTextStyles.dart';
 import 'package:mobile/src/views/classMaterialView.dart';
+import 'package:mobile/src/views/frequencyView.dart';
 import 'package:mobile/src/views/home/homeView.dart';
 import 'package:mobile/src/views/testsView.dart';
 
@@ -47,7 +48,9 @@ class MenuView extends StatelessWidget {
             leading: Icon(Icons.date_range),
             title: Text('Frequência', style: AppTextStyles.bodyBold),
             onTap: (){
-              Navigator.of(context).pushReplacementNamed('/frequency');
+              Navigator.of(context).push(new MaterialPageRoute(
+                builder: (BuildContext context) => new FrequencyView(studentInfo: studentInfo)
+              ));
             },
           ),
           ListTile(
