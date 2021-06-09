@@ -28,10 +28,7 @@ class FrequencyView extends StatefulWidget {
 }
 
 class _FrequencyViewState extends State<FrequencyView> {
-  List<Subject> frequency = [
-    Subject('C115', 'L2', 2, 10, 20),
-    Subject('C213', '', 4, 12, 80),
-  ];
+  List<Subject> frequency = [];
   String matriculationNumber;
 
   getFrequency() async {
