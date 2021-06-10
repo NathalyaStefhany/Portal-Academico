@@ -40,7 +40,7 @@ class HomeViewState extends State<HomeView> {
                 child: StudentInfo(studentInfo: widget.studentInfo),
             ),
             Container(
-              child: ClassSchedule(),
+              child: ClassSchedule(studentInfo: widget.studentInfo),
             )
           ],
         ),
