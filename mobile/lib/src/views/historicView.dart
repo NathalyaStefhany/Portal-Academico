@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mobile/src/core/appColors.dart';
 import 'package:mobile/src/core/appTextStyles.dart';
 import 'package:mobile/src/views/menuView.dart';
+import 'package:http/http.dart' as http;
 
 class FinalGrades {
   final String subject;
@@ -11,27 +15,61 @@ class FinalGrades {
   FinalGrades(this.subject, this.grade, this.semester);
 }
 
-class HistoricView extends StatelessWidget {
-  final List<FinalGrades> historic = [
-      FinalGrades('Introdução à Engenharia', '100', '2017/1'),
-      FinalGrades('Algoritmos e Estruturas de Dados I', '100', '2017/1'),
-      FinalGrades('Circuitos Elétricos I', '100', '2017/1'),
-      FinalGrades('Matemática', '100', '2017/1'),
-      FinalGrades('Álgebra e Geometria Analítica', '100', '2017/1'),
-      FinalGrades('Atividades Complementares', '100', '2017/1'),
-      FinalGrades('Algoritmos e Estrutura de Dados II', '100', '2017/1'),
-      FinalGrades('Desenho', '100', '2017/1'),
-      FinalGrades('Circuitos Elétricos II', '100', '2017/1'),
-      FinalGrades('Eletrônica Analógica I', '100', '2017/1'),
-      FinalGrades('Física I', '100', '2017/1'),
-      FinalGrades('Cálculo I', '100', '2017/1'),
-      FinalGrades('Química e Ciências dos Materiais', '100', '2017/1'),
-  ];
+class HistoricView extends StatefulWidget {
+  final Map<dynamic, dynamic> studentInfo;
+
+  const HistoricView({ this.studentInfo });
+
+  @override
+  _HistoricViewState createState() => _HistoricViewState();
+}
+
+class _HistoricViewState extends State<HistoricView> {
+  String matriculationNumber;
+  List<FinalGrades> historic = [];
+
+  getHistoric() async {
+    String url = DotEnv().env['URL'] + "/historic/$matriculationNumber";
+
+    http.Response response = await http.get(
+      Uri.parse(url), 
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      }
+    ); 
+
+    Map<dynamic, dynamic> data = json.decode(response.body);
+
+    List<FinalGrades> finalList = [];
+
+    for(var i = 0; i < data["Subjects"].length; i++){
+      finalList.add(
+        FinalGrades(
+          data["Subjects"][i]["SubjectName"], 
+          data["Subjects"][i]["GradeValue"].toString(), 
+          data["Subjects"][i]["SemesterYear"]
+        )
+      );
+    }
+
+    setState(() {
+      historic = finalList;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    matriculationNumber = widget.studentInfo["matriculationNumber"].toString();
+
+    getHistoric();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: MenuView(),
+      drawer: MenuView(studentInfo: widget.studentInfo,),
       appBar: AppBar(
         leading: Builder(
           builder: (context) => IconButton(

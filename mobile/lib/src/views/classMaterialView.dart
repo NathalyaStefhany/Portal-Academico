@@ -8,7 +8,6 @@ import 'package:mobile/src/views/menuView.dart';
 import 'package:http/http.dart' as http;
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:pdf/pdf.dart';
 
 class Material {
   final String acronym;

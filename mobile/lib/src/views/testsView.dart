@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:intl/intl.dart';
 import 'package:mobile/src/core/appColors.dart';
 import 'package:mobile/src/core/appTextStyles.dart';
 import 'package:mobile/src/views/menuView.dart';
@@ -46,9 +47,9 @@ class _TestsViewState extends State<TestsView> {
     for(var i = 0; i < data.length; i++){
       for(var j = 0; j < data[i]["TestInf"].length; j++){
         String classParam = data[i]["Class"] != "" ? " - ${data[i]["Class"]}" : "";
-        String date = data[i]["TestInf"][j]["Date"].substring(8, 10) + '/' + 
-          data[i]["TestInf"][j]["Date"].substring(5, 7) + '/' + 
-          data[i]["TestInf"][j]["Date"].substring(0, 4);
+        String date = DateFormat("dd/MM/yyyy").format(
+          DateTime.parse(data[i]["TestInf"][j]["Date"].toString())
+        );
 
         finalList.add(Test(data[i]["TestInf"][j]["TestName"], data[i]["Acronym"] + classParam, date, data[i]["TestInf"][j]["Local"]));
       }
