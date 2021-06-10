@@ -6,6 +6,7 @@ import 'package:mobile/src/views/frequencyView.dart';
 import 'package:mobile/src/views/gradeView.dart';
 import 'package:mobile/src/views/historicView.dart';
 import 'package:mobile/src/views/home/homeView.dart';
+import 'package:mobile/src/views/openingHoursView.dart';
 import 'package:mobile/src/views/replacementView.dart';
 import 'package:mobile/src/views/testsView.dart';
 
@@ -84,7 +85,9 @@ class MenuView extends StatelessWidget {
             leading: Icon(Icons.access_time),
             title: Text('Horário de Atendimento', style: AppTextStyles.bodyBold),
             onTap: (){
-              Navigator.of(context).pushReplacementNamed('/openingHours');
+              Navigator.of(context).push(new MaterialPageRoute(
+                builder: (BuildContext context) => new OpeningHoursView(studentInfo: studentInfo)
+              ));
             },
           ),
           ListTile(
