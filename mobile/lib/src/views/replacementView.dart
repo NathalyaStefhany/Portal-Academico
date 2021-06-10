@@ -11,8 +11,9 @@ import 'package:intl/intl.dart';
 class Replacement {
   final String subject;
   final String date;
+  final String hour;
 
-  Replacement(this.subject, this.date);
+  Replacement(this.subject, this.date, this.hour);
 }
 
 class ReplacementView extends StatefulWidget {
@@ -50,7 +51,7 @@ class _ReplacementViewState extends State<ReplacementView> {
 
       String date = DateFormat("dd/MM/yyyy").format(DateTime.parse(rep["Date"].toString()));
 
-      replacementsOfGet.add(new Replacement(acronym, date));
+      replacementsOfGet.add(new Replacement(acronym, date, rep["Hour"]));
       
     });
 
@@ -106,13 +107,16 @@ class _ReplacementViewState extends State<ReplacementView> {
                                   color: AppColors.darkBlue, width: 2))),
                       children: [
                         Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8),
-                            child: Text('Turma',
-                                style: AppTextStyles.bodyBlue16,
-                                textAlign: TextAlign.center)),
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          child: Text('Turma',
+                              style: AppTextStyles.bodyBlue16,
+                              textAlign: TextAlign.center)),
                         Text('Data',
-                            style: AppTextStyles.bodyBlue16,
-                            textAlign: TextAlign.center),
+                          style: AppTextStyles.bodyBlue16,
+                          textAlign: TextAlign.center),
+                        Text('Hora',
+                          style: AppTextStyles.bodyBlue16,
+                          textAlign: TextAlign.center),
                       ]),
                   for (var i = 0; i < replacements.length; i++)
                     TableRow(children: [
@@ -126,6 +130,11 @@ class _ReplacementViewState extends State<ReplacementView> {
                       ),
                       Text(
                         replacements[i].date,
+                        style: AppTextStyles.body,
+                        textAlign: TextAlign.center,
+                      ),
+                      Text(
+                        replacements[i].hour,
                         style: AppTextStyles.body,
                         textAlign: TextAlign.center,
                       ),
