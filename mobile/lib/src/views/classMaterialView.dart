@@ -237,6 +237,17 @@ class _ClassMaterialViewState extends State<ClassMaterialView> {
                                   ),
                                   onPressed: () {
                                     downloadFile(material[i].acronym, material[i].docId);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text("Download iniciado..."),
+                                        backgroundColor: Colors.blue[900],
+                                        elevation: 100.0,
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80)),
+                                        behavior: SnackBarBehavior.floating,
+                                        duration: Duration(seconds: 2),
+
+                                      )
+                                    );
                                   })
                             ])
                     ],
