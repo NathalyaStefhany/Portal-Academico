@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 import {
   withStyles,
@@ -17,10 +18,19 @@ import {
 
 import download from '../../assets/icons/download.svg';
 
+import useFetch from '../../hooks/useFetch';
+import {
+  GET_STUDENT_CLASSES,
+  GET_STUDENT_DOWNLOAD_MATERIAL,
+  GET_STUDENT_MATERIALS,
+} from '../../service/api';
+
+import FormatDateToShow from '../../utils/FormatDateToShow';
+
 import styles from './styles.module.css';
 
-const ClassMaterial = () => {
-  const [subject, setSubject] = useState();
+const ClassMaterial = ({ studentInfo }) => {
+  const [subject, setSubject] = useState('');
   const [page, setPage] = useState(0);
   const rowsPerPage = 6;
 
@@ -45,46 +55,95 @@ const ClassMaterial = () => {
     },
   }))(TableRow);
 
-  const rows = [
-    {
-      sigla: 'C317',
-      titulo: 'Milestone III - Relatório de Design de Projeto.pdf',
-      data: '19/03/2021',
-    },
-    {
-      sigla: 'C213',
-      titulo: 'Aula 1 - Introducao aos Sistemas de Controle.pdf',
-      data: '15/03/2021',
-    },
-    {
-      sigla: 'C213',
-      titulo: 'Aula 2 - Modelagem e Identificacao de Sistemas.pdf',
-      data: '08/03/2021',
-    },
-    {
-      sigla: 'C317',
-      titulo: 'Milestone III - Relatório de Design de Projeto.pdf',
-      data: '19/03/2021',
-    },
-    {
-      sigla: 'C213',
-      titulo: 'Aula 1 - Introducao aos Sistemas de Controle.pdf',
-      data: '15/03/2021',
-    },
-    {
-      sigla: 'C213',
-      titulo: 'Aula 2 - Modelagem e Identificacao de Sistemas.pdf',
-      data: '08/03/2021',
-    },
-    {
-      sigla: 'C213',
-      titulo: 'Aula 2 - Modelagem e Identificacao de Sistemas.pdf',
-      data: '08/03/2021',
-    },
-  ];
+  const [allSubjects, setAllSubjects] = useState([]);
+  const [allMaterials, setAllMaterials] = useState([]);
+  const [downloadId, setDownloadId] = useState();
+
+  const { request } = useFetch();
+
+  useEffect(() => {
+    const sendRequest = async () => {
+      const { url: url, config: config } = GET_STUDENT_CLASSES(
+        studentInfo.matriculationNumber
+      );
+
+      const { json, error } = await request(url, config);
+
+      if (!error && json.length) {
+        setSubject(json[0]?.Acronym);
+        setAllSubjects(json);
+      }
+    };
+
+    sendRequest();
+  }, []);
+
+  useEffect(() => {
+    if (subject !== '') {
+      setAllMaterials([]);
+
+      const sendRequest = async () => {
+        const subjectSplit = subject.split('-');
+
+        const acronym = subjectSplit[0];
+        const classParam = subjectSplit.length > 1 ? subjectSplit[1] : '""';
+
+        const { url: url, config: config } = GET_STUDENT_MATERIALS(
+          acronym,
+          classParam
+        );
+
+        const { json, error } = await request(url, config);
+
+        if (!error && json.length) {
+          setAllMaterials(json);
+        }
+      };
+
+      sendRequest();
+    }
+  }, [subject]);
+
+  useEffect(() => {
+    if (downloadId) {
+      const sendRequest = async () => {
+        const subjectSplit = subject.split('-');
+
+        const acronym = subjectSplit[0];
+        const classParam = subjectSplit.length > 1 ? subjectSplit[1] : '""';
+
+        const { url: url, config: config } = GET_STUDENT_DOWNLOAD_MATERIAL(
+          acronym,
+          classParam,
+          downloadId
+        );
+
+        const { json, error } = await request(url, config);
+
+        if (!error && json.length) {
+          var byteCharacters = atob(json[0]?.Content);
+          var byteNumbers = new Array(byteCharacters.length);
+
+          for (var i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+          }
+
+          var byteArray = new Uint8Array(byteNumbers);
+          var file = new Blob([byteArray], { type: 'application/pdf;base64' });
+          var fileURL = URL.createObjectURL(file);
+          window.open(fileURL);
+        }
+
+        setDownloadId();
+      };
+
+      sendRequest();
+    }
+  }, [downloadId]);
 
   const emptyRows =
-    rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+    rowsPerPage -
+    Math.min(rowsPerPage, allMaterials.length - page * rowsPerPage);
 
   const arr = [1, 1, 1, 1, 1, 1];
 
@@ -108,10 +167,9 @@ const ClassMaterial = () => {
             onChange={(value) => setSubject(value.target.value)}
             label="Disciplina"
           >
-            <option value="Todas">Todas</option>
-            <option value="C115">C115</option>
-            <option value="C213">C213</option>
-            <option value="C317">C317</option>
+            {allSubjects.map((sub) => (
+              <option value={sub.Acronym}>{sub.Acronym}</option>
+            ))}
           </Select>
         </FormControl>
 
@@ -130,24 +188,24 @@ const ClassMaterial = () => {
               </TableHead>
 
               <TableBody>
-                {rows
+                {allMaterials
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => (
-                    <StyledTableRow key={row.turma}>
+                    <StyledTableRow key={row._id}>
                       <StyledTableCell align="center">
-                        {row.sigla}
+                        {subject}
                       </StyledTableCell>
 
                       <StyledTableCell align="left">
-                        {row.titulo}
+                        {row.Description}
                       </StyledTableCell>
 
                       <StyledTableCell align="center">
-                        {row.data}
+                        {FormatDateToShow(row.CreationDate)}
                       </StyledTableCell>
 
                       <StyledTableCell align="center">
-                        <button>
+                        <button onClick={() => setDownloadId(row._id)}>
                           <img src={download} />
                         </button>
                       </StyledTableCell>
@@ -171,7 +229,7 @@ const ClassMaterial = () => {
 
           <TablePagination
             component="div"
-            count={rows.length}
+            count={allSubjects.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onChangePage={(value, newPage) => setPage(newPage)}
@@ -181,6 +239,10 @@ const ClassMaterial = () => {
       </div>
     </div>
   );
+};
+
+ClassMaterial.propTypes = {
+  studentInfo: PropTypes.object,
 };
 
 export default ClassMaterial;

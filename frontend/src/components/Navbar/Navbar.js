@@ -127,7 +127,7 @@ const Navbar = () => {
                 <Link
                   to="/aluno/matricula"
                   className={styles.menuItem}
-                  onClick={() => setClassIsOpen(false)}
+                  onClick={() => setMatIsOpen(false)}
                 >
                   Matrícula
                 </Link>
@@ -135,7 +135,7 @@ const Navbar = () => {
                 <Link
                   to="/aluno/requisitos"
                   className={styles.menuItem}
-                  onClick={() => setClassIsOpen(false)}
+                  onClick={() => setMatIsOpen(false)}
                 >
                   Quadro de Pré/Co-Requisitos
                 </Link>
@@ -143,7 +143,7 @@ const Navbar = () => {
                 <Link
                   to="/aluno/historico"
                   className={styles.menuItem}
-                  onClick={() => setClassIsOpen(false)}
+                  onClick={() => setMatIsOpen(false)}
                 >
                   Histórico
                 </Link>
@@ -151,7 +151,7 @@ const Navbar = () => {
                 <Link
                   to="/aluno/coeficiente"
                   className={styles.menuItem}
-                  onClick={() => setClassIsOpen(false)}
+                  onClick={() => setMatIsOpen(false)}
                 >
                   Coeficiente Acadêmico
                 </Link>

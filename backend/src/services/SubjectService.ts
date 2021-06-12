@@ -140,7 +140,7 @@ class SubjectService {
     classes.push(
       await Promise.all(
         classIds.map(async (id) => {
-          return await this.classRepository.findOne({_id: id});
+          return await this.classRepository.findOne({ _id: id });
         })
       )
     );

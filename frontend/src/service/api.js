@@ -86,6 +86,27 @@ export const GET_STUDENT_FREQUENCY = (matriculationNumber) => ({
   },
 });
 
+export const GET_STUDENT_CLASSES = (matriculationNumber) => ({
+  url: `${API}/student/classes/${matriculationNumber}`,
+  config: {
+    method: 'GET',
+  },
+});
+
+export const GET_STUDENT_MATERIALS = (acronym, classParam) => ({
+  url: `${API}/class/listFiles/${acronym}/${classParam}`,
+  config: {
+    method: 'GET',
+  },
+});
+
+export const GET_STUDENT_DOWNLOAD_MATERIAL = (acronym, classParam, id) => ({
+  url: `${API}/class/download/${acronym}/${classParam}/${id}`,
+  config: {
+    method: 'GET',
+  },
+});
+
 export const POST_TEACHER_LOGIN = (body) => ({
   url: `${API}/login/teacher`,
   config: {
