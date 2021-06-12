@@ -18,16 +18,16 @@ class Schedule {
       this.horario, this.seg, this.ter, this.qua, this.qui, this.sex, this.sab);
 }
 
-class ClassSchedule extends StatefulWidget {
+class OpenSchedule extends StatefulWidget {
   final Map<dynamic, dynamic> studentInfo;
 
-  ClassSchedule({this.studentInfo});
+  OpenSchedule({this.studentInfo});
 
   @override
-  _ClassScheduleViewState createState() => _ClassScheduleViewState();
+  _OpenScheduleViewState createState() => _OpenScheduleViewState();
 }
 
-class _ClassScheduleViewState extends State<ClassSchedule> {
+class _OpenScheduleViewState extends State<OpenSchedule> {
   String matriculationNumber;
   String link;
   List<Schedule> schedule = [
@@ -47,7 +47,7 @@ class _ClassScheduleViewState extends State<ClassSchedule> {
 
   getFrequency() async {
     String url =
-        DotEnv().env['URL'] + "/student/timeTable/$matriculationNumber";
+        DotEnv().env['URL'] + "/student/openingHours/$matriculationNumber";
     http.Response response = await http.get(
       Uri.parse(url),
       headers: {
@@ -147,10 +147,6 @@ class _ClassScheduleViewState extends State<ClassSchedule> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Horário do Semestre', style: AppTextStyles.heading),
-            SizedBox(
-              height: 10,
-            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 5),
               child: Container(
