@@ -121,17 +121,27 @@ const ClassMaterial = ({ studentInfo }) => {
         const { json, error } = await request(url, config);
 
         if (!error && json.length) {
-          var byteCharacters = atob(json[0]?.Content);
-          var byteNumbers = new Array(byteCharacters.length);
+          const byteCharacters = atob(json[0]?.Content);
+          const byteNumbers = new Array(byteCharacters.length);
 
-          for (var i = 0; i < byteCharacters.length; i++) {
+          for (let i = 0; i < byteCharacters.length; i++) {
             byteNumbers[i] = byteCharacters.charCodeAt(i);
           }
 
-          var byteArray = new Uint8Array(byteNumbers);
-          var file = new Blob([byteArray], { type: 'application/pdf;base64' });
-          var fileURL = URL.createObjectURL(file);
-          window.open(fileURL);
+          const byteArray = new Uint8Array(byteNumbers);
+          const file = new Blob([byteArray], {
+            type: 'application/pdf;base64',
+          });
+          const link = document.createElement('a');
+          const fileURL = URL.createObjectURL(file);
+
+          link.setAttribute('href', fileURL);
+          link.setAttribute('download', `${json[0]?.Description}`);
+          link.style.visibility = 'hidden';
+
+          document.body.appendChild(link);
+
+          link.click();
         }
 
         setDownloadId();
@@ -212,7 +222,7 @@ const ClassMaterial = ({ studentInfo }) => {
                     </StyledTableRow>
                   ))}
 
-                {arr.map((element, index) => {
+                {arr.map((_, index) => {
                   return (
                     <>
                       {index < emptyRows && (
@@ -229,10 +239,10 @@ const ClassMaterial = ({ studentInfo }) => {
 
           <TablePagination
             component="div"
-            count={allSubjects.length}
+            count={allMaterials.length}
             rowsPerPage={rowsPerPage}
             page={page}
-            onChangePage={(value, newPage) => setPage(newPage)}
+            onChangePage={(_, newPage) => setPage(newPage)}
             rowsPerPageOptions={[]}
           />
         </div>
