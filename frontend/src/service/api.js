@@ -153,6 +153,14 @@ export const PUT_INSERT_FREQUENCY = (body) => ({
   },
 });
 
+export const POST_INSERT_MATERIAL = (acronym, classParam, data) => ({
+  url: `${API}/class/upload/${acronym}/${classParam}`,
+  config: {
+    method: 'POST',
+    data: data,
+  },
+});
+
 export const POST_EMPLOYEE_LOGIN = (body) => ({
   url: `${API}/login/admin`,
   config: {

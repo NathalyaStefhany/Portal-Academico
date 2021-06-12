@@ -1,15 +1,42 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+
+import Modal from '../../../components/Modal/Modal';
+import Button from '../../../components/Button/Button';
+
+import useFetch from '../../../hooks/useFetch';
+import { POST_INSERT_MATERIAL } from '../../../service/api';
 
 import styles from './styles.module.css';
 
-const Upload = ({ subject, setNewMaterial }) => {
-  const classes = [
-    {
-      subject: 'C210',
-      class: ['L1', 'L2', 'L3'],
-    },
-    { subject: 'S201', class: ['A', 'B'] },
-  ];
+const Upload = ({ subject, setNewUpload }) => {
+  const [newMaterial, setNewMaterial] = useState();
+  const [upload, setUpload] = useState(false);
+  const [modal, setModal] = useState(false);
+
+  const { request } = useFetch();
+
+  const uploadMaterial = async (data) => {
+    const subjectSplit = subject.split(' ');
+
+    const acronym = subjectSplit[0];
+    const classParam = subjectSplit.length > 1 ? subjectSplit[2] : '""';
+
+    const { url, config } = POST_INSERT_MATERIAL(acronym, classParam, data);
+
+    const { json, error } = await request(url, config);
+  };
+
+  useEffect(() => {
+    if (upload) {
+      const data = new FormData();
+      data.append('uploadedFile', newMaterial, newMaterial.name);
+
+      uploadMaterial(data);
+
+      setUpload(false);
+      setModal(true);
+    }
+  }, [upload]);
 
   return (
     <div className={styles.upload}>
@@ -36,7 +63,11 @@ const Upload = ({ subject, setNewMaterial }) => {
         }}
       >
         <b style={{ marginRight: '8px' }}>Arquivo: </b>
-        <input type="file" className={styles.inputFile} />
+        <input
+          type="file"
+          className={styles.inputFile}
+          onChange={(value) => setNewMaterial(value.target.files[0])}
+        />
       </div>
 
       <div
@@ -46,22 +77,7 @@ const Upload = ({ subject, setNewMaterial }) => {
           marginLeft: '24px',
           alignItems: 'center',
         }}
-      >
-        <b style={{ marginRight: '10px' }}>Turmas: </b>
-        {classes
-          .filter((value) => value.subject === subject)[0]
-          .class.map((e) => (
-            <>
-              <input
-                type="checkbox"
-                style={{ width: '18px', height: '18px' }}
-              />
-              <label style={{ marginLeft: '5px', marginRight: '20px' }}>
-                {e}
-              </label>
-            </>
-          ))}
-      </div>
+      ></div>
 
       <div
         style={{
@@ -71,9 +87,25 @@ const Upload = ({ subject, setNewMaterial }) => {
           justifyContent: 'space-around',
         }}
       >
-        <button>CONFIRMAR UPLOAD</button>
-        <button onClick={() => setNewMaterial(false)}>CANCELAR UPLOAD</button>
+        <button onClick={() => setUpload(true)}>CONFIRMAR UPLOAD</button>
+        <button onClick={() => setNewUpload(false)}>CANCELAR UPLOAD</button>
       </div>
+
+      {modal && (
+        <Modal height="150px">
+          <div className={styles.modal}>
+            <p className={styles.created}>Upload realizado com sucesso!</p>
+
+            <Button
+              title="FECHAR"
+              onClick={() => {
+                setModal(false);
+                setNewUpload(false);
+              }}
+            />
+          </div>
+        </Modal>
+      )}
     </div>
   );
 };

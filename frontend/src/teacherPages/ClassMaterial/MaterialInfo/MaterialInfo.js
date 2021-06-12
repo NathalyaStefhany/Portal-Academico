@@ -2,30 +2,7 @@ import React from 'react';
 
 import styles from './styles.module.css';
 
-const MaterialInfo = ({ subject, idMaterial, setMaterialInfo }) => {
-  const infos = [
-    {
-      subject: 'C210',
-      idMaterial: 0,
-      title: 'Aula 1 - Apresentação.pdf',
-      selectedClass: ['L1', 'L2'],
-    },
-    {
-      subject: 'C210',
-      idMaterial: 1,
-      title: 'Aula 2 - Introdução.pdf',
-      selectedClass: ['L1'],
-    },
-  ];
-
-  const classes = [
-    {
-      subject: 'C210',
-      class: ['L1', 'L2', 'L3'],
-    },
-    { subject: 'S201', class: ['A', 'B'] },
-  ];
-
+const MaterialInfo = ({ subject, title, setMaterialInfo }) => {
   return (
     <div className={styles.upload}>
       <div className={styles.uploadTitle}>
@@ -51,7 +28,7 @@ const MaterialInfo = ({ subject, idMaterial, setMaterialInfo }) => {
         }}
       >
         <b style={{ marginRight: '8px' }}>Arquivo: </b>
-        <p>{infos.filter((info) => info.idMaterial === idMaterial)[0].title}</p>
+        <p>{title}</p>
       </div>
 
       <div
@@ -63,24 +40,15 @@ const MaterialInfo = ({ subject, idMaterial, setMaterialInfo }) => {
         }}
       >
         <b style={{ marginRight: '10px' }}>Turmas: </b>
-        {classes
-          .filter((value) => value.subject === subject)[0]
-          .class.map((e) => (
-            <>
-              <input
-                type="checkbox"
-                checked={
-                  infos
-                    .filter((info) => info.idMaterial === idMaterial)[0]
-                    .selectedClass.indexOf(e) !== -1
-                }
-                style={{ width: '18px', height: '18px' }}
-              />
-              <label style={{ marginLeft: '5px', marginRight: '20px' }}>
-                {e}
-              </label>
-            </>
-          ))}
+        <input
+          type="checkbox"
+          checked
+          style={{ width: '18px', height: '18px' }}
+        />
+        <label style={{ marginLeft: '5px', marginRight: '20px' }}>A</label>
+
+        <input type="checkbox" style={{ width: '18px', height: '18px' }} />
+        <label style={{ marginLeft: '5px', marginRight: '20px' }}>B</label>
       </div>
 
       <div

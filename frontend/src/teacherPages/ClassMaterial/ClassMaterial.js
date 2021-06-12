@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 
 import {
   List,
@@ -11,33 +12,98 @@ import {
 import selectOpen from '../../assets/icons/selectOpen.svg';
 import selectClose from '../../assets/icons/selectClose.svg';
 
+import useFetch from '../../hooks/useFetch';
+
 import styles from './styles.module.css';
 import Upload from './Upload/Upload';
 import MaterialInfo from './MaterialInfo/MaterialInfo';
+import {
+  GET_CLASS,
+  GET_STUDENT_MATERIALS,
+  GET_TEACHER,
+} from '../../service/api';
 
-const ClassMaterial = () => {
+const ClassMaterial = ({ teacherInfo }) => {
   const [isOpen, setIsOpen] = useState({});
   const [newMaterial, setNewMaterial] = useState(false);
   const [materialInfo, setMaterialInfo] = useState(false);
   const [subject, setSubject] = useState({});
-  const [idMaterial, setIdMaterial] = useState();
+  const [material, setMaterial] = useState();
 
-  const allMaterials = [
-    {
-      subject: 'C210',
-      materials: [
-        { title: 'Aula 1 - Apresentação.pdf' },
-        { title: 'Aula 2 - Introdução.pdf' },
-      ],
-    },
-    { subject: 'S201', materials: [] },
-  ];
+  const [allClassesId, setAllClassesId] = useState([]);
+  const [allMaterials, setAllMaterials] = useState([]);
+
+  const { request } = useFetch();
 
   useEffect(() => {
     allMaterials.map((value) =>
       setIsOpen((element) => ({ ...element, [value.subject]: false }))
     );
+  }, [allMaterials]);
+
+  useEffect(() => {
+    const sendRequest = async () => {
+      const { url, config } = GET_TEACHER(teacherInfo.employeeNumber);
+
+      const { json, error } = await request(url, config);
+
+      if (!error && json) {
+        setAllClassesId(json.Classes);
+      }
+    };
+
+    sendRequest();
   }, []);
+
+  const getClassInfo = async (id) => {
+    const { url, config } = GET_CLASS(id);
+
+    const { json, error } = await request(url, config);
+
+    if (!error && json) {
+      const classParam = json.classParam ? ` - ${json.classParam}` : '';
+      const subject = json.acronym + classParam;
+
+      return { subject: subject };
+    }
+  };
+
+  const getAllMaterial = async (sub) => {
+    const subjectSplit = sub.split(' ');
+
+    const acronym = subjectSplit[0];
+    const classParam = subjectSplit.length > 1 ? subjectSplit[2] : '""';
+
+    const { url, config } = GET_STUDENT_MATERIALS(acronym, classParam);
+
+    const { json, error } = await request(url, config);
+
+    if (!error && json.length) {
+      const materials = json.map((mat) => {
+        return {
+          title: mat.Description,
+        };
+      });
+
+      return materials;
+    }
+  };
+
+  useEffect(async () => {
+    if (allClassesId.length && !newMaterial) {
+      const subjectMaterial = await Promise.all(
+        allClassesId.map((classId) => getClassInfo(classId))
+      );
+
+      subjectMaterial.forEach(async (element, index) => {
+        subjectMaterial[index].materials = await getAllMaterial(
+          element.subject
+        );
+      });
+
+      setAllMaterials(subjectMaterial);
+    }
+  }, [allClassesId, newMaterial]);
 
   return (
     <div className={styles.container}>
@@ -84,14 +150,14 @@ const ClassMaterial = () => {
                   timeout="auto"
                   unmountOnExit
                 >
-                  {value.materials.map((item, index) => (
+                  {value.materials?.map((item, index) => (
                     <List component="div" disablePadding>
                       <ListItem
                         button
                         onClick={() => {
                           setMaterialInfo(true);
-                          setIdMaterial(index);
                           setSubject(value.subject);
+                          setMaterial(item.title);
                           setNewMaterial(false);
                         }}
                       >
@@ -123,19 +189,23 @@ const ClassMaterial = () => {
         </div>
 
         {newMaterial && (
-          <Upload subject={subject} setNewMaterial={setNewMaterial} />
+          <Upload subject={subject} setNewUpload={setNewMaterial} />
         )}
 
         {materialInfo && (
           <MaterialInfo
             subject={subject}
-            idMaterial={idMaterial}
+            title={material}
             setMaterialInfo={setMaterialInfo}
           />
         )}
       </div>
     </div>
   );
+};
+
+ClassMaterial.propTypes = {
+  teacherInfo: PropTypes.object,
 };
 
 export default ClassMaterial;

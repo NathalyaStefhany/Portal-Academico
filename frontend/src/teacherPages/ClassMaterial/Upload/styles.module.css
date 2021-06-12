@@ -56,3 +56,19 @@
 .upload button:disabled {
   cursor: auto;
 }
+
+.modal {
+  margin: 16px 8px;
+  text-align: -webkit-center;
+}
+
+.modal p {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.created {
+  color: #2aa100;
+
+  margin-bottom: 32px;
+}
