@@ -6,101 +6,104 @@ import Modal from '../../components/Modal/Modal';
 import useFetch from '../../hooks/useFetch';
 import {
   GET_ALL_SUBJECTS,
+  POST_CREATE_REPLACEMENT,
   GET_CLASS,
-  PUT_CREATE_TEST,
 } from '../../service/api';
 
 import styles from './styles.module.css';
 
-const Tests = () => {
-  const [acronym, setAcronym] = useState();
+const Replacement = () => {
+  const [subject, setSubject] = useState();
   const [classParam, setClassParam] = useState();
-  const [testName, setTestName] = useState('NP1');
   const [date, setDate] = useState();
   const [time, setTime] = useState();
-  const [local, setLocal] = useState('I-1');
-
-  const [create, setCreate] = useState(false);
-
-  const allTestsName = ['NP1', 'NP2', 'NP3', 'NL1', 'NL2', 'NL3'];
-  const allLocal = ['I-1', 'I-2', 'I-3', 'I-4', 'I-5', 'I-6', 'I-7'];
-
-  const { request } = useFetch();
+  const [place, setPlace] = useState();
+  const [classId, setClassId] = useState();
 
   const [allSubjects, setAllSubjects] = useState([]);
   const [allClasses, setAllClasses] = useState([]);
+  const [allClassId, setAllClassId] = useState();
 
-  let firstClass = '';
+  const allLocal = ['I-1', 'I-2', 'I-3', 'I-4', 'I-5', 'I-6', 'I-7'];
+
+  const [create, setCreate] = useState(false);
 
   const [showModal, setShowModal] = useState(false);
   const [message, setMessage] = useState('');
 
+  const { request } = useFetch();
+
   useEffect(() => {
-    const sendRequest = async () => {
+    const getAllSubjects = async () => {
       const { url: url, config: config } = GET_ALL_SUBJECTS();
 
       const { json, error } = await request(url, config);
 
-      if (!error) {
-        const allSub = json.filter((subject) => subject.Classes.length);
+      if (json?.length) {
+        const subjects = [];
 
-        setAllSubjects(allSub);
+        json.forEach((sub) => {
+          subjects.push(sub.Acronym);
+        });
 
-        setAcronym(json.length ? allSub[0].Acronym : null);
+        setAllSubjects(subjects);
+        setAllClassId(json);
+
+        setSubject(subjects[0]);
       }
     };
 
-    sendRequest();
+    getAllSubjects();
   }, []);
 
-  useEffect(() => {
-    if (acronym) {
-      firstClass = '';
+  useEffect(async () => {
+    if (subject) {
+      const getClass = async (id) => {
+        const { url: url, config: config } = GET_CLASS(id);
 
-      const sendRequest = async () => {
-        const classes = allSubjects.filter(
-          (value) => value.Acronym === acronym
-        )[0].Classes;
+        const { json, error } = await request(url, config);
 
-        setAllClasses(
-          await Promise.all(
-            classes.map(async (classId, index) => {
-              const { url: url, config: config } = GET_CLASS(classId.ClassId);
+        if (json?.acronym) {
+          return json.classParam;
+        }
 
-              const { json, error } = await request(url, config);
-
-              if (index === 0) firstClass = json?.classParam;
-
-              if (!error) {
-                return json.classParam;
-              } else return null;
-            })
-          )
-        );
-
-        if (!classes.length) setAllClasses(['']);
-
-        setClassParam(firstClass);
+        return null;
       };
 
-      sendRequest();
+      const classesId = allClassId.filter((sub) => subject === sub.Acronym)[0]
+        .Classes;
+
+      const classes = await Promise.all(
+        classesId.map(async (value) => {
+          return {
+            classId: value.ClassId,
+            classParam: await getClass(value.ClassId),
+          };
+        })
+      );
+
+      setClassParam(classes[0]?.classParam);
+      setAllClasses(classes);
     }
-  }, [acronym]);
+  }, [subject]);
 
   useEffect(() => {
     if (create) {
-      if (acronym && testName && date && time && local) {
+      if (subject && classParam && date && time && place && classId) {
         const bodyData = {
-          acronym: acronym,
+          classId: classId,
+          acronym: subject,
           classParam: classParam,
-          testName: testName,
           date: date,
-          time: time,
-          local: local,
+          hour: time,
+          room: place,
         };
 
-        const createTest = async () => {
-          const { url: url, config: config } = PUT_CREATE_TEST(bodyData);
+        console.log(bodyData);
+
+        const createReplacement = async () => {
+          const { url: url, config: config } =
+            POST_CREATE_REPLACEMENT(bodyData);
 
           const { json, error } = await request(url, config);
 
@@ -112,8 +115,7 @@ const Tests = () => {
             setShowModal(true);
           }
         };
-
-        createTest();
+        createReplacement();
       } else {
         setMessage(2);
         setShowModal(true);
@@ -124,36 +126,33 @@ const Tests = () => {
 
   return (
     <div className={styles.registrationContainer} style={{ height: '380px' }}>
-      <p className={styles.registrationTitle}>Provas</p>
+      <p className={styles.registrationTitle}>Reposição de Aula</p>
       <table style={{ height: '100%' }}>
         <tr>
           <td>Matéria:</td>
           <td>
-            <select onChange={(value) => setAcronym(value.target.value)}>
-              {allSubjects?.length &&
-                allSubjects.map((subject) => (
-                  <option value={subject.Acronym}>{subject.Acronym}</option>
-                ))}
+            <select onChange={(value) => setSubject(value.target.value)}>
+              {allSubjects.map((sub) => (
+                <option value={sub}>{sub}</option>
+              ))}
             </select>
           </td>
         </tr>
         <tr>
           <td>Turma:</td>
           <td>
-            <select disabled={allClasses[0] === ''}>
-              {allClasses?.length &&
-                allClasses.map((value) => (
-                  <option value={value}>{value}</option>
-                ))}
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td>Prova:</td>
-          <td>
-            <select onChange={(value) => setTestName(value.target.value)}>
-              {allTestsName.map((test) => (
-                <option value={test}>{test}</option>
+            <select
+              onChange={(value) => {
+                setClassParam(value.target.value);
+                setClassId(
+                  allClasses.filter(
+                    (value) => classParam === value.classParam
+                  )[0].classId
+                );
+              }}
+            >
+              {allClasses.map((param) => (
+                <option value={param.classParam}>{param.classParam}</option>
               ))}
             </select>
           </td>
@@ -179,7 +178,7 @@ const Tests = () => {
         <tr>
           <td>Local:</td>
           <td>
-            <select onChange={(value) => setLocal(value.target.value)}>
+            <select onChange={(value) => setPlace(value.target.value)}>
               {allLocal.map((loc) => (
                 <option value={loc}>{loc}</option>
               ))}
@@ -198,15 +197,13 @@ const Tests = () => {
         <Modal height="150px">
           <div className={styles.modal}>
             {message === 0 ? (
-              <p className={styles.created}>Prova criada com sucesso!</p>
+              <p className={styles.created}>Reposição criada com sucesso!</p>
             ) : message === 1 ? (
               <p className={styles.error}>
-                Não foi possível criar a prova. Prova já existe!
+                Não foi possível criar a reposição!
               </p>
             ) : (
-              <p className={styles.errorInfo}>
-                Preencha todas as informações da prova!
-              </p>
+              <p className={styles.errorInfo}>Preencha todas as informações!</p>
             )}
 
             <Button title="FECHAR" onClick={() => setShowModal(false)} />
@@ -217,4 +214,4 @@ const Tests = () => {
   );
 };
 
-export default Tests;
+export default Replacement;

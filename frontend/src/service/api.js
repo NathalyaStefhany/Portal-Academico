@@ -172,6 +172,14 @@ export const PUT_CREATE_TEST = (body) => ({
   },
 });
 
+export const POST_CREATE_REPLACEMENT = (body) => ({
+  url: `${API}/replacement`,
+  config: {
+    method: 'POST',
+    data: body,
+  },
+});
+
 export const GET_ALL_SUBJECTS = () => ({
   url: `${API}/subjects`,
   config: {

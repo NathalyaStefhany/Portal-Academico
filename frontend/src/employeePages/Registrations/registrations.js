@@ -4,6 +4,7 @@ import Button from '../../components/Button/Button';
 import Student from './student';
 import Teacher from './teacher';
 import Tests from './tests';
+import Replacement from './replacement';
 
 import styles from './styles.module.css';
 
@@ -31,64 +32,7 @@ const Registrations = () => {
         <div style={{ display: 'flex' }}>
           <Tests />
 
-          <div
-            className={styles.registrationContainer}
-            style={{ height: '380px' }}
-          >
-            <p className={styles.registrationTitle}>Reposição de Aula</p>
-            <table style={{ height: '100%' }}>
-              <tr>
-                <td>Matéria:</td>
-                <td>
-                  <select>
-                    <option value="L1">C210</option>
-                  </select>
-                </td>
-              </tr>
-              <tr>
-                <td>Turma:</td>
-                <td>
-                  <select>
-                    <option value="L1">L1</option>
-                  </select>
-                </td>
-              </tr>
-              <tr>
-                <td>Professor:</td>
-                <td>
-                  <select>
-                    <option value="Renzo">Renzo</option>
-                  </select>
-                </td>
-              </tr>
-              <tr>
-                <td>Data:</td>
-                <td>
-                  <input type="date" />
-                </td>
-              </tr>
-              <tr>
-                <td>Horário:</td>
-                <td>
-                  <input type="time" />
-                </td>
-              </tr>
-              <tr>
-                <td>Local:</td>
-                <td>
-                  <select>
-                    <option value="I-17">I-17</option>
-                  </select>
-                </td>
-              </tr>
-              <tr>
-                <td></td>
-                <td style={{ height: '100%', paddingBottom: '50px' }}>
-                  <Button title="CONFIRMAR" />
-                </td>
-              </tr>
-            </table>
-          </div>
+          <Replacement />
         </div>
 
         <div style={{ display: 'flex' }}>
