@@ -21,17 +21,28 @@ This project is a proposed interface for the Inatel academic portal.
  <a href="#-authors">Authors</a>
 </p>
 
+<p align="center">
+  <img src="web-layout.png">
+</p>
+
 ## 💻 Project Description
+The project's objective is to develop a complete application (backend, web and mobile). In the mobile application we have the student's academic portal and on the web, in addition to having the student part, we also have the teacher and administrator part. Both applications use the same backend.
+
+The project is being developed in:
+- **Backend:** Node.js and MongoDB
+- **Web:** React
+- **Mobile:** Flutter
+
+In addition, some software engineering techniques were applied:
+- **Unit Tests:** created in backend using [Jest](https://jestjs.io/)
+- **End-to-end Tests:** created in frontend using [Cypress](https://www.cypress.io/)
+- **Continuous Integration (CI):** used in backend with [Github Actions](https://github.com/features/actions)
 
 ## 🎨 Layout
 The application layout is available on Figma:
 
 [![Generic badge](https://img.shields.io/badge/Mobile-Figma-blue.svg)](https://www.figma.com/file/FYdgvV8ZyrKSO97gk1YSsK/Portal-Acad%C3%AAmico-Mobile?node-id=0%3A1)
 [![Generic badge](https://img.shields.io/badge/Web-Figma-blue.svg)](https://www.figma.com/file/Mq2Y7fAF6gTGm7shjpLZvT/Portal-Acad%C3%AAmico?node-id=166%3A335)
-
-### Mobile
-
-### Web
 
 ## 🎯 Functionalities
 
