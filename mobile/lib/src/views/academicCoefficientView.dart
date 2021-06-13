@@ -49,8 +49,8 @@ class _AcademicCoefficientViewState extends State<AcademicCoefficientView> {
       finalList.add(
         AcademicCoef(
           data["Values"][i]["PeriodDate"], 
-          data["Values"][i]["Cre"], 
-          data["Values"][i]["Crs"], 
+          data["Values"][i]["Cre"].toDouble(), 
+          data["Values"][i]["Crs"].toDouble(), 
           data["Values"][i]["Median"].toDouble()
         ) 
       );
