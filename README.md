@@ -35,20 +35,52 @@ The application layout is available on Figma:
 
 ## 🎯 Functionalities
 
+### Web
+
+The application is divided into 3 parts:
+
+- Student:
+  - [x] Login
+  - [x] Class Schedule
+  - [x] Class Material
+  - [x] Grades
+  - [x] Frequency
+  - [x] Academic Record
+  - [x] Academic Coefficient
+  - [x] Exam Dates
+  - [x] Class Replacement
+  - [x] Teacher's Office Hours
+  - [x] Profile
+  - [ ] Matriculation
+
+- Teacher:
+  - [x] Login
+  - [x] Class and office hours schedules
+  - [x] Publish Class Material
+  - [x] Publish Grades
+  - [x] Publish Frequency
+  - [x] Profile
+
+- Admin:
+  - [x] Login
+  - [x] Register Student
+  - [x] Register Teacher
+  - [x] Register Exam Date
+  - [x] Register Class Reposition
+  - [x] Profile
+
 ### Mobile
 The application has the following features:
-- [ ] Login
-- [ ] Class Schedule
-- [ ] Class Material
-- [ ] Grades
-- [ ] Frequency
-- [ ] Academic Record
-- [ ] Academic Coefficient
-- [ ] Test Date
-- [ ] Class Replacement
-- [ ] Teacher's Office Hours
-
-### Web
+- [x] Login
+- [x] Class Schedule
+- [x] Class Material
+- [x] Grades
+- [x] Frequency
+- [x] Academic Record
+- [x] Academic Coefficient
+- [x] Test Date
+- [x] Class Replacement
+- [x] Teacher's Office Hours
 
 ## 🛠 Technologies
 The following tools were used in the construction of the project:
