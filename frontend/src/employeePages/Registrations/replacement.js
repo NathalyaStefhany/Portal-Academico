@@ -83,6 +83,11 @@ const Replacement = () => {
       );
 
       setClassParam(classes[0]?.classParam);
+      setClassId(
+        classes.filter(
+          (value) => classes[0]?.classParam === value.classParam
+        )[0]?.classId
+      );
       setAllClasses(classes);
     }
   }, [subject]);
@@ -98,8 +103,6 @@ const Replacement = () => {
           hour: time,
           room: place,
         };
-
-        console.log(bodyData);
 
         const createReplacement = async () => {
           const { url: url, config: config } =
@@ -146,7 +149,7 @@ const Replacement = () => {
                 setClassParam(value.target.value);
                 setClassId(
                   allClasses.filter(
-                    (value) => classParam === value.classParam
+                    (value) => value.target.value === value.classParam
                   )[0].classId
                 );
               }}
