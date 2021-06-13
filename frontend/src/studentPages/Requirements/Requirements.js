@@ -136,79 +136,80 @@ const Requirements = ({ studentInfo }) => {
       </div>
 
       <table className={styles.table}>
-        {requirements.length &&
-          requirements.map((subject, index) => {
-            if (subject.length) {
-              return (
-                <tr key={index}>
-                  <td width={100}>
-                    <b>P{index + 1}</b>
-                    <p>({periodCredit[index]} crd)</p>
-                  </td>
+        {requirements.length
+          ? requirements.map((subject, index) => {
+              if (subject.length) {
+                return (
+                  <tr key={index}>
+                    <td width={100}>
+                      <b>P{index + 1}</b>
+                      <p>({periodCredit[index]} crd)</p>
+                    </td>
 
-                  <td>
-                    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                      {subject.map((value) => (
-                        <div>
-                          <div
-                            key={value.disciplina}
-                            className={styles.disciplina}
-                            style={{
-                              backgroundColor:
-                                value.HistoricFlag === 0
-                                  ? '#c0ffaa'
-                                  : value.HistoricFlag === 1
-                                  ? '#fdff97'
-                                  : value.HistoricFlag === 2
-                                  ? '#abd6ff'
-                                  : '#c4c4c4',
-                              marginBottom:
-                                value.Requirements.length > 0 && '0px',
-                              borderBottomRightRadius:
-                                value.Requirements.length > 0 && '0px',
-                              borderBottomLeftRadius:
-                                value.Requirements.length > 0 && '0px',
-                              borderBottom:
-                                value.Requirements.length > 0 && 'none',
-                            }}
-                          >
-                            <p>{value.Acronym}</p>
-                            <p>({value.Credits} crd)</p>
-                          </div>
-
-                          {value.Requirements.length > 0 && (
+                    <td>
+                      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                        {subject.map((value) => (
+                          <div>
                             <div
+                              key={value.disciplina}
+                              className={styles.disciplina}
                               style={{
-                                border: '1px solid #666666',
-                                borderBottomRightRadius: '5px',
-                                borderBottomLeftRadius: '5px',
-                                margin: '15px',
-                                marginTop: '0px',
-                                width: '167px',
+                                backgroundColor:
+                                  value.HistoricFlag === 0
+                                    ? '#c0ffaa'
+                                    : value.HistoricFlag === 1
+                                    ? '#fdff97'
+                                    : value.HistoricFlag === 2
+                                    ? '#abd6ff'
+                                    : '#c4c4c4',
+                                marginBottom:
+                                  value.Requirements.length > 0 && '0px',
+                                borderBottomRightRadius:
+                                  value.Requirements.length > 0 && '0px',
+                                borderBottomLeftRadius:
+                                  value.Requirements.length > 0 && '0px',
+                                borderBottom:
+                                  value.Requirements.length > 0 && 'none',
                               }}
                             >
-                              {value.Requirements.map((requisito) => (
-                                <div className={styles.requisitos}>
-                                  {requisito.situation === 'ok' && (
-                                    <img
-                                      src={check}
-                                      alt="Icone representado Ok!"
-                                    />
-                                  )}
-                                  <p>{requisito.Acronym}</p>
-                                  <p>({requisito.HistoricFlag} )</p>
-                                </div>
-                              ))}
+                              <p>{value.Acronym}</p>
+                              <p>({value.Credits} crd)</p>
                             </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </td>
-                </tr>
-              );
-            } else return null;
-          })}
+
+                            {value.Requirements.length > 0 && (
+                              <div
+                                style={{
+                                  border: '1px solid #666666',
+                                  borderBottomRightRadius: '5px',
+                                  borderBottomLeftRadius: '5px',
+                                  margin: '15px',
+                                  marginTop: '0px',
+                                  width: '167px',
+                                }}
+                              >
+                                {value.Requirements.map((requisito) => (
+                                  <div className={styles.requisitos}>
+                                    {requisito.situation === 'ok' && (
+                                      <img
+                                        src={check}
+                                        alt="Icone representado Ok!"
+                                      />
+                                    )}
+                                    <p>{requisito.Acronym}</p>
+                                    <p>({requisito.HistoricFlag} )</p>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </td>
+                  </tr>
+                );
+              } else return null;
+            })
+          : null}
       </table>
 
       <div className={styles.subtitle}>
