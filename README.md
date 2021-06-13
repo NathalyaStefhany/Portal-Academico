@@ -182,5 +182,5 @@ $ flutter run
 ```
 
 ## 👪 Authors
-- Nathalya Stefhany ([Entre em contato!](https://www.linkedin.com/in/nathalya-stefhany-pereira/))
-- Renan Dias ([Entre em contato!](https://www.linkedin.com/in/renan-dias-faria-54a599190/))
+- **Web and Mobile:** Nathalya Stefhany ([Entre em contato!](https://www.linkedin.com/in/nathalya-stefhany-pereira/))
+- **Backend:** Renan Dias ([Entre em contato!](https://www.linkedin.com/in/renan-dias-faria-54a599190/))
