@@ -1,7 +1,12 @@
-module.export = {
-    preset: 'ts-jest',
-    testEnvironment: 'node',
-    testMatch: ['./src/**/*.test.ts'],
+module.exports = {
+    bail: 1,
+    testEnvironment: "node",
+    testMatch: ["**/tests/**/*.test.ts"],
     clearMocks: true,
-    preset: 'ts-jest'
+    transform: {
+        "^.+\\.(ts|tsx)$": "ts-jest"
+    },
+    collectCoverage: true,
+    collectCoverageFrom: ["src/entities/**/*.ts"],
+    coverageDirectory: "tests/coverage"
 };
